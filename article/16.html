@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> Race condition 발생시키고 Mutex lock으로 해결하기 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/16.html"><meta property="og:title" content="Race condition 발생시키고 Mutex lock으로 해결하기"><meta property="og:image" content="https://og-image-parksb.vercel.app/**Race%20condition%20%EB%B0%9C%EC%83%9D%EC%8B%9C%ED%82%A4%EA%B3%A0%20Mutex%20lock%EC%9C%BC%EB%A1%9C%20%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.11%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="race condition은 두 개 이상의 프로세스나 스레드가 하나의 데이터를 공유할 때 데이터가 동기화되지 않는 상황을 말한다. (공룡책으로 정리하는 운영체제 Ch.6에 정리했다.) 그리고 코드에서 이러한 문제가 발생할 수 있는 부분을 critical section이라고 하며, 이 문제를 해결하기 위해 한 번에 하나의 ..."><meta name="twitter:title" content="Race condition 발생시키고 Mutex lock으로 해결하기"><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**Race%20condition%20%EB%B0%9C%EC%83%9D%EC%8B%9C%ED%82%A4%EA%B3%A0%20Mutex%20lock%EC%9C%BC%EB%A1%9C%20%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.11%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="race condition은 두 개 이상의 프로세스나 스레드가 하나의 데이터를 공유할 때 데이터가 동기화되지 않는 상황을 말한다. (공룡책으로 정리하는 운영체제 Ch.6에 정리했다.) 그리고 코드에서 이러한 문제가 발생할 수 있는 부분을 critical section이라고 하며, 이 문제를 해결하기 위해 한 번에 하나의 ..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> Race condition 발생시키고 Mutex lock으로 해결하기 </h1> <time id="article-date"> 2018.06.11 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180611_resolving-race-condition-using-mutex.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul></ul></div></p>
+</details>
+<p>race condition은 두 개 이상의 프로세스나 스레드가 하나의 데이터를 공유할 때 데이터가 동기화되지 않는 상황을 말한다. (<a href="https://parksb.github.io/article/10.html">공룡책으로 정리하는 운영체제 Ch.6</a>에 정리했다.) 그리고 코드에서 이러한 문제가 발생할 수 있는 부분을 critical section이라고 하며, 이 문제를 해결하기 위해 한 번에 하나의 스레드만 critical section에 진입할 수 있도록 제어하는 기법을 mutex lock이라고 한다.</p>
+<p>CentOS에서 3개의 스레드를 운영하는 프로그램을 짜고, race condition을 발생시킨 뒤 mutex lock을 통해 해결해보려 한다. 먼저 3개의 스레드를 만들어보자.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pthread.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;time.h&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">performThread</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* data)</span></span>;
+
+<span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* argv[])</span> </span>{
+  <span class="hljs-keyword">pthread_t</span> threads[<span class="hljs-number">3</span>];
+  <span class="hljs-keyword">char</span> threadNames[<span class="hljs-number">3</span>][<span class="hljs-number">128</span>] = {
+    {<span class="hljs-string">&quot;thread1&quot;</span>},
+    {<span class="hljs-string">&quot;thread2&quot;</span>},
+    {<span class="hljs-string">&quot;thread3&quot;</span>}
+  };
+
+  pthread_create(&amp;threads[<span class="hljs-number">0</span>], <span class="hljs-literal">NULL</span>, performThread, (<span class="hljs-keyword">void</span>*)threadNames[<span class="hljs-number">0</span>]);
+  pthread_create(&amp;threads[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, performThread, (<span class="hljs-keyword">void</span>*)threadNames[<span class="hljs-number">1</span>]);
+  pthread_create(&amp;threads[<span class="hljs-number">2</span>], <span class="hljs-literal">NULL</span>, performThread, (<span class="hljs-keyword">void</span>*)threadNames[<span class="hljs-number">2</span>]);
+
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, count);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">performThread</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* data)</span> </span>{
+  count++;
+}
+</code></pre>
+<p>3개의 스레드가 차례대로 <code>count</code>를 증가시켰기 때문에 예상대로 결과는 3이 나온다. 이걸 조금 바꿔서 <code>count</code>를 10만번 증가시키고, 모든 내용을 로그에 남기도록 하려한다. <code>performThread</code>만 수정해주면 된다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">performThread</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* data)</span> </span>{
+  <span class="hljs-keyword">time_t</span> currentTime;
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tm</span>* <span class="hljs-title">timeInfo</span>;</span>
+  <span class="hljs-keyword">char</span> currentTimeString[<span class="hljs-number">128</span>];
+
+  <span class="hljs-keyword">char</span>* threadName = (<span class="hljs-keyword">char</span>*)data;
+  FILE* file;
+  <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+  file = fopen(<span class="hljs-string">&quot;event.log&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>);
+
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++) {
+    time(&amp;currentTime);
+    timeInfo = localtime(&amp;currentTime);
+    strftime(currentTimeString, <span class="hljs-number">128</span>, <span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, timeInfo);
+
+    <span class="hljs-built_in">fprintf</span>(file, <span class="hljs-string">&quot;%s\t%s\t%d\n&quot;</span>, currentTimeString, threadName, count);
+
+    count++;
+  }
+
+  fclose(file);
+}
+</code></pre>
+<p>반복문을 10만번 돌면서 시간, 스레드 이름, <code>count</code> 순서로 로그를 한 줄씩 남기도록 수정하고 실행한다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/50655469-a575fd00-0fd3-11e9-86c4-54add9d239f4.png" alt="로그. 0, 1, 3, 4, 5, 7 순차적이지 않게 로그가 남았다."></p>
+<p>엄청난 빈도로 race condition이 발생했으며, 최종 결과가 정확히 300000으로 떨어지지 않았다. 이에 앞서 VM에서 테스트하면서 race condition이 일어나지 않아 삽질을 많이 했는데, VM을 싱글 코어로 설정해서 그런 것이었다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/50655465-a3ac3980-0fd3-11e9-856b-a5f67445bb09.png" alt="싱글 코어 환경에서의 로그. 31642, 31643, 31644 순차적으로 로그가 남았다."></p>
+<p>위와 같이 싱글 코어 환경에서는 한 번에 하나의 스레드만 실행되기 때문에 race condition이 발생하지 않는다.</p>
+<p>다시 멀티 코어 환경으로 돌아와서, race condition을 mutex lock으로 해결해본다.</p>
+<pre class="hljs"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pthread.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;time.h&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">performThread</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* data)</span></span>;
+
+<span class="hljs-keyword">pthread_mutex_t</span> mutex = PTHREAD_MUTEX_INITIALIZER;
+<span class="hljs-keyword">int</span> counter = <span class="hljs-number">0</span>;
+FILE* file;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* argv[])</span> </span>{
+  <span class="hljs-keyword">pthread_t</span> threads[<span class="hljs-number">3</span>];
+  <span class="hljs-keyword">char</span> threadNames[<span class="hljs-number">3</span>][<span class="hljs-number">128</span>] = {
+    {<span class="hljs-string">&quot;thread1&quot;</span>},
+    {<span class="hljs-string">&quot;thread2&quot;</span>},
+    {<span class="hljs-string">&quot;thread3&quot;</span>}
+  };
+  <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+
+  file = fopen(<span class="hljs-string">&quot;event.log&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>);
+
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++) {
+    pthread_create(&amp;threads[<span class="hljs-number">0</span>], <span class="hljs-literal">NULL</span>, performThread, (<span class="hljs-keyword">void</span>*)threadNames[<span class="hljs-number">0</span>]);
+    pthread_create(&amp;threads[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, performThread, (<span class="hljs-keyword">void</span>*)threadNames[<span class="hljs-number">1</span>]);
+    pthread_create(&amp;threads[<span class="hljs-number">2</span>], <span class="hljs-literal">NULL</span>, performThread, (<span class="hljs-keyword">void</span>*)threadNames[<span class="hljs-number">2</span>]);
+  }
+
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Done: %d\n&quot;</span>, counter);
+  fclose(file);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">performThread</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* data)</span> </span>{
+  pthread_mutex_lock(&amp;mutex);
+
+  <span class="hljs-keyword">time_t</span> currentTime;
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tm</span>* <span class="hljs-title">timeInfo</span>;</span>
+  <span class="hljs-keyword">char</span> currentTimeString[<span class="hljs-number">128</span>];
+  <span class="hljs-keyword">char</span>* threadName = (<span class="hljs-keyword">char</span>*)data;
+
+  time(&amp;currentTime);
+  timeInfo = localtime(&amp;currentTime);
+  strftime(currentTimeString, <span class="hljs-number">128</span>, <span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, timeInfo);
+
+  <span class="hljs-built_in">fprintf</span>(file, <span class="hljs-string">&quot;%s\t%s\t%d\n&quot;</span>, currentTimeString, threadName, counter);
+
+  counter++;
+
+  pthread_mutex_unlock(&amp;mutex);
+}
+</code></pre>
+<p>먼저 <code>mutex</code> 변수를 만들었다. 그리고 critical section은 <code>performThread</code> 함수에서 로그를 남기고 <code>counter</code>를 증가시키는 부분이므로, 스레드가 <code>performThread</code>에 진입할 때 lock해 다른 스레드가 진입할 수 없도록 만든 후 나올 때는 unlock해주도록 했다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/50655470-a870ed80-0fd3-11e9-9917-b1fede3dcea0.png" alt="로그. 299978, 299979, 299980 순차적으로 로그가 남았다."></p>
+<p>최종 값은 299999였다. <code>counter</code>가 0에서 출발하니까 최종 값이 299999이어야 각 스레드가 100000번씩 수행되었다는 의미가 된다. 잘 동작했다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/17.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">Java Design Pattern: Singleton</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/15.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🌞 개떡같은 코드와 함께한 하루 리뉴얼 이야기</p> <p class="article-navigation-subtitle">거대한 레거시를 수습한 경험</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/16.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

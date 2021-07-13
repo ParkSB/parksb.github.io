@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🦕 공룡책으로 정리하는 운영체제 Ch.3 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/7.html"><meta property="og:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.3: Process Concept "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.3**.png?subtitle=Process%20Concept&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="본격적으로 프로세스에 대해서 다루기 시작한다. Ch.1 Overview에서 나왔듯이 디스크에 있는 것은 프로그램, 메모리에 로드된 것은 프로세스라고 한다. 프로세스는 Stack, Heap, Data, Code로 나뉜다.+---------------+ max|     stack     | +-------+-------+| ..."><meta name="twitter:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.3: Process Concept "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.3**.png?subtitle=Process%20Concept&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="본격적으로 프로세스에 대해서 다루기 시작한다. Ch.1 Overview에서 나왔듯이 디스크에 있는 것은 프로그램, 메모리에 로드된 것은 프로세스라고 한다. 프로세스는 Stack, Heap, Data, Code로 나뉜다.+---------------+ max|     stack     | +-------+-------+| ..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🦕 공룡책으로 정리하는 운영체제 Ch.3 </h1> <h2 id="article-subtitle"> Process Concept </h2> <time id="article-date"> 2018.05.03 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180503_dinosaur-book-ch3.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#process-state">Process State</a></li><li><a href="#process-control-block-(pcb)">Process Control Block (PCB)</a></li><li><a href="#threads">Threads</a></li><li><a href="#process-scheduling">Process Scheduling</a><ul><li><a href="#scheduling-queues">Scheduling Queues</a></li><li><a href="#schedulers">Schedulers</a></li></ul></li><li><a href="#context-switch">Context Switch</a></li><li><a href="#operations-on-processes">Operations on Processes</a><ul><li><a href="#process-creation">Process Creation</a></li><li><a href="#process-termination">Process Termination</a></li></ul></li><li><a href="#interprocess-communication-(ipc)">Interprocess Communication (IPC)</a><ul><li><a href="#message-passing">Message Passing</a></li><li><a href="#shared-memory">Shared Memory</a></li><li><a href="#producer-consumer-problem">Producer-Consumer Problem</a></li><li><a href="#synchronization">Synchronization</a></li></ul></li><li><a href="#sockets">Sockets</a></li><li><a href="#pipes">Pipes</a></li></ul></div></p>
+</details>
+<p>본격적으로 프로세스에 대해서 다루기 시작한다. <a href="https://parksb.github.io/article/5.html">Ch.1 Overview</a>에서 나왔듯이 디스크에 있는 것은 프로그램, 메모리에 로드된 것은 프로세스라고 한다. 프로세스는 Stack, Heap, Data, Code로 나뉜다.</p>
+<pre class="hljs"><code>+---------------+ max
+|     stack     | 
++-------+-------+
+|       |       |
+|       v       |
+|               |
+|       ^       |
+|       |       |
++-------+-------+
+|     heap      |
++---------------+
+|     data      |
++---------------+
+|     text      |
++---------------+ 0
+</code></pre>
+<h1 id="process-state">Process State</h1>
+<p>프로세스의 상태는 현재 활동에 따라 달라진다.</p>
+<pre class="hljs"><code>                         +------------interrupt------------+
+                         v                                 |
++-----+              +-------+                        +----+----+          +------------+
+| new +---admitted--&gt;| ready +---scheduler dispatch--&gt;| running +---exit--&gt;| terminated |
++-----+              +-------+                        +----+----+          +------------+
+                         ^           +---------+           |
+                         +-----------+ waiting |&lt;----------+
+         I/O or event completion     +---------+     I/O or event wait
+</code></pre>
+<ul>
+<li>New: 프로세스가 처음 생성되었을 때.</li>
+<li>Ready: 프로세스가 프로세서에 할당되기를 기다릴 때.</li>
+<li>Running: 프로세스가 할당되어 실행될 때.</li>
+<li>Waiting: 프로세스가 이벤트를 기다릴 때.</li>
+<li>Terminated: 프로세스가 실행을 마쳤을 때.</li>
+</ul>
+<h1 id="process-control-block-(pcb)">Process Control Block (PCB)</h1>
+<p>각각의 프로세스는 자신의 정보 묶음인 PCB를 가지고 있다. PCB에는 프로세스 상태와 프로그램 카운터, 메모리 한계, 레지스터 정보 등이 담겨있다.</p>
+<ul>
+<li>Process state: 프로세스의 상태.</li>
+<li>Program counter: 해당 프로세스가 이어서 실행해야 할 명령의 주소를 가리키는 카운터.</li>
+<li>CPU registers: 프로세스가 인터럽트 이후 올바르게 작업을 이어가기 위해 참조하는 CPU 레지스터 값.</li>
+<li>CPU-scheduling information: 프로세스의 중요도, 스케줄링 큐 포인터 등 스케줄링 파라미터 정보.</li>
+<li>Memory-management information: base, limit 레지스터 값, 페이지 테이블 등 메모리 시스템 정보.</li>
+<li>Accounting information: 사용된 CPU 총량, 프로세스 개수, 시간 제한 등.</li>
+<li>I/O status information: 프로세스에 할당된 입출력 장치 목록, 열린 파일 목록 등.</li>
+</ul>
+<h1 id="threads">Threads</h1>
+<p>프로세스를 쪼개 하나의 프로세스 안에서 동시에 여러 작업을 처리할 수 있다. 지금까지는 싱글 스레드 프로세스를 전제하고 살펴봤다. 싱글 스레드 프로세스는 한번에 하나의 작업만 할 수 있다. 가령 워드 프로세서 프로그램을 실행한다면, 글자를 타이핑할 때 같은 프로세스 안에서 동작하는 문법 교정기가 동시에 동작할 수 없다. 챕터 4에서 자세히 다룬다.</p>
+<h1 id="process-scheduling">Process Scheduling</h1>
+<p>멀티프로그래밍의 목적은 CPU를 최대로 사용하기 위해 항상 일부 프로세스를 실행하는 것이다. 타임쉐어링의 목적은 프로세스 간에 CPU를 자주 전환함으로써 사용자가 각 프로그램이 실행되는 동안 서로 상호작용할 수 있도록 만드는 것이다. 이러한 목적을 달성하기 위해 프로세스 스케줄러는 CPU에서의 프로그램을 실행을 위해 사용 가능한 프로세스를 선택하며, 어떤 프로세스를 프로세서에 할당할 것인가 결정하는 일을 프로세스 스케줄링이라고 한다.</p>
+<h2 id="scheduling-queues">Scheduling Queues</h2>
+<p>프로세스가 시스템에 들어오면 잡 큐(Job queue)에 들어간다. 잡 큐는 시스템의 모든 프로세스로 구성되어있다. 메인 메모리에서 실행을 기다리는 ready 상태의 프로세스들은 레디 큐(Ready queue)에 쌓인다. 입출력 장치를 기다리는 프로세스들은 디바이스 큐(Device queue)로 들어간다.</p>
+<h2 id="schedulers">Schedulers</h2>
+<p>레디 큐에 프로세스를 옮기는 것은 잡 스케줄러, 또는 Long-term 스케줄러라고 한다. 프로세스를 프로세서에 할당하는 것은 CPU 스케줄러, 또는 Short-term 스케줄러라고 한다. Long-term 스케줄러는 CPU 밖에서 가끔 수행된다. Short-term 스케줄러는 그 반대다.</p>
+<h1 id="context-switch">Context Switch</h1>
+<p>프로세스가 실행되다가 인터럽트가 발생해 운영체제가 개입하여 <strong>프로세서에 할당된 프로세스를 바꾸는 것</strong>을 말한다. 시스템 콜을 사용해야 하는 경우 프로세스가 자체적으로 처리할 수 없기 때문에 운영체제가 개입해야 한다. 프로세서가 다른 프로세스로 스위치할 때, 시스템은 작업중이던 프로세스의 상태를 저장하고 새로운 프로세스의 상태를 로드한다. 컴퓨터과학에서 컨텍스트는 <strong>내 시스템에서 활용 가능한 모니터링된 정보들</strong>을 의미한다. 프로세서 입장에서 컨텍스트는 PCB이기 때문에 PCB 정보가 바뀌는 것을 컨텍스트 스위치라고 부른다. 컨텍스트 스위치는 오버헤드가 발생하는 작업이기 때문에 너무 자주 일어나면 성능을 저하한다.</p>
+<h1 id="operations-on-processes">Operations on Processes</h1>
+<p>대부분의 시스템에서 프로세스는 동시에 실행될 수 있고, 이들은 동적으로 생성되거나 삭제될 수 있다. 시스템은 프로세스 생성, 삭제 메커니즘을 제공해야 한다.</p>
+<h2 id="process-creation">Process Creation</h2>
+<p>프로세스는 트리 구조로 되어 있다. 즉, 부모 프로세스가 자식 프로세스를 만든다. PCB에 저장된 <code>pid</code>값으로 프로세스를 식별하는데, 이는 운영체제가 정해준 고유 번호다. <strong>프로세스 생성은 플라나리아 번식과 유사하다.</strong> 시스템 콜의 <code>fork()</code> 함수를 호출하면 부모 프로세스는 자신과 똑같은 자식 프로세스를 생성한다. 자식 프로세스는 <code>exec()</code>를 통해 내용을 모두 바꾼다. <code>fork()</code> 함수는 부모 프로세스에겐 자식 프로세스의 <code>pid</code>를, 자식프로세스에겐 <code>0</code>을 반환한다. <strong>부모 프로세스와 자식 프로세스는 동시에 작동</strong>한다.</p>
+<h2 id="process-termination">Process Termination</h2>
+<p><code>exit()</code>를 호출하면 프로세스를 종료시킬 수 있다. 부모 프로세스가 자식 프로세스보다 먼저 종료되면 자식 프로세스는 그 상위 프로세스를 부모 프로세스로 바라본다. 자식 프로세스가 종료되었는데, 부모 프로세스가 자식 프로세스가 반환한 정보를 회수하지 않으면 자식 프로세스는 종료되었음에도 정보가 메모리에 남아 있는 좀비 프로세스가 된다.</p>
+<h1 id="interprocess-communication-(ipc)">Interprocess Communication (IPC)</h1>
+<p>프로세스는 독립적으로 동작하거나 서로 협력하며 동작할 수 있다. 협력하는 프로세스들은 통신하며 서로에게 영향을 미친다. IPC 모델에는 메시지 패싱(Message passing)과 공유 메모리(Shared memory)가 있다.</p>
+<h2 id="message-passing">Message Passing</h2>
+<p>메시지 패싱은 우편이다. 송신 프로세스가 정보를 받는 수신 프로세스에게 <strong>커널을 통해 정보를 전달</strong>하며, 수신 프로세스도 <strong>커널에 접근해 정보를 수신</strong>한다. 메시지 패싱은 컨텍스트 스위치가 발생하기 때문에 속도가 느리다. 다만 커널이 기본적인 기능을 제공하므로 공유 메모리 방식에 비해선 구현이 쉽다.</p>
+<h2 id="shared-memory">Shared Memory</h2>
+<p>공유 메모리는 게시판이다. 특정 메모리 공간을 두 프로세스가 함께 사용하며 정보를 주고 받는다. 커널을 거치지 않기 때문에 속도가 빠르지만 메모리에 동시 접근하는 것을 방지하기 위해 프로그래머가 따로 구현을 해줘야 한다.</p>
+<h2 id="producer-consumer-problem">Producer-Consumer Problem</h2>
+<p>협력하는 프로세스 중 정보를 생산하는 프로세스를 생산자(Producer), 정보를 소비하는 프로세스를 소비자(Consumer)라고 부른다. 생산자-소비자 문제는 <strong>두 프로세스가 동시에 동작할 때 일어나는 이슈</strong>를 말한다. 보통 정보가 생산되는 속도가 소비하는 속도보다 빠르기 때문에 동기화 문제가 발생하는데, 이를 해결하기 위해 생산된 데이터를 담아두는 버퍼(Buffer)를 사용한다. 크기에 한계가 있는 버퍼를 유한 버퍼(Bounded buffer), 버퍼의 시작과 끝을 이어붙여 크기가 무한한 버퍼를 무한 버퍼(Unbounded buffer)라고 한다.</p>
+<h2 id="synchronization">Synchronization</h2>
+<p>메시지 패싱의 동기화 문제를 해결하기 위해 blocking 방식과 non-blocking 방식이 사용된다.</p>
+<ul>
+<li>Blocking send: 수신자가 메시지를 받을 때까지 송신자는 block된다.</li>
+<li>Blocking receive: 메시지를 수신할 때까지 수신자는 block된다.</li>
+<li>Non-blocking send: 송신자가 메시지를 보내고 작업을 계속한다.</li>
+<li>None-blocking receive: 수신자가 유효한 메시지나 Null 메시지를 받는다.</li>
+</ul>
+<h1 id="sockets">Sockets</h1>
+<p>소켓은 서버와 클라이언트가 통신하는 방식이다. <strong>IP주소와 포트 정보가 있으면 클라이언트는 네트워크를 통해 서버 프로세스에 접근</strong>할 수 있다. RPC(Remote Procedure Calls)는 프로세스와 프로세스가 네트워크로 이어져 있을 때 발생하는 호출을 말한다. 서버와 클라이언트가 통신할 때는 IP주소와 포트를 래핑해서 Stub으로 만들어 전송한다.</p>
+<h1 id="pipes">Pipes</h1>
+<p>파이프는 부모 프로세스와 자식 프로세스가 통신할 때 사용하는 방식이다. 말 그대로 프로세스 사이에 파이프를 두고 정보를 주고 받는 건데, <strong>파이프는 단방향 통신만 가능</strong>하기 때문에 양방향으로 정보를 주고 받으려면 두 개의 파이프가 필요하다. (파이프는 파일이다.) 파이프에 이름을 붙인 named pipe를 사용하면 꼭 부모-자식 관계가 아니더라도 파이프를 이용해 통신할 수 있다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/8.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.4</p> <p class="article-navigation-subtitle">Multithreaded Programming</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/6.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.2</p> <p class="article-navigation-subtitle">System Structures</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/7.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

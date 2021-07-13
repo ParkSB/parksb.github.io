@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 📡 WSL에서 SSH 서버 열기 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/21.html"><meta property="og:title" content="📡 WSL에서 SSH 서버 열기: 학교에서 아이패드로 코딩하기 "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%93%A1%20WSL%EC%97%90%EC%84%9C%20SSH%20%EC%84%9C%EB%B2%84%20%EC%97%B4%EA%B8%B0**.png?subtitle=%ED%95%99%EA%B5%90%EC%97%90%EC%84%9C%20%EC%95%84%EC%9D%B4%ED%8C%A8%EB%93%9C%EB%A1%9C%20%EC%BD%94%EB%94%A9%ED%95%98%EA%B8%B0&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.09.08%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="SSH(Secure Shell)는 안전하게 원격 접속을 하기 위해 사용하는 프로토콜이다. 윈도우 데스크탑에서 SSH 서버를 열면 아이패드에서 원격으로 데스크탑 쉘에 접속을 할 수 있다. WSL(Windows Subsystem for Linux)은 윈도우의 서브시스템에 리눅스를 탑재하는 기술이다. 아직 부드럽게 작동하지 않..."><meta name="twitter:title" content="📡 WSL에서 SSH 서버 열기: 학교에서 아이패드로 코딩하기 "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%93%A1%20WSL%EC%97%90%EC%84%9C%20SSH%20%EC%84%9C%EB%B2%84%20%EC%97%B4%EA%B8%B0**.png?subtitle=%ED%95%99%EA%B5%90%EC%97%90%EC%84%9C%20%EC%95%84%EC%9D%B4%ED%8C%A8%EB%93%9C%EB%A1%9C%20%EC%BD%94%EB%94%A9%ED%95%98%EA%B8%B0&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.09.08%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="SSH(Secure Shell)는 안전하게 원격 접속을 하기 위해 사용하는 프로토콜이다. 윈도우 데스크탑에서 SSH 서버를 열면 아이패드에서 원격으로 데스크탑 쉘에 접속을 할 수 있다. WSL(Windows Subsystem for Linux)은 윈도우의 서브시스템에 리눅스를 탑재하는 기술이다. 아직 부드럽게 작동하지 않..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 📡 WSL에서 SSH 서버 열기 </h1> <h2 id="article-subtitle"> 학교에서 아이패드로 코딩하기 </h2> <time id="article-date"> 2018.09.08 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180907_opening-ssh-server-with-wsl.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#openssh-server-%EC%9E%AC%EC%84%A4%EC%B9%98">openssh-server 재설치</a></li><li><a href="#sshd_config-%ED%8C%8C%EC%9D%BC-%EC%88%98%EC%A0%95">sshd_config 파일 수정</a></li><li><a href="#%ED%8F%AC%ED%8A%B8%ED%8F%AC%EC%9B%8C%EB%94%A9">포트포워딩</a></li><li><a href="#%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%84%A4%EC%A0%95">방화벽 설정</a></li><li><a href="#ssh-%EC%84%9C%EB%B2%84-%EC%A0%91%EC%86%8D">SSH 서버 접속</a></li></ul></div></p>
+</details>
+<p>SSH(Secure Shell)는 안전하게 원격 접속을 하기 위해 사용하는 프로토콜이다. 윈도우 데스크탑에서 SSH 서버를 열면 아이패드에서 원격으로 데스크탑 쉘에 접속을 할 수 있다. WSL(Windows Subsystem for Linux)은 윈도우의 서브시스템에 리눅스를 탑재하는 기술이다. 아직 부드럽게 작동하지 않는 부분들이 조금 있지만, 마이크로소프트에서 WSL에 신경을 많이 쓰고 있기 때문에 충분히 쓸만하다.</p>
+<p>내 목적은 학교에서 아이패드로 집에 있는 윈도우 10 데스크탑에 원격 접속해 코딩을 하는 것이었다. 우선 데스크탑에 WSL 우분투 16.04를 설치했고, 아이패드에는 터미널 앱 <a href="https://www.termius.com/">Termius</a>를 설치했다.</p>
+<h1 id="openssh-server-%EC%9E%AC%EC%84%A4%EC%B9%98">openssh-server 재설치</h1>
+<p>SSH 서버를 열기위해서는 openssh-server라는 패키지가 필요하다. WSL 우분투 16.04 기준으로 SSH 서버를 실행하는 명령 <code>service ssh start</code>를 실행해보면 몇가지 에러가 나타난다. 기본 설치되어있는 openssh-server의 문제이므로, 재설치해준다.</p>
+<pre class="hljs"><code>$ sudo apt remove openssh-server
+$ sudo apt install openssh-server
+</code></pre>
+<h1 id="sshd_config-%ED%8C%8C%EC%9D%BC-%EC%88%98%EC%A0%95">sshd_config 파일 수정</h1>
+<p><code>sshd_config</code>는 SSH 설정 파일이다. SSH 서버를 열기 전에 이 파일을 약간 수정해줘야 한다. root 권한이 필요하므로, 자신의 계정에 root 권한이 없다면 root 계정으로 전환하고 <code>/etc/ssh/sshd_config</code> 파일을 연다.</p>
+<pre class="hljs"><code>$ sudo su - root
+$ vi /etc/ssh/sshd_config
+</code></pre>
+<p>여기서 바꿔야 할 부분은 두 곳이다. (우부투 18.04 버전이라면 <code>Port</code> 값만 수정해도 된다.)</p>
+<ul>
+<li><code>Port</code>의 값을 변경한다. SSH 기본 포트는 <code>22</code>인데, 이는 윈도우에서 이미 사용 중인 포트이기 때문에 WSL에서는 다른 값으로 바꿔줘야 한다. 적당히 <code>2222</code>로 했다.</li>
+<li><code>PasswordAuthentication</code>의 값을 <code>yes</code>로 바꿔준다. 패스워드 인증을 사용하도록 설정하는 것이다.</li>
+</ul>
+<p>저장 후 SSH 서버를 재시작해준다.</p>
+<pre class="hljs"><code>$ sudo service ssh --full-restart
+</code></pre>
+<h1 id="%ED%8F%AC%ED%8A%B8%ED%8F%AC%EC%9B%8C%EB%94%A9">포트포워딩</h1>
+<p>서버 컴퓨터가 공유기에 연결되어 있는 상황이므로 외부에서 접속하려면 포트포워딩을 해줘야한다. 공인 아이피는 공유기에 할당되는데, 공유기에 연결된 컴퓨터나 휴대폰 등의 디바이스에는 <code>192.168.0.x</code> 형태의 사설 아이피가 할당된다. 따라서 외부망에서 공인 아이피를 입력해도 이 서버 컴퓨터로는 접속을 할 수가 없다.</p>
+<p>ipTIME을 사용 중이라면 아래 과정을 따르면 된다. (제조사마다 설정 인터페이스가 조금씩 다르다.)</p>
+<ol>
+<li>브라우저에 공유기의 공인 아이피 또는 <code>192.168.0.1</code>을 입력한다.</li>
+<li>로그인 후 '고급 설정 &gt; NAT/라우터 관리 &gt; 포트포워드 설정’에 들어간다.</li>
+<li>내부 아이피 주소는 '현재 접속된 PC의 IP 주소로 설정’으로 설정한다.</li>
+<li>프로토콜을 TCP로 설정한다.</li>
+<li>외부 포트는 <code>sshd_config</code> 파일에서 설정한 <code>Port</code> 값으로 설정한다. (<code>2222</code> ~ <code>2222</code>)</li>
+<li>내부 포트도 똑같이 설정한다. (<code>2222</code> ~ <code>2222</code>)</li>
+<li>규칙 이름은 마음대로 정한다.</li>
+<li>좌측 상단의 '저장’을 클릭한다.</li>
+</ol>
+<p>공유기 포트포워딩은 검색해도 많이 나오고, <a href="https://opentutorials.org/course/3265/20038">생활코딩 강의</a>도 잘 되어있다.</p>
+<h1 id="%EB%B0%A9%ED%99%94%EB%B2%BD-%EC%84%A4%EC%A0%95">방화벽 설정</h1>
+<p>SSH 포트가 방화벽으로 막혀있을 경우 접속이 불가능하다.</p>
+<ol>
+<li>'제어판 &gt; 시스템 및 보안 &gt; Windows Defender 방화벽’에 들어가 '고급 설정’을 클릭한다.</li>
+<li>인바운드 규칙을 클릭하고 '새 규칙’을 클릭한다.</li>
+<li>규칙 종류는 '포트’를 선택한다.</li>
+<li>프로토콜은 TCP, '특정 원격 포트’는 앞서 설정한 <code>Port</code> 값으로 설정한다. (<code>2222</code>) 이름은 마음대로 정한다.</li>
+<li>아웃바운드 규칙도 마찬가지로 해준다.</li>
+</ol>
+<h1 id="ssh-%EC%84%9C%EB%B2%84-%EC%A0%91%EC%86%8D">SSH 서버 접속</h1>
+<p>WSL bash를 종료하면 SSH 서버도 닫혀버린다. 다시 열고 싶을 때는 아래 명령을 실행하면 된다.</p>
+<pre class="hljs"><code>$ sudo service ssh start
+</code></pre>
+<p><a href="https://www.putty.org/">Putty</a>나 <a href="https://www.termius.com/">Termius</a> 같은 프로그램을 이용해 접속 테스트를 해보자. 서버와 같은 컴퓨터에서 접속하는 경우 <code>hostname</code>은 서버의 공인 아이피로, <code>port</code>는 앞서 설정한 <code>2222</code>로 두면 된다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/45214415-6067e580-b2d5-11e8-88b6-a39c1ca6b051.PNG" alt="Putty에서 원격 접속."></p>
+<p>이어서 외부망의 넷북에서 테스트했고, 이후 아이패드에서도 테스트했는데 잘 됐다! 이제 학교에 노트북들고 가지 않고 프로그래밍을 할 수 있게 되었다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/23.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🌐 Top-Down으로 접근하는 네트워크</p> <p class="article-navigation-subtitle">Computer Networks and the Internet</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/20.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">윈도우즈에서 React Native 개발 환경 세팅하기</p> <p class="article-navigation-subtitle">개발 환경 세팅만 사흘</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/21.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

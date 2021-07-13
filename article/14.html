@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> ES6 화살표 함수의 this에 관하여 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/14.html"><meta property="og:title" content="ES6 화살표 함수의 this에 관하여"><meta property="og:image" content="https://og-image-parksb.vercel.app/**ES6%20%ED%99%94%EC%82%B4%ED%91%9C%20%ED%95%A8%EC%88%98%EC%9D%98%20this%EC%97%90%20%EA%B4%80%ED%95%98%EC%97%AC**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.20%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="동아리 웹 세미나 중 jQuery를 이용해서 요소를 클릭하면 요소의 내용이 바뀌는 예제를 시연했다.$(&amp;#x27;#el&amp;#x27;).on(&amp;#x27;click&amp;#x27;, function() {  $(this).html(&amp;#x27;clicked!&amp;#x27;);});물론 잘 된다...."><meta name="twitter:title" content="ES6 화살표 함수의 this에 관하여"><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**ES6%20%ED%99%94%EC%82%B4%ED%91%9C%20%ED%95%A8%EC%88%98%EC%9D%98%20this%EC%97%90%20%EA%B4%80%ED%95%98%EC%97%AC**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.20%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="동아리 웹 세미나 중 jQuery를 이용해서 요소를 클릭하면 요소의 내용이 바뀌는 예제를 시연했다.$(&amp;#x27;#el&amp;#x27;).on(&amp;#x27;click&amp;#x27;, function() {  $(this).html(&amp;#x27;clicked!&amp;#x27;);});물론 잘 된다...."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> ES6 화살표 함수의 this에 관하여 </h1> <time id="article-date"> 2018.05.20 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180520_this-in-arrow-function.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul></ul></div></p>
+</details>
+<p>동아리 웹 세미나 중 jQuery를 이용해서 요소를 클릭하면 요소의 내용이 바뀌는 예제를 시연했다.</p>
+<pre class="hljs"><code>$(<span class="hljs-string">&#x27;#el&#x27;</span>).on(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  $(<span class="hljs-built_in">this</span>).html(<span class="hljs-string">&#x27;clicked!&#x27;</span>);
+});
+</code></pre>
+<p>물론 잘 된다. 그런데 개발환경을 설명하는 부분에서 npm과 babel까지 설치하고 ES6로 같은 예제를 돌렸는데 왠지 작동하지 않았다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;jquery&#x27;</span>;
+$(<span class="hljs-string">&#x27;#el&#x27;</span>).on(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  $(<span class="hljs-built_in">this</span>).html(<span class="hljs-string">&#x27;clicked!&#x27;</span>);
+});
+</code></pre>
+<p>뭔가 webpack에서 설정을 잘못해서 서버에 반영이 되지 않는 상황인줄 알고 일단 넘어갔다. 그런데 지금 생각해보니 결정적인 부분에서 실수한 것이었다. <strong>화살표 함수에서 <code>this</code>는 스스로를 가리키지 않는다.</strong> 대신 외부 컨텍스트의 <code>this</code>값이 적용된다.</p>
+<p>화살표 함수가 없던 구버전 ECMAScript에서는 외부 컨텍스트의 <code>this</code>에 접근하려면 별도의 변수를 만들어야했다. (<a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Functions/%EC%95%A0%EB%A1%9C%EC%9A%B0_%ED%8E%91%EC%85%98#%EB%B0%94%EC%9D%B8%EB%94%A9_%EB%90%98%EC%A7%80_%EC%95%8A%EC%9D%80_this">MDN 화살표 함수 문서</a>를 인용했다.)</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> that = <span class="hljs-built_in">this</span>;  
+  that.age = <span class="hljs-number">0</span>;
+
+  <span class="hljs-built_in">setInterval</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">growUp</span>(<span class="hljs-params"></span>) </span>{
+    that.age++;
+  }, <span class="hljs-number">1000</span>);
+}
+</code></pre>
+<p>외부 컨텍스트 <code>Person</code>의 <code>age</code>에 접근하기 위해 <code>that</code>이라는 변수를 사용했다. 하지만 화살표 함수를 쓴다면?</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-built_in">this</span>.age = <span class="hljs-number">0</span>;
+
+  <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-built_in">this</span>.age++;
+  }, <span class="hljs-number">1000</span>);
+}
+</code></pre>
+<p><code>this</code>가 <code>Person</code> 객체를 참조하기 때문에 바로 <code>age</code>에 접근할 수 있다. <code>that</code> 같은 변수는 필요하지 않다.</p>
+<p>그렇다면 클릭 이벤트는 어떻게 처리해야 할까?</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;jquery&#x27;</span>;
+$(<span class="hljs-string">&#x27;#el&#x27;</span>).on(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
+  $(e.currentTarget).html(<span class="hljs-string">&#x27;clicked!&#x27;</span>);
+});
+</code></pre>
+<p>jQuery에서는 <code>currentTarget</code>이라는 속성을 제공한다. 클릭 이벤트가 발생했을 때 이벤트 객체 <code>e</code>의 <code>currentTarget</code>에 접근하면 클릭된 요소를 조작할 수 있다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/15.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🌞 개떡같은 코드와 함께한 하루 리뉴얼 이야기</p> <p class="article-navigation-subtitle">거대한 레거시를 수습한 경험</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/13.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🏕️ 오픈소스 입문을 위한 아주 구체적인 가이드</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/14.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

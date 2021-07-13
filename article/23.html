@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🌐 Top-Down으로 접근하는 네트워크 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/23.html"><meta property="og:title" content="🌐 Top-Down으로 접근하는 네트워크: Computer Networks and the Internet "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%8C%90%20Top-Down%EC%9C%BC%EB%A1%9C%20%EC%A0%91%EA%B7%BC%ED%95%98%EB%8A%94%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC**.png?subtitle=Computer%20Networks%20and%20the%20Internet&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.09.28%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="James F. Kurose, Keith W. Ross의 Computer Networking: A Top-Down Approach는 잘 모르는 책이었는데 의외로 많은 학교에서 교재로 쓰이는 것 같다. 컴퓨터 네트워크 수업을 들으며 Computer Networking: A Top-Down Approach 7th Editio..."><meta name="twitter:title" content="🌐 Top-Down으로 접근하는 네트워크: Computer Networks and the Internet "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%8C%90%20Top-Down%EC%9C%BC%EB%A1%9C%20%EC%A0%91%EA%B7%BC%ED%95%98%EB%8A%94%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC**.png?subtitle=Computer%20Networks%20and%20the%20Internet&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.09.28%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="James F. Kurose, Keith W. Ross의 Computer Networking: A Top-Down Approach는 잘 모르는 책이었는데 의외로 많은 학교에서 교재로 쓰이는 것 같다. 컴퓨터 네트워크 수업을 들으며 Computer Networking: A Top-Down Approach 7th Editio..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🌐 Top-Down으로 접근하는 네트워크 </h1> <h2 id="article-subtitle"> Computer Networks and the Internet </h2> <time id="article-date"> 2018.09.28 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180928_computer-networks-top-down-approach.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#what-is-the-internet%3F">What is the Internet?</a><ul><li><a href="#a-nuts-and-bolts-description">A Nuts-and-Bolts Description</a></li><li><a href="#services-description">Services Description</a><ul><li><a href="#a-human-analogy-%26-nework-protocols">A Human Analogy & Nework Protocols</a></li></ul></li></ul></li><li><a href="#the-network-edge">The Network Edge</a><ul><li><a href="#access-networks">Access Networks</a></li><li><a href="#physical-media">Physical Media</a></li></ul></li><li><a href="#the-network-core">The Network Core</a><ul><li><a href="#packet-switching">Packet Switching</a><ul><li><a href="#store-and-forward-transmission">Store-and-Forward Transmission</a></li><li><a href="#queuing-delays-and-packet-loss">Queuing Delays and Packet Loss</a></li></ul></li></ul></li><li><a href="#delay%2C-loss%2C-and-throughput-in-packet-switched-networks">Delay, Loss, and Throughput in Packet-Switched Networks</a><ul><li><a href="#overview-of-delay-in-packet-switched-networks">Overview of Delay in Packet-Switched Networks</a><ul><li><a href="#types-of-delay">Types of Delay</a></li></ul></li></ul></li><li><a href="#protocol-layers-and-their-service-models">Protocol Layers and Their Service Models</a><ul><li><a href="#layered-architecture">Layered Architecture</a><ul><li><a href="#protocol-layering">Protocol Layering</a></li><li><a href="#application-layer">Application Layer</a></li><li><a href="#transport-layer">Transport Layer</a></li><li><a href="#network-layer">Network Layer</a></li><li><a href="#link-layer">Link Layer</a></li><li><a href="#physical-layer">Physical Layer</a></li></ul></li><li><a href="#encapsulation">Encapsulation</a></li></ul></li><li><a href="#networks-under-attack">Networks Under Attack</a></li><li><a href="#history-of-computer-networking-and-the-internet">History of Computer Networking and the Internet</a><ul><li><a href="#the-development-of-packet-switching%3A-1961-1972">The Development of Packet Switching: 1961-1972</a></li><li><a href="#proprietary-networks-and-internetworking%3A-1972-1980">Proprietary Networks and Internetworking: 1972-1980</a></li><li><a href="#a-proliferation-of-networks%3A-1980-1990">A Proliferation of Networks: 1980-1990</a></li><li><a href="#the-internet-explosion%3A-the-1990s">The Internet Explosion: The 1990s</a></li></ul></li></ul></div></p>
+</details>
+<p>James F. Kurose, Keith W. Ross의 Computer Networking: A Top-Down Approach는 잘 모르는 책이었는데 의외로 많은 학교에서 교재로 쓰이는 것 같다. 컴퓨터 네트워크 수업을 들으며 Computer Networking: A Top-Down Approach 7th Edition의 첫 챕터를 정리해보기로 했다.</p>
+<p>첫 챕터는 컴퓨터 네트워크의 전반을 둘러보는 챕터다. 언제나 그렇듯 overview 챕터가 책에서 가장 중요하다. 원래 책 전체를 정리하려 했으나 더 이상 책을 번역하는 작업하는 정도의 정리는 무리라고 판단, 개괄적인 내용을 다루는 Ch.1 Computer Networks and the Internet만 정리하기로 했다.</p>
+<h1 id="what-is-the-internet%3F">What is the Internet?</h1>
+<p>인터넷이 뭘까? 여기서는 두 가지 이야기를 해볼 수 있다. 첫 번째는 인터넷을 구성하는 볼트와 너트, 하드웨어와 소프트웨어에 관한 것이고, 두 번째는 네트워킹 인프라에 관한 것이다.</p>
+<h2 id="a-nuts-and-bolts-description">A Nuts-and-Bolts Description</h2>
+<p>인터넷은 수많은 컴퓨팅 디바이스들이 연결된 컴퓨터 네트워크다. 몇 년전에는 PC, 리눅스 워크스테이션과 같은 전통적인 컴퓨터들이 인터넷을 구성했다면, 지금은 스마트폰, 웨어러블 기기, 태블릿, 자동차 등 거의 모든 것이 인터넷에 연결되고 있다. 따라서 컴퓨터 네트워크라는 용어가 조금은 구시대적인 말일 수도 있다.</p>
+<p>인터넷에서 모든 기기들은 호스트(Host)와 엔드 시스템(End system)으로 나뉜다. 엔드 시스템은 커뮤니케이션 링크(Communication link)와 패킷 스위치(Packet switch)의 네트워크에 함께 연결되어 있다. 커뮤니케이션 링크는 구리선, 광케이블과 같은 여러 종류의 물리적 매체로 만들어져 있다. 서로 다른 링크는 각자 다른 전송률(Transmission rate)를 갖는다.</p>
+<p>한 엔드 시스템에서 다른 엔드 시스템으로 데이터를 전송할 때, 데이터를 전송하는 엔드 시스템은 데이터를 나누고, 각 세그먼트에 헤더를 추가한다. 최종적으로 만들어지는 정보의 묶음을 패킷(Packet)이라고 부르며, 네트워크를 통해 목적지의 엔드 시스템으로 보내진다.</p>
+<p>과거에는 회선 교환(Circuit switching) 방식을 사용했다. 과거 전화 방식이 이랬다. A가 B에게 전화를 하려면 먼저 교환수에게 B 회선에 연결해달라고 말해야 한다. 그리고 교환수가 교환기의 A 회선을 B에 연결하면 비로소 전화를 할 수 있었다. 현재 가장 많이 사용되는 통신 방식은 패킷 교환(Packet switching) 방식으로, 교환수 대신 라우터(Router)가 패킷의 경로를 설정하는 역할을 한다. 라우터는 패킷 스위치의 일종이며, 패킷 스위치는 패킷의 경로를 설정하는 네트워크 장비를 말한다.</p>
+<p>엔드 시스템은 ISP(Internet Service Providers)를 통해 인터넷에 접속한다. ISP는 KT, SKT, LG U+와 같은 통신사를 말하며, 이들은 보유하고 있는 인터넷 회선을 개인이나 기업에게 임대해준다. IP를 할당해주는 것도 ISP다.</p>
+<h2 id="services-description">Services Description</h2>
+<p>지메일, 넷플릭스, 멜론, 페이스북과 같은 어플리케이션들을 분산 어플리케이션(Distributed application)라고 부른다. 분산 어플리케이션은 네트워크 상의 여러 엔드 시스템에서 서비스되는 어플리케이션으로, 서로 데이터를 교환하며 동작한다. 분산 어플리케이션은 단일 시스템에서 동작하는 전통적인 어플리케이션과 대비되는 용어로, 현재 사람들이 주로 사용하는 프로그램은 거의 모두 분산 어플리케이션이라고 봐도 무방하다.</p>
+<p>엔드 시스템에서 작동하는 어플리케이션은 C, Java, 또는 Python 등 서로 다른 기반 위에 작성된다. 서로 다른 엔드 시스템 위에서 동작하는 분산 어플리케이션은 서로에게 데이터를 전송할 수 있어야 하는데, 여기서 중요한 이슈가 생긴다. 한 엔드 시스템에서 동작하는 어플리케이션이 어떻게 다른 엔드 시스템의 어플리케이션에게 데이터를 전송할 수 있는 걸까?</p>
+<p>인터넷에 연결된 엔드 시스템은 소켓 인터페이스(Socket interface)를 제공한다. 소켓 인터페이스는 프로그램이 어떻게 다른 엔드 시스템에게 데이터를 전달할 수 있는 지 명시한 것으로, 현실에서 두 사람이 우편을 주고 받을 때 우체국의 역할을 한다고 생각하면 쉽다.</p>
+<h3 id="a-human-analogy-%26-nework-protocols">A Human Analogy &amp; Nework Protocols</h3>
+<p>네트워크는 사람이 대화하는 것과 유사하다. 밥이 앨리스에게 &quot;Hi&quot;라고 말하면 앨리스도 밥에게 &quot;Hi&quot;라고 말한다. 마찬가지로 컴퓨터도 통신 연결을 요청하면 요청에 대한 응답을 보낸다.</p>
+<p>성공적인 소통을 위해서는 대화의 주제, 대화의 수단, 대화의 시간이 일치해야 한다. 만약 한 쪽은 전화로 대화하려 하고, 한 쪽은 메일로 대화하려 한다면 소통이 불가능할 것이다. 마찬가지로 네트워크에서는 다음과 같은 요소들이 필요하다.</p>
+<ul>
+<li>문법(Syntax): 데이터의 형식, 인코딩/디코딩 정보.</li>
+<li>시맨틱(Semantic): 발신과 수신에 대해 정해진 행동, 에러 처리.</li>
+<li>타이밍(Timing): 메시지의 순서, 속도. (큰 파일을 보낼 경우 이를 여러 조각으로 잘라서 보내야 하는데, 이때 수신자가 어떤 순서로 조각을 합쳐야 하는지 알 수 있어야 한다.)</li>
+</ul>
+<p>위 세가지 요소의 집합을 통신 규약(Communication protocol)이라고 한다.</p>
+<h1 id="the-network-edge">The Network Edge</h1>
+<p>엔드 시스템은 웹 브라우저나 웹 서버와 같은 어플리케이션을 동작시키기 때문에 호스트라고도 한다. (책에서는 엔드 시스템과 호스트를 같은 의미로 사용한다.) 호스트는 클라이언트(Client)와 서버(Server)로 나뉜다. 쉽게 생각하면, 클라이언트는 데스크탑이나 노트북, 스마트폰이 될 수 있다. 한편 웹 페이지나 스트림 비디오 등을 저장하고 여러 곳에 전송할 수 있는 장비는 서버가 될 수 있다. 우리 사용하는 서버는 거대한 데이터 센터에 위치하고 있다.</p>
+<h2 id="access-networks">Access Networks</h2>
+<p>2014년 기준, 선진국 가정의 78퍼센트 이상은 집에서 인터넷에 접속이 가능하다. 한국, 네덜란드, 핀란드, 스웨덴은 80퍼센트 이상 가능하다. 오늘날 통신에서는 광대역, IP 기반, 유무선 통합, 지능형이 트렌드로 자리 잡았다.</p>
+<p>몇 년 전까지 IPTV와 VoIP, WoIP이 대세였고, 지금은 인터넷에 연결되는 기기의 종류가 늘어나며 XoIP(Anything over IP)라고 부르게 되었다. 이제 QoS나 QoE를 통해 X2X(Any to Any) 네트워크를 구축하고 있는 단계에 있으며, 미래에는 SDN이나 CCN과 같은 새로운 네트워크가 나타날 것이다.</p>
+<h2 id="physical-media">Physical Media</h2>
+<p>통신에는 물리적 매체도 중요하다. 동축 케이블과 광 케이블과 같이 유선 연결을 위한 매체와 더불어 지상파 채널, 위성 채널과 같은 무선 연결을 위한 매체가 쓰인다.</p>
+<h1 id="the-network-core">The Network Core</h1>
+<p>네트워크 코어는 패킷 스위치 네트워크와 엔드 시스템들의 연결을 말한다.</p>
+<h2 id="packet-switching">Packet Switching</h2>
+<p>네트워크 어플리케이션에서 엔드 시스템들은 서로 메시지를 교환한다. 메시지는 텍스트, 이미지, 영상 등 무엇이든 담을 수 있다. 메시지를 목적지의 엔드 시스템에 보내면 발신 엔드 시스템은 메시지를 여러 조각으로 작게 나눈다. (이것이 패킷이다.) 발신 엔드 시스템과 수신 엔드 시스템 사이의 각 패킷은 커뮤니케이션 링크와 패킷 스위치(라우터와 링크 레이어 스위치)를 통해 전송된다. 만약 패킷 스위치가 L bits 패킷을 R bits/sec으로 전송하면 패킷이 전송되는 데 걸리는 시간은 L/R 초가 된다.</p>
+<h3 id="store-and-forward-transmission">Store-and-Forward Transmission</h3>
+<p>대부분의 패킷 스위치는 저장 후 전달 전송(Store-and-Forward Transmission) 방식을 사용한다. store-and-forward 전송 방식에서 패킷 스위치는 패킷의 첫 비트를 링크에 전송하기 전에 패킷의 모든 비트를 받아야 한다.</p>
+<pre class="hljs"><code>                            Router
++--------+ 3 2 1          /--------\            +-------------+
+| Source +-#-#-#---------+--&gt;#      +-----------+ Destination |
++--------+                \--------/            +-------------+
+                             Front of packet 1
+                             stored in router,
+                             awating remaining
+                             bits before forwarding
+</code></pre>
+<p>하나의 라우터에 연결된 두 개의 엔드 시스템을 상상해보자. 만약 한 엔드 시스템에서 패킷을 3개 전송하면, 라우터에 패킷이 순서대로 도착하게 된다.</p>
+<h3 id="queuing-delays-and-packet-loss">Queuing Delays and Packet Loss</h3>
+<p>각 패킷 스위치네는 여러 개의 링크가 연결되어 있다. 각각의 링크에 대해 패킷 스위치는 출력 버퍼(Output buffer or Output queue)를 가지고 있다. 출력 버퍼는 링크에 보낼 패킷을 담고 있으며, 패킷 교환에 중요한 역할을 한다.</p>
+<p>만약 패킷이 도착하면 링크에 전송해야 하지만, 링크가 혼잡하다면 패킷은 출력 버퍼에서 대기한다. 이때 대기할 때 지연되는 시간을 큐 지연(Queuing delay)이라고 부른다. 만약 패킷이 도착했을 때 이미 버퍼가 가득차 있다면 패킷 손실(Packet loss)이 일어나며, 도착한 패킷이나 큐 안에 있는 패킷이 손실된다.</p>
+<h1 id="delay%2C-loss%2C-and-throughput-in-packet-switched-networks">Delay, Loss, and Throughput in Packet-Switched Networks</h1>
+<p>엔드 시스템끼리 통신할 때는 패킷 전송이 지연되거나 일부 패킷이 손실될 수 있으며, 컴퓨터 네트워크는 다양한 문제를 직면할 수 있다.</p>
+<h2 id="overview-of-delay-in-packet-switched-networks">Overview of Delay in Packet-Switched Networks</h2>
+<p>호스트(the source)에서 출발한 패킷은 라우터들을 거쳐 또 다른 호스트(the destination)에서 끝난다. 패킷이 전송될 때 각 노드(호스트나 라우터)에서 일어나는 지연이 발생할 수 있는데, 여기에는 몇 가지 종류가 있다.</p>
+<h3 id="types-of-delay">Types of Delay</h3>
+<pre class="hljs"><code>+------+
+| Node |-#---+      Router A
++------+     |     /--------\            /--------\
+             +---&gt;|      ### #--&gt;-------+ Router B |
++------+     |     \--------/            \--------/
+| Node |-#---+    |-----|---|-|---------|
++------+             |    |  |     |  
+                     |    |  |     Propagation
+                     |    |  |  
+                     |    |  Transmission
+                     |    |
+                     |    Queueing Transmission (waiting for transmission)
+                     |
+                     Nodal processing
+</code></pre>
+<ul>
+<li>처리 지연(Processing Delay): 패킷의 헤더(Header)를 확인하고 패킷이 어디로 가야하는 지 결정할 때 지연되는 것을 말한다. 패킷의 에러를 체크할 때도 프로세싱 지연이 일어날 수 있다. 고속 라우터에서는 프로세싱 지연은 몇 마이크로초 이하로 걸린다. 이 과정 이후 라우터는 패킷을 링크된 라우터의 큐로 보낸다.</li>
+<li>큐 지연(Queuing Delay): 패킷이 큐에서 전송되기를 기다릴 때 발생하는 지연을 말한다. 지연의 길이는 몇 개의 패킷이 이미 큐에 있는지, 링크로 전송될 때까지 얼마나 대기해야 하는지에 따른다. 만약 큐가 비어있고, 어떠한 패킷도 전송되고 있지 않다면 패킷의 지연은 0이다. 반면, 트래픽이 혼잡하고 많은 패킷이 전송되길 기다리고 있다면 지연은 길어질 것이다. 큐 지연은 마이크로초에서 밀리초 정도가 될 수 있다.</li>
+<li>전송 지연(Transmission Delay): 패킷 스위치에서 패킷은 FCFS(First-Come-First-Served)에 따라 전송되는데, 이때 패킷의 모든 비트가 도착해야 패킷이 전송될 수 있다. 패킷의 길이는 L bits이고, 라우터 A와 라우터 B 사이 링크의 전송률은 R bits/sec이다. 예를 들어, 10 Mbps 이더넷 링크의 전송률은 R=10 Mbps이며, 100 Mbps 이더넷 링크의 전송률은 R-100 Mbps이다. 그리고 이때 전송 지연은 L/R이다.</li>
+<li>전파 지연(Propagation Delay): 링크로 보내진 비트는 라우터 B로 전송되어야 하는데, 이때 걸리는 시간이 전파 지연이다. 비트는 링크의 전파 속도에 따라 전파되며, 전파 속도는 링크의 물리적 매체(구리선, 광섬유 등)에 따라 다르다. 전파 속도의 범위는 보통 2 * 108 meters/sec에서 3 * 108 meters/sec사이이며, 이는 빛의 속도보다 조금 느린 정도다. 전파 지연은 두 라우터의 거리 d를 전파 속도 s로 나눈 것으로, d/s가 된다. WAN(Wide-Area Networks)에서 전파 지연은 밀리세컨드 수준이다.</li>
+</ul>
+<h1 id="protocol-layers-and-their-service-models">Protocol Layers and Their Service Models</h1>
+<p>인터넷은 굉장히 복잡한 시스템이다. 네트워크 아키텍처를 더욱 효율적으로 조직할 수 있는 방법이 있다.</p>
+<h2 id="layered-architecture">Layered Architecture</h2>
+<p>레이어 아키텍처는 기능별로 서로 독립적인 계층(Layer)을 나누는 것을 말한다. (<a href="https://parksb.github.io/article/6.html">운영체제의 그것과 동일하다.</a>) 두 철학자가 대화하는 상황을 생각해보자. 한 쪽은 한국 철학자이고, 한쪽은 중국 철학자이다. 이들의 대화 주제는 철학으로 동일하다. 하지만 모국어가 다르기 때문에 통역가를 거쳐야 한다. 통역가는 각자 한국어를 영어로, 영어를 한국어로, 중국어를 영어로, 중국어를 영어로 통역할 수 있다. 또한 두 철학자가 멀리 떨어져 있기 때문에 전화를 통해 대화해야 한다.</p>
+<p>이때 레이어는 (1)철학자 레이어 (2)통역가 레이어 (3)통신사 레이어로 분리할 수 있다. 철학자 레이어는 통역이 어떻게 되는지 신경쓸 필요가 없다. 통역가 레이어에서도 철학자들이 어떤 주제로 대화하는지 신경쓸 필요가 없다. 통신사 레이어는 어떤 언어인지 신경쓸 필요가 없으며, 사람 목소리든 바람소리든 전달만 하면 된다. 즉, 각 레이어가 독립적으로 동작하며, 자신의 작업에만 집중할 수 있게 된다. 또한 어떤 문제가 생겼을 때 어디서 문제가 생겼는지 파악하기도 쉬워진다. 그리고 여기서 레이어와 레이어를 연결해주는 것을 인터페이스(Interface)라고 한다.</p>
+<p>두 시스템이 통신하기 위해 레이어 모델이 지켜야 하는 규칙은 다음과 같다:</p>
+<ul>
+<li>레이어의 개수가 동일해야 한다.</li>
+<li>서로 통신하는 두 레이어의 프로토콜이 같아야 한다.</li>
+<li>상위 레이어(Upper layer)와 하위 레이어(Lower layer)의 인터페이스가 같아야 한다.</li>
+</ul>
+<h3 id="protocol-layering">Protocol Layering</h3>
+<p>네트워크의 레이어 모델에는 대표적으로 OSI(Open Systems Interconnection) 모델과 TCP/IP 프로토콜 슈트가 있다.</p>
+<pre class="hljs"><code>+----------------------+  +--------------------+
+|                      |  | Application Layer  |
+|                      |  +--------------------+
+| Application Layter   |  | Presentation Layer |
+|                      |  +--------------------+
+|                      |  | Session Layer      |
++----------------------+  +--------------------+
+| Transport Layer      |  | Transport Layer    |
++----------------------+  +--------------------+
+| Internet Layer       |  | Network Layer      |
++----------------------+  +--------------------+
+|                      |  | Data Link Layer    |
+| Network Access Layer |  +--------------------+
+|                      |  | Physical Layer     |
++----------------------+  +--------------------+
+         TCP/IP                    OSI
+</code></pre>
+<p>OSI 모델은 국제 표준화 기구(ISO)에서 만든 공식적 표준 모델이다. 하지만 계층이 7개나 되기 때문에 지금은 잘 쓰이지 않게 되었다. 인터넷 프로토콜 슈트 중 압도적으로 많이 쓰이는 것은 TCP/IP 프로토콜로, 사실상 표준이라고 볼 수 있다. TCP/IP의 계층은 4개이며, 미국 방위고등연구계획국(DARPA)에서 만들었다.</p>
+<h3 id="application-layer">Application Layer</h3>
+<p>어플리케이션 레이어는 HTTP, SMTP, FTP 등 다양한 프로토콜을 포함하고 있으며, 여러 엔드시스템에 분산되어 다른 엔드 시스템에 패킷을 교환하는 역할을 하는다. 어플리케이션 레이어의 PDU(Protocol Data Unit)는 메시지(Message) 또는 단순히 데이터(Data)라고 한다.</p>
+<h3 id="transport-layer">Transport Layer</h3>
+<p>어플리케이션 사이에서 어플리케이션 레이어 메시지를 전송하는 역할을 한다. 인터넷에는 TCP(Transmission Control Protocol)와 UDP(User Datagram Protocol)라는 두 개의 전송 프로토콜이 있다. TCP는 연결 지향(Connection oriented)이며, 데이터가 잘 전달 됐는지 매번 확인하기 때문에 속도가 느리지만 데이터 손실이 없다. 반면 UDP는 비연결 지향(Connectionless oriented)이며, 데이터 손실이 있지만 속도가 빠르다. 트랜스포트 레이어의 PDU는 세그먼트(Segment)라고 하며, 세그먼트에 포함되는 트랜스포트 레이어 헤더에는 포트 번호 필드가 있다.</p>
+<h3 id="network-layer">Network Layer</h3>
+<p>네트워크 레이어의 PDU는 데이터그램(Datagram) 또는 패킷(Packet)이며, 네트워크 레이어는 데이터그램을 호스트에서 다른 곳으로 보내는 역할을 한다. 발신 호스트의 트랜스포트 레이어 프로토콜(TCP 또는 UDP)에서 세그먼트와 목적지 주소를 네트워크 레이어에게 보내면 네트워크 레이어는 세그먼트를 목적지 호스트의 트랜스포트 레이어에게 보낸다. TCP/IP 모델에서 네트워크 레이어의 프로토콜은 IP(Internet Protocol)만 쓰이며, 이 덕분에 통신을 용이하게 할 수 있다. 데이터그램에 포함되는 헤더에는 프로토콜 필드가 있다.</p>
+<h3 id="link-layer">Link Layer</h3>
+<p>네트워크 레이어가 라우팅한 데이터그램은 발신지와 수신지 사이의 라우터들을 거친다. 패킷이 한 노드(호스트 또는 라우터)에서 다음 노드로 움직일 때, 네트워크 레이어는 링크 레이어 위에서 동작하게 된다. 이때 각 노드의 네트워크 레이어가 데이터그램을 링크 레이어로 내려보내는데, 링크 레이어는 이 데이터그램을 다음 노드의 링크 레이어에게 보낸다. 그리고 다음 노드의 링크 레이어는 수신한 데이터그램을 네트워크 레이어에게 올려보낸다. 링크 레이어의 PDU는 프레임(Frame)이며, 프레임의 헤더에는 타입 필드가 있다.</p>
+<h3 id="physical-layer">Physical Layer</h3>
+<p>피지컬 레이어의 역할은 프레임의 각 비트를 다음 노드로 보내는 것이다. 피지컬 레이어의 프로토콜은 링크의 종류에 따라 달라지는데, 가령 이더넷의 경우 구리연선이나 동축 케이블, 단일 모드 광섬유 등 다양한 프로토콜을 가진다. 피지컬 레이어의 PDU는 비트(Bit)다.</p>
+<h2 id="encapsulation">Encapsulation</h2>
+<pre class="hljs"><code>                      &lt;Source&gt;      |
+                      +-------------+-+      
+          Message [M] | Application | |
+                      +-------------+-+
+      Segment [Ht][M] | Transport   | |
+                      +-------------+-+
+ Datagram [Hn][Ht][M] | Network     | |
+                      +-------------+-+
+Frame [Hl][Hn][Ht][M] | Link        | |
+                      +-------------+-+
+                      | Physical    | |                   +----------+
+                      +-------------+-+                   |          |
+                                    |                   +-+----------+-+
+                                    |   [Hl][Hn][Ht][M] | | Link     | | [Hl][Hn][Ht][M]
+                                    |                   |-+----------+-+
+                                    |                   | | Physical | |
+                                    |                   +-+----------+-+ &lt;Link-layer switch&gt;
+                                    |                     |          |
+                                    +---------------------+          |
+                &lt;Destination&gt; ^                                      |
+                +-------------+-+                                    |
+            [M] | Application | |                                    |
+                +-------------+-+                     +----------+   |
+        [Ht][M] | Transport   | |                     |          |   |
+                +-------------+-+                   +-+----------+-+ |
+    [Hn][Ht][M] | Network     | |       [Hn][Ht][M] | | Network  | | |     [Hn][Ht][M]           
+                +-------------+-+                   |-+----------+-+ |
+[Hl][Hn][Ht][M] | Link        | |   [Hl][Hn][Ht][M] | | Link     | | | [Hl][Hn][Ht][M]                
+                +-------------+-+                   |-+----------+-+ |
+                | Physical    | |                   | | Physical | | |
+                +-------------+-+                   +-+----------+-+ | &lt;Router&gt;
+                              |                       |          |   |
+                              +-----------------------+          +---+
+</code></pre>
+<p>위 그림은 데이터가 전송될 때 어떤 경로를 거치는지 보여준다. 그림에 있는 링크 레이어 스위치와 라우터는 모두 패킷 스위치다. 엔드 시스템과 비슷하게 라우터와 링크 레이어 스위치도 레이어 모델을 취하고 있다. 하지만 모든 레이어가 구현되어 있는 것은 아닌데, 링크 레이어 스위치의 경우 링크 레이어와 피지컬 레이어만있고, 라우터는 네트워크 레이어와 링크 레이어, 피지컬 레이어만 가지고 있다.</p>
+<p>중요한 것은 캡슐화(Encapsulation)이다. 그 과정을 자세히 보자:</p>
+<ol>
+<li>발신 호스트에서 에플리케이션 레이어 메시지는 트랜스포트 레이어로 보내진다. 트랜스포트 레이어는 메시지를 받고, 여기에 트랜스포트 레이어 헤더 정보를 덧붙인다. 어플리케이션 레이어 메시지와 트랜스포트 레이어 헤더는 트랜스포트 레이어 세그먼트를 구성한다.</li>
+<li>트랜스포트 레이어는 세그먼트를 네트워크 레이어로 보내고, 네트워크 레이어는 여기에 네트워크 레이어 헤더 정보를 붙여 (여기에는 발신지와 수신지의 주소가 들어있다.) 네트워크 레이어 데이터그램을 만든다. 그리고 이를 링크 레이어로 보낸다.</li>
+<li>링크 레이어는 네트워크 레이어 데이터그램에 링크 레이어 헤더를 붙여 링크 레이어 프레임을 만든다.</li>
+</ol>
+<p>각 레이어에서 패킷은 두가지 필드를 가지는데, 하나는 헤더 필드(Header field)이고, 하나를 페이로드 필드(Payload field)이다. 페이로드는 상위 레이어에서 내려온 패킷을 말한다.</p>
+<h1 id="networks-under-attack">Networks Under Attack</h1>
+<p>오늘날 인터넷은 기업, 대학, 정부기관 등 거의 모든 곳에서 사용하고 있기 때문에 보안이 매우 중요하다. 공격은 다음과 같이 분류할 수 있다:</p>
+<ul>
+<li>멀웨어(Malware) 설치</li>
+<li>서버 또는 네트워크 인프라(DoS; Denial-Of-Service Attack) 공격</li>
+<li>패킷 감청(Sniffing)</li>
+<li>신뢰할 수 있는 사람 사칭</li>
+</ul>
+<h1 id="history-of-computer-networking-and-the-internet">History of Computer Networking and the Internet</h1>
+<p>위 내용들만 알아도 가족들이나 친구들한테 아는 척을 좀 할 수 있다. 하지만 칵테일 파티에서 인싸가 되고 싶다면 인터넷의 역사를 알아야 한다. (진짜 책에 이렇게 나온다.)</p>
+<h2 id="the-development-of-packet-switching%3A-1961-1972">The Development of Packet Switching: 1961-1972</h2>
+<p>전쟁 공포가 고조되던 냉전시대에는 전화 네트워크를 기반으로한 회선 교환 방식이 쓰였다. 하지만 회선 교환 방식은 전화국만 폭격되면 통신이 마비되는 치명적인 문제가 있었다.</p>
+<p>이를 해결하기 위해 MIT 대학원생 Leonard Kleinrock이 처음으로 패킷 교환 기술을 발표했고, 이후 1964년 랜드 연구소의 Paul Baran이 군사 네트워크에 패킷 교환 기술을 사용하는 방법을 고안했다. 또한 영국의 국립물리연구소의 Donald Davies와 Roger Scantlebury도 패킷 교환을 개발해냈다.</p>
+<p>1969년 미국 국방부 산하의 고등 연구국(ARPA)은 UCLA와 스탠포드 연구소(SRI)를 연결해 최초의 패킷 교환 방식 네트워크를 구축했다. 이 통신망을 ARPAnet이라고 불렀고, 이후 1972년에는 15개 노드가 더 연결되었다.</p>
+<h2 id="proprietary-networks-and-internetworking%3A-1972-1980">Proprietary Networks and Internetworking: 1972-1980</h2>
+<p>초기 ARPAnet은 단일의 폐쇄형 네트워크였다. 1970년대 초중반, 하와이 대학교가 위성과 지상을 무선 연결하는 네트워크를 구축했고, 이를 ALOHAnet(Additive Links Online Hawwaii Area)이라고 불렀다. 그 외에도 텔넷(Telenet), 시분할 네트워크(Time-sharing networks), SNA(Systems Network Architecture) 등 수많은 네트워크가 구축됐다.</p>
+<h2 id="a-proliferation-of-networks%3A-1980-1990">A Proliferation of Networks: 1980-1990</h2>
+<p>70년대 말에는 거의 200개의 호스트가 ARPAnet에 연결되었다. 그리고 80년대 말에는 수 많은 호스트가 공개 인터넷에 연결되었고, 네트워크는 오늘날의 인터넷과 비슷해 보였다.</p>
+<p>1983년 1월 1일에는 공식적으로 TCP/IP가 NCP를 대체해 ARPAnet의 새로운 표준 호스트 프로토콜로 자리잡았다. 이때 DNS와 32비트 IP 주소가 개발되었다.</p>
+<h2 id="the-internet-explosion%3A-the-1990s">The Internet Explosion: The 1990s</h2>
+<p>90년대의 중요한 사건은 WWW(World Wide Web)의 탄생이다. WWW는 CERN의 Tim Berners-Lee가 1989에서 1991년 사이 고안한 인터넷 시스템이다. 이후 수 많은 컴퓨터들이 인터넷에 연결되었고, 구글이나 아마존, 페이스북 같은 어플리케이션들이 만들어졌다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/24.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🔐 HTTPS는 어떻게 다를까?</p> <p class="article-navigation-subtitle">진짜 데이터를 뜯어보았다</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/21.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">📡 WSL에서 SSH 서버 열기</p> <p class="article-navigation-subtitle">학교에서 아이패드로 코딩하기</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/23.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

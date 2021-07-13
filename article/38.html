@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🧱 Server Driven UI 설계를 통한 UI 유연화 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/38.html"><meta property="og:title" content="🧱 Server Driven UI 설계를 통한 UI 유연화: 클라이언트 배포없이 화면 구성 변경하기 "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A7%B1%20Server%20Driven%20UI%20%EC%84%A4%EA%B3%84%EB%A5%BC%20%ED%86%B5%ED%95%9C%20UI%20%EC%9C%A0%EC%97%B0%ED%99%94**.png?subtitle=%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20%EB%B0%B0%ED%8F%AC%EC%97%86%EC%9D%B4%20%ED%99%94%EB%A9%B4%20%EA%B5%AC%EC%84%B1%20%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202021.07.09%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="웹과 달리 네이티브 모바일 앱은 빌드, 배포 후에는 수정이 불가능하다. 만약 잘못된 위치에 버튼을 배치한 채로 스토어에 앱을 배포했다면, 그리고 사용자가 잘못된 버전의 앱을 설치했다면 버튼의 위치를 수정할 방법이 없다. 유일한 방법은 사용자가 스스로 스토어에 들어가 수정된 버전의 앱으로 업데이트하는 것 뿐이다.배포 후 수..."><meta name="twitter:title" content="🧱 Server Driven UI 설계를 통한 UI 유연화: 클라이언트 배포없이 화면 구성 변경하기 "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A7%B1%20Server%20Driven%20UI%20%EC%84%A4%EA%B3%84%EB%A5%BC%20%ED%86%B5%ED%95%9C%20UI%20%EC%9C%A0%EC%97%B0%ED%99%94**.png?subtitle=%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20%EB%B0%B0%ED%8F%AC%EC%97%86%EC%9D%B4%20%ED%99%94%EB%A9%B4%20%EA%B5%AC%EC%84%B1%20%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202021.07.09%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="웹과 달리 네이티브 모바일 앱은 빌드, 배포 후에는 수정이 불가능하다. 만약 잘못된 위치에 버튼을 배치한 채로 스토어에 앱을 배포했다면, 그리고 사용자가 잘못된 버전의 앱을 설치했다면 버튼의 위치를 수정할 방법이 없다. 유일한 방법은 사용자가 스스로 스토어에 들어가 수정된 버전의 앱으로 업데이트하는 것 뿐이다.배포 후 수..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🧱 Server Driven UI 설계를 통한 UI 유연화 </h1> <h2 id="article-subtitle"> 클라이언트 배포없이 화면 구성 변경하기 </h2> <time id="article-date"> 2021.07.09 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20210709_server-driven-ui.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-ui-%EB%8B%A4%EB%A3%A8%EA%B8%B0">서버에서 UI 다루기</a></li><li><a href="#graphql%3A-%EC%9E%AC%EC%82%AC%EC%9A%A9-%EA%B0%80%EB%8A%A5%ED%95%9C-ui-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%A0%9C%EA%B3%B5%ED%95%98%EA%B8%B0">GraphQL: 재사용 가능한 UI 컴포넌트 제공하기</a><ul><li><a href="#%EC%BF%BC%EB%A6%AC-%EC%84%A4%EA%B3%84">쿼리 설계</a></li><li><a href="#%EC%9A%94%EC%B2%AD%EA%B3%BC-%EC%9D%91%EB%8B%B5">요청과 응답</a></li></ul></li><li><a href="#flutter%3A-%EA%B2%AC%EA%B3%A0%ED%95%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C%EA%B3%BC-%EC%9C%84%EC%A0%AF%EC%9C%BC%EB%A1%9C-%ED%99%94%EB%A9%B4-%EA%B7%B8%EB%A6%AC%EA%B8%B0">Flutter: 견고한 디자인 시스템과 위젯으로 화면 그리기</a><ul><li><a href="#%ED%94%84%EB%9E%98%EA%B7%B8%EB%A8%BC%ED%8A%B8-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%9C%84%EC%A0%AF-%EB%8C%80%EC%9D%91">프래그먼트-컴포넌트-위젯 대응</a></li><li><a href="#%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%A1%B0%EB%A6%BD">컴포넌트 조립</a></li></ul></li><li><a href="#references">References</a></li></ul></div></p>
+</details>
+<p>웹과 달리 네이티브 모바일 앱은 빌드, 배포 후에는 수정이 불가능하다. 만약 잘못된 위치에 버튼을 배치한 채로 스토어에 앱을 배포했다면, 그리고 사용자가 잘못된 버전의 앱을 설치했다면 버튼의 위치를 수정할 방법이 없다. 유일한 방법은 사용자가 스스로 스토어에 들어가 수정된 버전의 앱으로 업데이트하는 것 뿐이다.</p>
+<p>배포 후 수정이 불가능하다는 특성이 부딪히는 또 다른 상황은 A/B 테스팅이다. 소프트웨어를 사용하는 동안 일어나는 사용자의 행동과 경험은 화면 구성이나 문구에 따라 크게 달라지기 때문에 최적의 화면을 디자인하는 것이 중요하다. 그런데 사용자의 행동과 경험을 예측하는 것은 매우 어려운 일이기 때문에 현실의 사용자들에게 다양한 유형의 UI를 제공하고, 어떤 UI가 적합한지 실측할 필요가 있다. 실제로 많은 소프트웨어 기업들이 사용자를 A, B 그룹으로 나누고 (더 많은 그룹으로 나눌 수도 있다.) 각 그룹에게 서로 다른 UI를 제공해 가장 적합한 UI를 선정하는 A/B 테스팅을 하고 있다.</p>
+<p>유연한 UI를 제공하려면 UI가 클라이언트의 빌드와 배포로부터 자유로워야 한다. 이러한 목표를 이루기 위해 웹뷰와 같이 네이티브 환경을 벗어난 다양한 방법을 선택할 수도 있겠지만, 현실에서는 다양한 이유로 웹뷰를 사용할 수 없는 상황이 있다. 이 글에서는 웹뷰를 사용하지 않는다는 전제 하에 유연하게 UI를 다루기 위한 Server Driven UI 설계에 대해 소개하고자 한다.</p>
+<h2 id="%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-ui-%EB%8B%A4%EB%A3%A8%EA%B8%B0">서버에서 UI 다루기</h2>
+<p>클라이언트과 달리 서버는 언제든 변경, 배포할 수 있다. 그렇다면 서버에서 제공하는 API를 이용해 동적으로 클라이언트의 UI를 구성하면 어떨까? 서버가 API 응답에 UI 정보를 담아 클라이언트에 제공하고, 클라이언트가 API 응답에 따라 화면을 렌더링한다면 서버에서 API 응답을 변경하는 것만으로 클라이언트의 화면 구성을 동적으로 변경할 수 있을 것이다.</p>
+<p>예를 들어 사용자에게 홈 화면을 제공하는 경우, 서버가 제공하는 REST API <code>screen</code>을 통해 <code>home</code> 화면에 대한 UI 정보를 얻을 수 있을 것이다.</p>
+<pre class="hljs"><code>GET /screen/home
+</code></pre>
+<p>이 API는 홈 화면을 구성하는 UI 요소 리스트를 JSON 포맷으로 응답한다. 따라서 클라이언트는 응답의 <code>data</code> 리스트를 순회하며 각각의 <code>type</code>에 해당하는 UI 요소를 화면에 그려주면 된다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/124375746-bf951100-dcde-11eb-8b50-9362fbf46ff9.png" alt="앱바, 텍스트 버튼 2개가 배치된 화면."></p>
+<p>이렇게 하면 클라이언트를 새로 배포하지 않아도 서버에서 <code>data</code> 리스트의 요소를 변경함으로써 클라이언트가 유연한 UI를 제공할 수 있을 것이다. 이처럼 UI에 대한 정보를 서버에서 관리, 제공하는 것이 Server Driven UI 설계의 기본 개념이다.</p>
+<h2 id="graphql%3A-%EC%9E%AC%EC%82%AC%EC%9A%A9-%EA%B0%80%EB%8A%A5%ED%95%9C-ui-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%A0%9C%EA%B3%B5%ED%95%98%EA%B8%B0">GraphQL: 재사용 가능한 UI 컴포넌트 제공하기</h2>
+<p>서버에서 UI를 관리하면 유연성을 확보할 수 있지만, 사용하는 UI 요소의 재사용성을 고려하지 않으면 다양한 화면에서 UI 요소를 교체하기 어려워진다. 이러한 문제를 피하려면 모든 UI 요소를 재사용 가능한 컴포넌트로 구성하고, UI 컴포넌트를 다양한 화면에서 조립해서 사용할 수 있도록 만들어야 한다.</p>
+<p>또한 수시로 화면에 새로운 컴포넌트가 추가되고 제거되면 서버와 클라이언트 사이의 타입 정의에 불일치가 발생하기 쉽다. 이때 GraphQL을 사용하면 서버와 클라이언트가 공유하는 스키마를 통해 API의 타입 안전성을 보장할 수 있다.</p>
+<h3 id="%EC%BF%BC%EB%A6%AC-%EC%84%A4%EA%B3%84">쿼리 설계</h3>
+<p>서버는 UI 컴포넌트 리스트를 반환하는 <code>screen</code> 쿼리를 통해 특정 화면에 대한 UI 정보를 제공한다.</p>
+<pre class="hljs"><code>type Query {
+  screen(screenType: ScreenType!): Screen!
+}
+
+enum ScreenType {
+  HOME
+  SIGN_IN
+}
+
+type Screen {
+  components: [Component!]!
+}
+</code></pre>
+<p>클라이언트는 <code>screen</code> 쿼리를 호출하며 홈 화면에서는 <code>screenType: HOME</code> 인자를, 로그인 화면에서는 <code>screenType: SIGN_IN</code> 인자를 전달할 것이다. 서버는 쿼리를 받으면 해당 <code>screenType</code>에 맞는 컴포넌트를 조합하여 <code>Screen</code> 타입의 <code>components</code> 필드에 <code>Component</code> 리스트를 담아 응답한다.</p>
+<p><code>Component</code>는 유니온 타입이다. 유니온 타입은 다양한 타입의 컴포넌트를 <code>Component</code>라는 하나의 타입으로 다룰 수 있게 해준다. <code>Screen</code> 타입의 <code>components</code> 필드가 <code>Component</code> 리스트를 반환한다는 것은 리스트 안에 <code>AppBar</code>, <code>TextButton</code>, <code>Image</code> 타입이 섞일 수 있다는 의미다.</p>
+<pre class="hljs"><code>union Component = AppBar | TextButton | Image
+
+type AppBar {
+  title: String!
+}
+
+type TextButton {
+  text: String!
+  route: String
+}
+
+type Image {
+  url: String!
+}
+</code></pre>
+<p>만약 컴포넌트들이 공통 필드를 가진다면 <code>Component</code>를 유니온 타입 대신 인터페이스로 만들어도 된다.</p>
+<pre class="hljs"><code>interface Component {
+  position: Int!
+}
+
+type AppBar implements Component {
+  position: Int!
+  title: String!
+}
+
+type TextButton implements Component {
+  position: Int!
+  text: String!
+  route: String
+}
+
+type Image implements Component {
+  position: Int!
+  url: String!
+}
+</code></pre>
+<p>유니온 타입은 단순히 독립적인 컴포넌트 타입들을 하나의 타입으로 사용하기 위한 방식이었다면, 인터페이스는 각각의 컴포넌트 타입들이 추상 타입인 <code>Component</code>를 구현하는 방식이기 때문에 어떤 타입이 UI 컴포넌트인지 명확해진다는 장점이 있다.</p>
+<h3 id="%EC%9A%94%EC%B2%AD%EA%B3%BC-%EC%9D%91%EB%8B%B5">요청과 응답</h3>
+<p>GraphQL의 재사용 가능한 필드 묶음인 프래그먼트(Fragment)는 UI 컴포넌트를 주고받기에 매우 적합하다. 클라이언트에서 컴포넌트를 요청할 때는 사용 가능한 모든 컴포넌트 프래그먼트를 요청할 것이다.</p>
+<pre class="hljs"><code>query fetchScreen {
+  screen(screenType: HOME) {
+    components {
+      ... on AppBar {
+        __typename
+        title
+      }
+      ... on TextButton {
+        __typename
+        text
+        route
+      }
+      ... on Image {
+        __typename
+        url
+      }
+    }
+  }
+}
+</code></pre>
+<p>주의할 점은 '사용 가능한 모든 컴포넌트’를 요청한다는 점이다. 만약 구현 당시에 사용할 컴포넌트만 요청하면 차후 서버에서 다른 컴포넌트를 화면에 추가해도 보여줄 수 없기 때문이다.</p>
+<p>요청을 받은 서버는 홈 화면에서 사용할 컴포넌트를 골라서 반환한다. 이 예시에서는 홈 화면에 <code>AppBar</code> 컴포넌트 하나와 <code>TextButton</code> 컴포넌트 두 개를 응답한다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">impl</span> QueryRoot {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">screen</span></span>(screen_type: ScreenType) -&gt; FieldResult&lt;Screen&gt; {
+        <span class="hljs-literal">Ok</span>(
+            Screen {
+                components: <span class="hljs-keyword">match</span> screen_type {
+                    ScreenType::Home =&gt; home_components(),
+                    ScreenType::SignIn =&gt; sign_in_components(),
+                }
+            }
+        )
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">home_components</span></span>() -&gt; <span class="hljs-built_in">Vec</span>&lt;Component&gt; {
+    <span class="hljs-built_in">vec!</span>[
+        Component::AppBar(AppBar {
+            title: <span class="hljs-string">&quot;Home&quot;</span>.to_string(),
+        }),
+        Component::TextButton(TextButton {
+            text: <span class="hljs-string">&quot;Sign in&quot;</span>.to_string(),
+            route: <span class="hljs-literal">Some</span>(<span class="hljs-string">&quot;/sign_in&quot;</span>.to_string()),
+        }),
+        Component::TextButton(TextButton {
+            text: <span class="hljs-string">&quot;Sign up&quot;</span>.to_string(),
+            route: <span class="hljs-literal">None</span>,
+        }),
+    ]
+}
+</code></pre>
+<p>러스트로 서버 코드를 작성한 이유는 순전히 개인 취향이며, Server Driven UI나 GraphQL과는 전혀 관련이 없다. 다양한 언어로 된 GraphQL API 서버 구현체가 있기 때문에 언어의 선택은 문제가 되지 않는다.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>요청이 성공하면 서버에서 의도한 GraphQL 응답을 받을 수 있다.</p>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;screen&quot;</span>: {
+      <span class="hljs-attr">&quot;components&quot;</span>: [
+        {
+          <span class="hljs-attr">&quot;__typename&quot;</span>: <span class="hljs-string">&quot;AppBar&quot;</span>,
+          <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;Home&quot;</span>
+        },
+        {
+          <span class="hljs-attr">&quot;__typename&quot;</span>: <span class="hljs-string">&quot;TextButton&quot;</span>,
+          <span class="hljs-attr">&quot;text&quot;</span>: <span class="hljs-string">&quot;Sign in&quot;</span>,
+          <span class="hljs-attr">&quot;route&quot;</span>: <span class="hljs-string">&quot;/sign_in&quot;</span>
+        },
+        {
+          <span class="hljs-attr">&quot;__typename&quot;</span>: <span class="hljs-string">&quot;TextButton&quot;</span>,
+          <span class="hljs-attr">&quot;text&quot;</span>: <span class="hljs-string">&quot;Sign up&quot;</span>,
+          <span class="hljs-attr">&quot;route&quot;</span>: <span class="hljs-literal">null</span>
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+<p>앞서 클라이언트가 <code>components</code> 필드 아래에 <code>Image</code> 프래그먼트도 요청했지만, 서버가 <code>Image</code> 컴포넌트를 응답하지 않았기 때문에 리스트에는 포함되지 않았다. 반대로 서버가 <code>Image</code> 컴포넌트를 응답했지만 클라이언트가 요청하지 경우에도 리스트에 포함되지 않는다. 따라서 서버가 신규 컴포넌트를 정의하거나 기존 컴포넌트에 신규 필드를 추가해도 구버전 클라이언트에서는 신규 컴포넌트와 필드를 요청하지 않기 때문에 클라이언트의 하위호환성을 확보할 수 있다. 단, 기존 컴포넌트에 대해 구버전 클라이언트에서 사용 중인 필드를 제거하거나 non-nullable 필드를 nullable 필드로 바꾸는 경우 하위호환성이 깨지므로 주의해야 한다.</p>
+<h2 id="flutter%3A-%EA%B2%AC%EA%B3%A0%ED%95%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C%EA%B3%BC-%EC%9C%84%EC%A0%AF%EC%9C%BC%EB%A1%9C-%ED%99%94%EB%A9%B4-%EA%B7%B8%EB%A6%AC%EA%B8%B0">Flutter: 견고한 디자인 시스템과 위젯으로 화면 그리기</h2>
+<p>통일감있는 컴포넌트를 사용하려면 디자인 시스템이 잘 잡혀 있어야 한다. 만약 UI 레벨에서 디자인 시스템이 정립되어 있지 않다면 애초에 컴포넌트를 개념을 도입하는 것이 어불성설일 뿐더러, 서버와 클라이언트, 디자인 사이에 사용하는 용어가 달라져 커뮤니케이션 비용도 증가한다.</p>
+<p>플러터(Flutter)의 <a href="https://api.flutter.dev/flutter/material/material-library.html">머티리얼 라이브러리(Material Library)</a>는 구글의 머티리얼 디자인 시스템을 높은 수준으로 구현하고 있어 Server Driven UI를 바로 적용할 수 있다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/123917302-995d3180-d9bd-11eb-8c4f-706ee9e92565.png" alt="플러터 머티리얼 컴포넌트 위젯 목록: Appbar, BottomNavigationBar, Drawer."></p>
+<h3 id="%ED%94%84%EB%9E%98%EA%B7%B8%EB%A8%BC%ED%8A%B8-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%9C%84%EC%A0%AF-%EB%8C%80%EC%9D%91">프래그먼트-컴포넌트-위젯 대응</h3>
+<p>플러터가 가진 위젯(Widget) 개념이 컴포넌트 개념과 부합한다는 점도 Server Driven UI 설계와 잘 맞는다. 플러터의 위젯은 웹 프론트엔드 프레임워크인 리액트(React)의 컴포넌트 시스템으로부터 영감을 받아 만들어졌으며, 각 위젯은 자신의 현재 상태에 따른 UI를 표현한다.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>클라이언트의 추상 클래스 <code>Component</code>는 서버에서 응답하는 GraphQL 유니온 타입 <code>Component</code>에 대응된다. <code>Component</code>를 구현하는 클래스는 위젯을 반환하는 <code>compose</code> 메서드를 함께 구현해야 한다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span> </span>{
+  Widget compose(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">dynamic</span>&gt; args, BuildContext context);
+}
+</code></pre>
+<p>가령 앱 상단에 들어가는 앱바 UI를 의미하는 <code>AppBarComponent</code>는 <code>Component</code> 클래스를 구현하며, <a href="https://api.flutter.dev/flutter/material/AppBar-class.html"><code>AppBar</code></a> 위젯을 반환하는 <code>compose</code> 메서드를 갖는다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppBarComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Component</span> </span>{
+  Widget compose(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">dynamic</span>&gt; args, BuildContext context) {
+    <span class="hljs-keyword">return</span> AppBar(
+      title: Text(args[<span class="hljs-string">&#x27;title&#x27;</span>]),
+    );
+  }
+}
+</code></pre>
+<p><code>compose</code> 메서드는 <code>args</code> 인자의 <code>title</code> 프로퍼티에 접근해 앱바의 타이틀을 채운다. 이때 <code>args</code> 인자는 서버의 응답에 포함되는 <code>AppBar</code> 프래그먼트의 필드들이 <code>Map&lt;String, dynamic&gt;</code> 타입으로 전달될 것이다.</p>
+<p>클라이언트가 서버로부터 받은 응답을 파싱한 다음, <code>components</code> 필드에 포함된 각각의 프래그먼트들을 자신의 컴포넌트에 대응시키고, 각 컴포넌트의 위젯에 대응시키려면 GraphQL 스키마를 바탕으로 한 컴포넌트 레지스트리가 필요하다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Registry</span> </span>{
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, Component&gt; _dictionary = {
+    <span class="hljs-string">&#x27;AppBar&#x27;</span>: AppBarComponent(),
+    <span class="hljs-string">&#x27;TextField&#x27;</span>: TextFieldComponent(),
+    <span class="hljs-string">&#x27;Image&#x27;</span>: ImageComponent(),
+  };
+
+  <span class="hljs-keyword">static</span> Widget getComponent(<span class="hljs-built_in">dynamic</span> component, BuildContext context) {
+    <span class="hljs-keyword">var</span> matchedComponent = _dictionary[component[<span class="hljs-string">&#x27;__typename&#x27;</span>]];
+    <span class="hljs-keyword">if</span> (matchedComponent != <span class="hljs-keyword">null</span>) {
+      <span class="hljs-keyword">return</span> matchedComponent.compose(component, context);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+  }
+
+  <span class="hljs-keyword">static</span> <span class="hljs-built_in">List</span>&lt;Widget&gt; getComponents(<span class="hljs-built_in">dynamic</span> components, BuildContext context) {
+    <span class="hljs-keyword">var</span> matchedComponent = components <span class="hljs-keyword">as</span> <span class="hljs-built_in">List</span>&lt;<span class="hljs-built_in">dynamic</span>&gt;;
+    <span class="hljs-keyword">return</span> matchedComponent.map((component) =&gt; getComponent(component, context))
+        .where((element) =&gt; element != <span class="hljs-keyword">null</span>)
+        .toList();
+  }
+}
+</code></pre>
+<p>클라이언트는 응답 내용을 바탕으로 위젯 리스트를 얻기 위해 레지스트리의 <code>getComponents</code> 메서드를 호출하고, <code>components</code> 필드를 순회하며 <code>getComponent</code> 메서드를 통해 프래그먼트를 위젯으로 변환한다.</p>
+<p><code>getCompnent</code> 메서드는 프래그먼트에 포함된 메타 필드 <code>__typename</code> 값을 이용해 각 프래그먼트를 컴포넌트에 대응시키고, 해당 컴포넌트의 <code>compose</code> 메서드를 호출해 컴포넌트 각각의 위젯을 반환한다. 만약 클라이언트가 모르는(<code>_dictionary</code>에 등록되지 않은) 컴포넌트가 응답에 포함되어 있다면 필터링될 것이다.</p>
+<h3 id="%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%A1%B0%EB%A6%BD">컴포넌트 조립</h3>
+<p>앞서 살펴본 레지스트리를 이용해 서버에서 응답하는 모든 컴포넌트를 위젯으로 변환하고, 각 화면에 맞는 위젯을 구성할 수 있게 되었다. 지금까지의 흐름을 서버, API 응답, 클라이언트로 정리하면 아래와 같다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/124376806-afcbfb80-dce3-11eb-8661-6cebf1f787c5.png" alt="서버, GraphQL 응답, 클라이언트 흐름 도식."></p>
+<p>플러터 위젯 중 <a href="https://api.flutter.dev/flutter/widgets/Container-class.html"><code>Container</code></a>이나 <a href="https://api.flutter.dev/flutter/widgets/Column-class.html"><code>Column</code></a>과 같이 다른 위젯을 <code>child</code> 또는 <code>children</code>으로 담는 위젯도 같은 방식으로 만들 수 있다. 일종의 '컴포넌트의 컴포넌트’인 셈이다. 예를 들어 <a href="https://api.flutter.dev/flutter/widgets/GridView-class.html"><code>GridView</code></a> 위젯을 생각해보자. 그리드 뷰는 격자 셀이 반복되는 레이아웃으로, 각 셀에는 다른 위젯을 배치시킬 수 있다. 그리드의 열 개수와 각 셀에 넣을 컴포넌트를 서버에서 관리하고자 한다면 아래와 같이 스키마를 구성할 수 있을 것이다.</p>
+<pre class="hljs"><code>type GridView {
+  column_count: Int!
+  chidren: [Component!]!
+}
+</code></pre>
+<p>클라이언트에서 요청할 때는 <code>GridView</code> 프래그먼트의 <code>children</code> 필드 아래에 사용 가능한 모든 컴포넌트를 요청해야 한다. 같은 프래그먼트를 재사용하므로 인라인 프래그먼트 대신 별도의 기명 프래그먼트를 만들었다.</p>
+<pre class="hljs"><code>query fetchScreen {
+  screen(screenType: HOME) {
+    components {
+      ... AppBar
+      ... TextButton
+      ... Image
+      ... on GridView {
+        __typename
+        column_count
+        children {
+          ... AppBar
+          ... TextButton
+          ... Image
+        }
+      }
+    }
+  }
+}
+
+fragment AppBar on AppBar {
+  __typename
+  title
+}
+
+fragment TextButton on TextButton {
+  __typename
+  text
+  route
+}
+
+fragment Image on Image {
+  __typename
+  url
+}
+</code></pre>
+<p>마지막으로 <code>GridVew</code> 위젯을 반환하는 <code>GridViewComponent</code>는 자신의 <code>children</code> 필드 값을 <code>getComponents</code>로 넘겨 위젯 리스트를 구성한다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GridViewComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Component</span> </span>{
+  Widget compose(<span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">String</span>, <span class="hljs-built_in">dynamic</span>&gt; args, BuildContext context) {
+    <span class="hljs-keyword">return</span> Expanded(
+      child: GridView.count(
+        padding: <span class="hljs-keyword">const</span> EdgeInsets.all(<span class="hljs-number">20</span>),
+        crossAxisSpacing: <span class="hljs-number">20</span>,
+        mainAxisSpacing: <span class="hljs-number">20</span>,
+        crossAxisCount: args[<span class="hljs-string">&quot;columnCount&quot;</span>],
+        children: Registry.getComponents(args[<span class="hljs-string">&quot;children&quot;</span>], context),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>여기서는 <code>padding</code>, <code>crossAxisSpacing</code>, <code>mainAxisSpacing</code> 프로퍼티를 상수 값으로 설정했지만, 만약 서버에서 관리하고 싶다면 간단히 필드를 추가하고 값을 넣어주기만 하면 된다.</p>
+<p>이제 서버에서 <code>GridView</code>의 <code>children</code> 필드에 <code>TextButton</code> 두 개를 응답하면 클라이언트에서는 그대로 두 개의 셀에 <code>TextButton</code>이 담긴 화면을 구성한다. 그리드의 열 개수나 각 셀의 내용은 서버 응답을 수정하는 것만으로 언제든 변경할 수 있다.</p>
+<p><img src="https://user-images.githubusercontent.com/6410412/124346021-6a41fc80-dc17-11eb-8bf1-ef446ae0dfca.png" alt="Home, Sign in 화면 스크린샷."></p>
+<p>실제 동작하는 코드는 <a href="https://github.com/parksb/server-driven-ui">github.com/parksb/server-driven-ui</a>에서 확인할 수 있다. 동작 방식이나 개념은 이 글에서 설명한 것과 동일하지만, 컴포넌트 종류나 구체적인 필드는 다소 차이가 있다.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://medium.com/@kimdohun0104/server-driven-ui-feat-flutter-87fcbb04e610">김도훈, “Server Driven UI (Feat.Flutter)”, 2020.</a></li>
+<li><a href="https://deview.kr/2020/sessions/337">박호준, “GraphQL이 가져온 에어비앤비 프론트앤드 기술의 변천사”, DEVIEW 2020, 2020.</a></li>
+<li><a href="http://tom.lokhorst.eu/2020/07/server-driven-ui">Tom Lokhorst, “Server Driven UI”, Tom Lokhorst’s blog, 2020.</a></li>
+<li><a href="https://medium.com/airbnb-engineering/a-deep-dive-into-airbnbs-server-driven-ui-system-842244c5f5">Ryan Brroks, “A Deep Dive into Airbnb’s Server-Driven UI System”, 2021.</a></li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://graphql.org/code/">The GraphQL Foundation, “GraphQL Code Libraries, Tools and Services”.</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://flutter.dev/docs/development/ui/widgets-intro">Flutter, “Introduction to widgets”.</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-prev"> <a href="/article/37.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">읽기 쉬운 웹을 위한 타이포그래피</p> <p class="article-navigation-subtitle">조판 원칙으로 가독성 높이기</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/38.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

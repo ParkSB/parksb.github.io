@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 해피 터미널 라이프 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/33.html"><meta property="og:title" content="해피 터미널 라이프: dotfiles 세팅해 광명찾기 "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%ED%95%B4%ED%94%BC%20%ED%84%B0%EB%AF%B8%EB%84%90%20%EB%9D%BC%EC%9D%B4%ED%94%84**.png?subtitle=dotfiles%20%EC%84%B8%ED%8C%85%ED%95%B4%20%EA%B4%91%EB%AA%85%EC%B0%BE%EA%B8%B0&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.08.28%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="6년간 써온 윈도우 노트북을 포맷하고 다시 WSL 환경을 세팅했다. 포맷을 하도 오랜만에 해서 그런지 설정에 의외로 손이 많이 갔다. 모든 걸 완벽하게 자동화할 겸 세팅을 정리해보기로 했다.Git우선 git을 설치한다. 자신의 프로젝트에 git을 사용하지 않더라도 (웬만하면 써보자) 다른 프로그램을 설치할 때 필요하다.#..."><meta name="twitter:title" content="해피 터미널 라이프: dotfiles 세팅해 광명찾기 "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%ED%95%B4%ED%94%BC%20%ED%84%B0%EB%AF%B8%EB%84%90%20%EB%9D%BC%EC%9D%B4%ED%94%84**.png?subtitle=dotfiles%20%EC%84%B8%ED%8C%85%ED%95%B4%20%EA%B4%91%EB%AA%85%EC%B0%BE%EA%B8%B0&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.08.28%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="6년간 써온 윈도우 노트북을 포맷하고 다시 WSL 환경을 세팅했다. 포맷을 하도 오랜만에 해서 그런지 설정에 의외로 손이 많이 갔다. 모든 걸 완벽하게 자동화할 겸 세팅을 정리해보기로 했다.Git우선 git을 설치한다. 자신의 프로젝트에 git을 사용하지 않더라도 (웬만하면 써보자) 다른 프로그램을 설치할 때 필요하다.#..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 해피 터미널 라이프 </h1> <h2 id="article-subtitle"> dotfiles 세팅해 광명찾기 </h2> <time id="article-date"> 2018.08.28 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20190828_settings-for-happy-terminal-life.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#git">Git</a><ul><li><a href="#alias">Alias</a></li></ul></li><li><a href="#zsh-%26-oh-my-zsh">ZSH & Oh My ZSH</a><ul><li><a href="#theme">Theme</a></li><li><a href="#plugin">Plugin</a></li></ul></li><li><a href="#vim">Vim</a><ul><li><a href="#plugin">Plugin</a></li></ul></li><li><a href="#tmux">TMUX</a><ul><li><a href="#configuration">Configuration</a></li><li><a href="#plugin">Plugin</a></li></ul></li><li><a href="#dotfiles">Dotfiles</a></li></ul></div></p>
+</details>
+<p>6년간 써온 윈도우 노트북을 포맷하고 다시 WSL 환경을 세팅했다. 포맷을 하도 오랜만에 해서 그런지 설정에 의외로 손이 많이 갔다. 모든 걸 완벽하게 자동화할 겸 세팅을 정리해보기로 했다.</p>
+<h1 id="git">Git</h1>
+<p>우선 <a href="https://git-scm.com/">git</a>을 설치한다. 자신의 프로젝트에 git을 사용하지 않더라도 (웬만하면 써보자) 다른 프로그램을 설치할 때 필요하다.</p>
+<pre class="hljs"><code><span class="hljs-comment"># macOS</span>
+$ brew install git
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># Linux</span>
+$ apt install git
+</code></pre>
+<p>그리고 이름과 메일을 설정한다. <code>--global</code> 옵션으로 설정하면 모든 프로젝트에서 이 설정을 사용할 수 있다.</p>
+<pre class="hljs"><code>$ git config --global user.name = <span class="hljs-string">&quot;jake&quot;</span>
+$ git config --global user.email = jake@email.com
+</code></pre>
+<p>로그인에 2FA를 사용하고 있다면 <code>git clone</code>을 실행해 올바른 로그인 정보를 입력해도 인증에 실패하는 문제가 생긴다. 이 경우 액세스 토큰을 발급받아 비밀번호 대신 사용하면 된다.</p>
+<h2 id="alias">Alias</h2>
+<p>alias를 설정하면 긴 명령을 축약할 수 있다. 가령 <code>git status</code> 대신 <code>git s</code>를 사용하게 만드는 것이 가능하다. git에 관련된 설정을 하기 위해서는 .gitconfig 파일을 수정하면 된다.</p>
+<pre class="hljs"><code>$ vim ~/.gitconfig
+</code></pre>
+<p><code>[alias]</code> 섹션에 축약할 명령과 축약형을 작성하고 저장한다.</p>
+<pre class="hljs"><code>[alias]
+  l = log --reflog --graph --oneline --decorate
+</code></pre>
+<p>이제 <code>git l</code>은 <code>git log --reflog --graph --oneline --decorate</code>와 동일하다. 기계인간님의 <a href="https://johngrib.github.io/wiki/git-alias/">편리한 git alias 설정하기</a>를 참고하면 극한의 편리를 추구할 수도 있다.</p>
+<h1 id="zsh-%26-oh-my-zsh">ZSH &amp; Oh My ZSH</h1>
+<p>zsh(Z shell)은 터미널을 더 편리하게 만들어주는 유닉스 셸이다. 기본 셸인 bash 보다 환경 설정이나 플러그인 설치 등이 쉽다. <a href="https://ohmyz.sh/">oh-my-zsh</a>은 zsh 설정을 관리하기 위한 프레임워크로, 각종 테마와 플러그인을 제공한다.</p>
+<p>먼저 zsh을 설치한다.</p>
+<pre class="hljs"><code><span class="hljs-comment"># macOS</span>
+$ brew install zsh
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># Linux</span>
+$ apt install zsh
+</code></pre>
+<p>zsh을 기본 터미널의 셸로 사용하고 싶으면 환경변수 <code>$SHELL</code>을 수정한다. <code>chsh</code> 명령에 <code>-s</code> 옵션을 주고 대체할 셸의 경로를 인자로 주면 <code>$SHELL</code>을 변경할 수 있다.</p>
+<pre class="hljs"><code>$ chsh -s $(<span class="hljs-built_in">which</span> zsh)
+</code></pre>
+<p>이어서 oh-my-zsh을 설치한다. curl을 사용해도 되고, wget을 사용해도 된다.</p>
+<pre class="hljs"><code><span class="hljs-comment"># curl</span>
+$ sh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>&quot;</span>
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># wget</span>
+$ sh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>&quot;</span>
+</code></pre>
+<h2 id="theme">Theme</h2>
+<p>테마가 마음에 들지 않다면 .zshrc 파일을 수정해 바꿀 수 있다. .zshrc 파일을 통해 테마 뿐 아니라 플러그인이나 alias 등 zsh의 모든 것을 설정할 수 있다.</p>
+<pre class="hljs"><code>$ vim ~/.zshrc
+</code></pre>
+<p><a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes">oh-my-zsh 저장소에서 기본 테마를 살펴볼 수 있다.</a> 사용하고자 하는 테마가 기본 테마가 아니라면 테마를 설치하고, oh-my-zsh의 themes 디렉토리에 테마 파일을 넣어줘야 한다. <a href="https://github.com/romkatv/powerlevel10k">powerlevel10k</a> 테마를 사용하면 쉽게 시각 요소를 설정할 수 있다.</p>
+<pre class="hljs"><code>$ git <span class="hljs-built_in">clone</span> --depth=1 https://github.com/romkatv/powerlevel10k.git <span class="hljs-variable">$ZSH_CUSTOM</span>/themes/powerlevel10k
+</code></pre>
+<p>powerlevel10k 테마 설치 후 <code>p10k</code> 명령을 이용해 테마 설정을 시작하면 된다. 설정 과정이 워낙 직관적이라서 별다른 설명이 필요하지 않다.</p>
+<pre class="hljs"><code>$ p10k configure
+</code></pre>
+<h2 id="plugin">Plugin</h2>
+<p>플러그인도 쉽게 설치할 수 있다. <a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a>을 사용하면 명령에 하이라이팅을 줄 수 있는데, 유효한 명령은 녹색, 유효하지 않은 명령은 빨간색으로 보여줘서 편리하다.</p>
+<pre class="hljs"><code>$ git <span class="hljs-built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git <span class="hljs-variable">$ZSH_CUSTOM</span>/plugins/zsh-syntax-highlighting
+</code></pre>
+<p>그리고 .zshrc 파일을 열어 <code>plugins</code>에 <code>zsh-syntax-highlighting</code>을 추가해준다.</p>
+<pre class="hljs"><code>plugins=(
+  zsh-syntax-highlighting
+)
+</code></pre>
+<p><a href="https://github.com/zsh-users/zsh-autosuggestions/">zsh-autosuggestions</a>는 히스토리를 바탕으로 명령어를 추천해주며, <a href="https://github.com/wting/autojump">autojump</a>는 어디서든 원하는 디렉토리로 이동할 수 있도록 해준다. 각각의 방식으로 설치하고 .zshrc 파일을 수정해주면 된다.</p>
+<pre class="hljs"><code>plugins=(
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  autojump
+)
+</code></pre>
+<h1 id="vim">Vim</h1>
+<p>터미널에서 <a href="https://github.com/vim/vim">vim</a>을 자주 사용할 예정이라면 직접 설정을 해두는 것이 좋다. vim은 기본으로 설치되어 있어서 바로 사용할 수 있다. 시스템 vim은 최신 버전이 아닐 수 있으니 <code>vim --version</code> 명령으로 버전을 확인해보고 업데이트하는 것을 권장한다.</p>
+<p>vim도 zsh와 마찬가지로 .vimrc 파일로 설정할 수 있다.</p>
+<pre class="hljs"><code>$ vim ~/.vimrc
+</code></pre>
+<p>줄번호 표시 여부, 문법 하이라이팅 여부, 들여쓰기 등 일반적인 설정을 할 수 있는데, <a href="https://github.com/vim/vim/blob/master/runtime/defaults.vim">기본 설정</a>을 그대로 쓰기만해도 무난히 사용할 수 있다. 구체적인 설정 방법은 <a href="https://github.com/johngrib/simple_vim_guide/blob/master/md/vimrc.md">simple-vim-guide</a>에 잘 나와있다.</p>
+<h2 id="plugin-2">Plugin</h2>
+<p>vim에는 다양한 플러그인들이 있다. 플러그인 매니저 중 하나인 <a href="https://github.com/junegunn/vim-plug">vim-plug</a>를 사용하면 쉽게 플러그인을 설치, 적용하여 사용할 수 있다. 원래 <a href="https://github.com/VundleVim/Vundle.vim">vundle</a>을 사용했는데, <a href="https://junegunn.kr/">최준건님</a>이 만든 vim-plug가 더 가볍고 빠른 것 같다.</p>
+<p>먼저 vim-plug를 설치한다.</p>
+<pre class="hljs"><code>$ curl -fLo ~/.vim/<span class="hljs-built_in">autoload</span>/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+</code></pre>
+<p>그리고 .vimrc 파일에 vim-plug를 불러오기 위한 구문을 작성한다. 테스트로 사이드바에 디렉토리 트리를 보여주는 <a href="https://github.com/scrooloose/nerdtree">scrooloose/nerdtree</a>를 설치해봤다.</p>
+<pre class="hljs"><code>call plug#begin('~/.vim/plugged')
+
+Plugin 'scrooloose/nerdtree'
+
+call plug#end()
+</code></pre>
+<p>파일을 저장하고 vim 내에서 <code>:PluginInstall</code>을 입력하면 플러그인을 설치하기 시작한다. 새로운 플러그인을 설치하고 싶으면 <code>call plug#begin('...')</code>과 <code>call plug#end()</code> 사이에 <code>Plugin 'user-name/plugin-name'</code>을 추가하고 설치 명령을 실행하기만 하면 된다.</p>
+<p>하단에 상태바를 보여주는 <a href="https://github.com/vim-airline/vim-airline">vim-airline/vim-airline</a>과 git 변경 사항을 보여주는 <a href="https://github.com/airblade/vim-gitgutter">airblade/vim-gitgutter</a>, 코드의 문법 오류를 체크해주는 <a href="https://github.com/vim-syntastic/syntastic">scrooloose/syntastic</a> 등 다양한 플러그인으로 vim을 IDE처럼 만들 수도 있다.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>더 많은 vim 플러그인은 <a href="https://vimawesome.com/">Vim Awesome</a>에서 찾아볼 수 있다.</p>
+<h1 id="tmux">TMUX</h1>
+<p><a href="https://github.com/tmux/tmux">tmux(Termial Multiplexor)</a>는 터미널의 세션과 창을 분할 관리하기 위한 도구로, 다양한 플러그인을 제공한다. 기본으로 설치되어 있는 screen과 거의 비슷한데, tmux가 더 편리하다는 평이 많은 듯하다. 백그라운드에서 세션을 유지하거나 ssh 접속할 일이 많다면 필요하지만, 그럴 일이 없다면 사용하지 않아도 불편함은 없다.</p>
+<pre class="hljs"><code><span class="hljs-comment"># macOS</span>
+$ brew install tmux
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># Linux</span>
+$ apt install tmux
+</code></pre>
+<p>간단히 <code>tmux</code>라고 입력해 실행할 수 있다.</p>
+<pre class="hljs"><code>$ tmux
+</code></pre>
+<p>tmux는 세션(Session), 윈도우(Window), 팬(Pane)으로 구성된다. 세션은 가장 큰 단위이며, 윈도우는 세션 내에서 탭처럼 사용할 수 있는 화면이다. 팬은 한 윈도우 내에서의 화면 분할을 의미한다.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> tmux는 기본 prefix 키인 <code>Ctrl + b</code>를 누르고 명령 키를 입력하여 조작할 수 있다. 가령 윈도우를 수평 분할하는 키는 <code>%</code> 키이기 때문에 <code>Ctrl + b + %</code>를 입력하면 윈도우가 수평 분할된다.</p>
+<h2 id="configuration">Configuration</h2>
+<p>tmux를 설정하기 위한 .tmux.conf 파일을 홈 디렉토리에 만든다.</p>
+<pre class="hljs"><code>$ vim ~/.tmux.conf
+</code></pre>
+<p>기본 prefix 키는 <code>Ctrl + b</code>이지만, 원한다면 .tmux.conf 파일을 수정해 <code>Ctrl + a</code> 등 다른 키로 바꿀 수 있다. (screen의 기본 prefix가 <code>Ctrl + a</code>다.)</p>
+<pre class="hljs"><code>unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+</code></pre>
+<p>tmux를 사용하면 터미널에서 마우스를 사용할 수 없게 된다. (iTerms에서는 그랬다.) 팬 포커스 이동은 <code>prefix + q + number</code> 또는 <code>prefix + o</code>를 통해, 스크롤은 <code>prefix + [ + j or k</code>를 통해 할 수 있다. 불편하다면 마우스 설정을 켤 수도 있다.</p>
+<pre class="hljs"><code>set-option -g mouse on
+</code></pre>
+<p>파일을 저장하고 <code>tmux source ~/.tmux.conf</code>를 실행해 적용한다.</p>
+<h2 id="plugin-3">Plugin</h2>
+<p>tmux 플러그인을 쉽게 관리하기 위해 <a href="https://github.com/tmux-plugins/tpm">tpm</a>을 먼저 설치한다.</p>
+<pre class="hljs"><code>$ git <span class="hljs-built_in">clone</span> https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+</code></pre>
+<p>.tmux.conf 파일에 tpm을 설치, 실행하기 위한 코드를 추가한다.</p>
+<pre class="hljs"><code>set -g @plugin 'tmux-plugins/tpm'
+run -b '~/.tmux/plugins/tpm/tpm'
+</code></pre>
+<p><code>run -b '~/.tmux/plugins/tpm/tpm'</code>은 tpm을 초기화하기 위한 라인이므로 항상 설정 파일의 맨 아래에 위치해야 한다. tpm으로 관리되는 다른 플러그인도 설치하고 싶으면 같은 방식으로 <code>set -g @plugin 'user-name/plugin-name'</code>을 추가한다. 이제 파일을 저장하고 <code>prefix + I</code>를 입력하면 플러그인이 설치된다.</p>
+<p>하단에 상태바를 보여주는 <a href="https://github.com/erikw/tmux-powerline">tmux-powerline</a>, 세션과 윈도우, 팬 레이아웃 등 환경을 저장할 수 있도록 해주는 <a href="https://github.com/tmux-plugins/tmux-resurrect">tmux-resurrect</a> 등의 플러그인이 있다.</p>
+<h1 id="dotfiles">Dotfiles</h1>
+<p>이렇게 많은 설정 파일들을 관리하기 위해 dotfiles 저장소를 만들었다. 여기에 .zshrc나 .vimrc 등의 파일들을 올려두고 클론받아서 사용한다.</p>
+<pre class="hljs"><code>$ git <span class="hljs-built_in">clone</span> https://github.com/ParkSB/dotfiles.git
+</code></pre>
+<p>그리고 홈 디렉토리에 있던 기본 설정 파일들을 지우고 저장소에 올려둔 설정 파일들의 심볼릭 링크를 만들어줬다.</p>
+<pre class="hljs"><code>$ rm ~/.vimrc
+$ ln -s ./dotfiles/.vimrc ~/.vimrc
+</code></pre>
+<p>회사에서 쓰는 맥북과 집에서 쓰는 윈도우 노트북의 WSL, 따로 운영 중인 우분투 서버의 설정을 동기화하는 게 문제였는데 잘 해결됐다. 나중을 위해서 프로그램과 플러그인을 설치하는 쉘 스크립트도 작성해뒀다.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>오승환, “Vim을 IDE처럼 사용하기”, 2016. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>김용균, “<a href="https://edykim.com/ko/post/tmux-introductory-series-summary/">tmux 입문자 시리즈 요약</a>”, 2014. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/34.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🗞️ 훈련소에서 매일 뉴스 받아보기</p> <p class="article-navigation-subtitle">고립된 훈련병을 위한 종합 뉴스</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/32.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">하지만, 야크 털 깎기는 재미있다</p> <p class="article-navigation-subtitle">밑바닥부터 만드는 즐거움</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/33.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

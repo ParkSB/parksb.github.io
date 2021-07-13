@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 하나의 함수로 강아지와 고양이 분류하기 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/30.html"><meta property="og:title" content="하나의 함수로 강아지와 고양이 분류하기: 타입스크립트 제네릭 "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%ED%95%98%EB%82%98%EC%9D%98%20%ED%95%A8%EC%88%98%EB%A1%9C%20%EA%B0%95%EC%95%84%EC%A7%80%EC%99%80%20%EA%B3%A0%EC%96%91%EC%9D%B4%20%EB%B6%84%EB%A5%98%ED%95%98%EA%B8%B0**.png?subtitle=%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%A0%9C%EB%84%A4%EB%A6%AD&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202019.5.12%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="여기 강아지와 고양이가 있다.class Dog {  name: string;  age: number;}class Cat {  name: string;  color: string;}const dogs: Dog[] = [...];const cats: Cat[] = [...];이때 5살 미만의 강아지나 검은색 고양이를 골라내려..."><meta name="twitter:title" content="하나의 함수로 강아지와 고양이 분류하기: 타입스크립트 제네릭 "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%ED%95%98%EB%82%98%EC%9D%98%20%ED%95%A8%EC%88%98%EB%A1%9C%20%EA%B0%95%EC%95%84%EC%A7%80%EC%99%80%20%EA%B3%A0%EC%96%91%EC%9D%B4%20%EB%B6%84%EB%A5%98%ED%95%98%EA%B8%B0**.png?subtitle=%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%A0%9C%EB%84%A4%EB%A6%AD&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202019.5.12%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="여기 강아지와 고양이가 있다.class Dog {  name: string;  age: number;}class Cat {  name: string;  color: string;}const dogs: Dog[] = [...];const cats: Cat[] = [...];이때 5살 미만의 강아지나 검은색 고양이를 골라내려..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 하나의 함수로 강아지와 고양이 분류하기 </h1> <h2 id="article-subtitle"> 타입스크립트 제네릭 </h2> <time id="article-date"> 2019.5.12 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20190512_ts-generic-and-wrapper-type.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul></ul></div></p>
+</details>
+<p>여기 강아지와 고양이가 있다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dog</span> </span>{
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  age: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cat</span> </span>{
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  color: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">const</span> dogs: Dog[] = [...];
+<span class="hljs-keyword">const</span> cats: Cat[] = [...];
+</code></pre>
+<p>이때 5살 미만의 강아지나 검은색 고양이를 골라내려고 한다. <code>getFilteredAnimals</code> 함수는 파라미터 <code>animals</code>의 요소 타입이 <code>Dog</code>일 때 5살 미만의 강아지들을, <code>Cat</code>일 때 검은색 고양이들을 반환한다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFilteredAnimals</span>(<span class="hljs-params">animals: Dog[] | Cat[]</span>) </span>{
+  <span class="hljs-comment">// do something</span>
+
+  <span class="hljs-keyword">if</span> (animals[<span class="hljs-number">0</span>] <span class="hljs-keyword">instanceof</span> Dog) {
+    <span class="hljs-keyword">return</span> animals.filter(<span class="hljs-function">(<span class="hljs-params">dog: Dog</span>) =&gt;</span> dog.age &lt; <span class="hljs-number">5</span>);
+  }
+ 
+  <span class="hljs-keyword">return</span> animals.filter(<span class="hljs-function">(<span class="hljs-params">cat: Cat</span>) =&gt;</span> cat.color === <span class="hljs-string">&#x27;black&#x27;</span>);
+}
+</code></pre>
+<p>반환 타입과 분류 기준이 경우에 따라 다르기 때문에 좋은 함수는 아닐 수 있다. 하지만 각각의 타입에 대해 동일한 로직을 수행해야 할 때 같은 내용의 함수를 여러개 만드는 것보다 하나의 함수로 여러 타입을 처리하는 것이 나을 때가 있다. 다만 위와 같은 방식으로는 불가능하다.</p>
+<p><code>animals</code>의 요소가 <code>Dog</code> 타입일 수도, <code>Cat</code> 타입일 수도 있기 때문에 함부로 <code>age</code> 프로퍼티나 <code>color</code> 프로퍼티에 접근할 수 없다. 따라서 <code>animals.filter(...)</code> 구문에서 타입 에러가 발생한다.</p>
+<pre class="hljs"><code>Cannot invoke an expression whose type lacks a call signature. Type '{ &lt;S extends Dog&gt;(callbackfn: (value: Dog, index: number, array: Dog[]) =&gt; value is S, thisArg?: any): S[]; (callbackfn: (value: Dog, index: number, array: Dog[]) =&gt; any, thisArg?: any): Dog[]; } | { ...; }' has no compatible call signatures.
+</code></pre>
+<p><code>animals</code>의 타입을 <code>Dog[] | Cat[]</code>가 아닌 <code>Array&lt;Dog | Cat&gt;</code>으로 지정하여 해결할 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFilteredAnimals</span>(<span class="hljs-params">animals: <span class="hljs-built_in">Array</span>&lt;Dog | Cat&gt;</span>) </span>{
+  <span class="hljs-comment">// do something</span>
+
+  <span class="hljs-keyword">if</span> (animals[<span class="hljs-number">0</span>] <span class="hljs-keyword">instanceof</span> Dog) {
+    <span class="hljs-keyword">return</span> animals.filter(<span class="hljs-function">(<span class="hljs-params">dog: Dog</span>) =&gt;</span> dog.age &lt; <span class="hljs-number">5</span>);
+  }
+ 
+  <span class="hljs-keyword">return</span> animals.filter(<span class="hljs-function">(<span class="hljs-params">cat: Cat</span>) =&gt;</span> cat.color === <span class="hljs-string">&#x27;black&#x27;</span>);
+}
+</code></pre>
+<p><code>Array</code>는 타입스크립트에 내장된 인터페이스로, 자바스크립트의 <code>Array</code> 객체에 엄격한 타입을 지정한 것이다. 그 원형의 일부를 살펴보면 아래와 같다:</p>
+<pre class="hljs"><code><span class="hljs-keyword">interface</span> Array&lt;T&gt; {
+  pop(): T | <span class="hljs-literal">undefined</span>;
+  push(...items: T[]): <span class="hljs-built_in">number</span>;
+}
+</code></pre>
+<p>여기서 <code>&lt;T&gt;</code>가 제네릭(Generic) 문법이다. 통상적으로 배열 자료구조는 어떤 타입이든 모두 담을 수 있어야 한다. 만약 <code>Array</code>가 <code>number</code> 타입만 담을 수 있다면 범용성이 떨어질 것이다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">interface</span> Array {
+  pop(): <span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span>;
+  push(...items: <span class="hljs-built_in">number</span>[]): <span class="hljs-built_in">number</span>;
+}
+</code></pre>
+<p><code>any</code> 타입을 지정하면 어떨까? 타입 구분은 없어지겠지만 배열의 요소가 어떤 타입인지 특정할 수 없을 것이다.</p>
+<pre class="hljs"><code>arr.push(<span class="hljs-number">1</span>); <span class="hljs-comment">// [1]</span>
+arr.push(<span class="hljs-string">&#x27;str&#x27;</span>); <span class="hljs-comment">// [1, &#x27;str&#x27;] </span>
+arr.push({ <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;jake&#x27;</span> }); <span class="hljs-comment">// [1, &#x27;str&#x27;, { name: &#x27;jake&#x27; }]</span>
+</code></pre>
+<p>제네릭을 사용하면 범용성을 확보하는 동시에 요소의 타입도 보장할 수 있다. 제네릭 타입 <code>&lt;T&gt;</code>는 임의의 타입을 받을 수 있다. (제네릭 타입의 이름은 관습적으로 <code>T</code>라고 짓는다.)</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> numArr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">number</span>&gt;();
+numArr.push(<span class="hljs-number">1</span>);
+numArr.push(<span class="hljs-string">&#x27;str&#x27;</span>); <span class="hljs-comment">// Argument of type &#x27;&quot;str&quot;&#x27; is not assignable to parameter of type &#x27;number&#x27;.</span>
+
+<span class="hljs-keyword">const</span> strArr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">string</span>&gt;();
+strArr.push(<span class="hljs-string">&#x27;str&#x27;</span>);
+strArr.push(<span class="hljs-number">1</span>); <span class="hljs-comment">// Argument of type &#x27;1&#x27; is not assignable to parameter of type &#x27;string&#x27;.</span>
+</code></pre>
+<p>제네릭을 설명하기 위해 <code>new Array()</code> 구문으로 배열을 선언했는데, 불가피한 상황이 아니라면 배열 리터럴(<code>const arr = []</code>)을 사용하는 쪽이 더 안전하다. Array 객체가 예상치 못하게 오버라이드될 수 있기 때문이다. 사실 제네릭 타입 배열 <code>Array&lt;Dog | Cat&gt;</code>도 <code>(Dog | Cat)[]</code> 처럼 고쳐쓸 수 있다.</p>
+<p>제네릭은 인터페이스 뿐 아니라 함수나 클래스에도 적용할 수 있다. <code>getFilteredAnimals</code>의 경우 타입 각각의 프로퍼티에 접근해야 하기 때문에 제네릭을 적용하기 어려우니 조금 다른 함수를 보자.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">popToPets</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">animals: T[]</span>) </span>{
+  pets.push(animals.pop());
+}
+
+popToPets&lt;Dog&gt;(dogs);
+popToPets&lt;Cat&gt;(cats);
+popToPets&lt;Fox&gt;(foxes);
+</code></pre>
+<p><code>popToPets</code>는 <code>animals</code>의 마지막 요소를 pets 배열로 옮긴다. <code>pop</code>은 배열의 프로토타입에 속한 프로퍼티이기 때문에 배열이라면 어떤 타입이든 <code>pop</code>에 접근할 수 있다. 따라서 <code>popToPets</code> 함수는 <code>Dog[]</code>, <code>Cat[]</code>, <code>Fox[]</code> 등 다양한 타입을 받아 처리하는 것이 가능하다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/31.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">👻 CPU 보안 취약점을 공격하는 아주 구체적인 원리</p> <p class="article-navigation-subtitle">멜트다운, 스펙터 페이퍼 읽기</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/29.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">💵 캐시가 동작하는 아주 구체적인 원리</p> <p class="article-navigation-subtitle">하드웨어로 구현한 해시 테이블</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/30.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

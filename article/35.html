@@ -1,0 +1,379 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🦀 러스트의 멋짐을 모르는 당신은 불쌍해요 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/35.html"><meta property="og:title" content="🦀 러스트의 멋짐을 모르는 당신은 불쌍해요: 높은 성능과 신뢰를 확보하기 위한 언어 "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%80%20%EB%9F%AC%EC%8A%A4%ED%8A%B8%EC%9D%98%20%EB%A9%8B%EC%A7%90%EC%9D%84%20%EB%AA%A8%EB%A5%B4%EB%8A%94%20%EB%8B%B9%EC%8B%A0%EC%9D%80%20%EB%B6%88%EC%8C%8D%ED%95%B4%EC%9A%94**.png?subtitle=%EB%86%92%EC%9D%80%20%EC%84%B1%EB%8A%A5%EA%B3%BC%20%EC%8B%A0%EB%A2%B0%EB%A5%BC%20%ED%99%95%EB%B3%B4%ED%95%98%EA%B8%B0%20%EC%9C%84%ED%95%9C%20%EC%96%B8%EC%96%B4&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202019.11.29%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="내가 만나온 개발자들은 대체로 자신이 사용하는 프로그래밍 언어에 딱히 만족하지 않았는데 (극단적으로는 자바스크립트와 PHP가 있다.) 유독 러스트 개발자들은 적극적으로 러스트를 추천했다.하지만 그냥 그런 언어가 있구나 정도로 생각하고 있었다. 그런데 러스트 2018 에디션 발표 이후 근 1년간 러스트 코드를 웹어셈블리로 ..."><meta name="twitter:title" content="🦀 러스트의 멋짐을 모르는 당신은 불쌍해요: 높은 성능과 신뢰를 확보하기 위한 언어 "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%80%20%EB%9F%AC%EC%8A%A4%ED%8A%B8%EC%9D%98%20%EB%A9%8B%EC%A7%90%EC%9D%84%20%EB%AA%A8%EB%A5%B4%EB%8A%94%20%EB%8B%B9%EC%8B%A0%EC%9D%80%20%EB%B6%88%EC%8C%8D%ED%95%B4%EC%9A%94**.png?subtitle=%EB%86%92%EC%9D%80%20%EC%84%B1%EB%8A%A5%EA%B3%BC%20%EC%8B%A0%EB%A2%B0%EB%A5%BC%20%ED%99%95%EB%B3%B4%ED%95%98%EA%B8%B0%20%EC%9C%84%ED%95%9C%20%EC%96%B8%EC%96%B4&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202019.11.29%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="내가 만나온 개발자들은 대체로 자신이 사용하는 프로그래밍 언어에 딱히 만족하지 않았는데 (극단적으로는 자바스크립트와 PHP가 있다.) 유독 러스트 개발자들은 적극적으로 러스트를 추천했다.하지만 그냥 그런 언어가 있구나 정도로 생각하고 있었다. 그런데 러스트 2018 에디션 발표 이후 근 1년간 러스트 코드를 웹어셈블리로 ..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🦀 러스트의 멋짐을 모르는 당신은 불쌍해요 </h1> <h2 id="article-subtitle"> 높은 성능과 신뢰를 확보하기 위한 언어 </h2> <time id="article-date"> 2019.11.29 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20191129_rust-anthem.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#%EA%B8%89%EC%84%B1%EC%9E%A5%ED%95%98%EB%8A%94-%EC%96%B8%EC%96%B4">급성장하는 언어</a></li><li><a href="#%EC%8B%AC%ED%94%8C%ED%95%9C-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD">심플한 개발 환경</a></li><li><a href="#%EC%95%88%EC%A0%84%ED%95%9C-%EB%AC%B8%EB%B2%95">안전한 문법</a></li><li><a href="#%EC%95%88%EC%A0%84%ED%95%9C-nullable">안전한 Nullable</a></li><li><a href="#%EC%95%88%EC%A0%84%ED%95%9C-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC">안전한 메모리 관리</a><ul><li><a href="#copy">Copy</a></li><li><a href="#move">Move</a></li><li><a href="#references-%26-borrowing">References & Borrowing</a></li></ul></li><li><a href="#%EC%95%88%EC%A0%84%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81">안전을 위한 에러 핸들링</a></li><li><a href="#no-silver-bullet">No Silver Bullet</a></li><li><a href="#references">References</a></li></ul></div></p>
+</details>
+<p>내가 만나온 개발자들은 대체로 자신이 사용하는 프로그래밍 언어에 딱히 만족하지 않았는데 (극단적으로는 자바스크립트와 PHP가 있다.) 유독 러스트 개발자들은 적극적으로 러스트를 추천했다.</p>
+<p>하지만 그냥 그런 언어가 있구나 정도로 생각하고 있었다. 그런데 러스트 2018 에디션 발표 이후 근 1년간 러스트 코드를 웹어셈블리로 컴파일할 수 있다든지, <a href="https://github.com/denoland/deno">deno</a>의 코어가 러스트로 작성됐다든지하는 이야기들이 뉴스피드를 가득 채웠다. 심지어 <a href="https://www.sprintseoul.org/2019-06-29/">6월 스프린트 모임</a>에서 <a href="https://github.com/RustPython/RustPython">RustPython</a>의 인기를 본 뒤로는 러스트가 마치 피할 수 없는 시대의 흐름처럼 느껴졌다.</p>
+<p><img src="https://camo.githubusercontent.com/c15214349c0c79c237fbd9de08c226b3c4a7fb64/68747470733a2f2f72757374616365616e2e6e65742f6173736574732f72757374616365616e2d666c61742d68617070792e737667" alt="러스트 비공식 마스코트 Ferris."></p>
+<p>무엇보다 러스트 커뮤니티의 비공식 마스코트인 Ferris가 귀여워서 반은 먹고 들어간다.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 러스트 사용자는 갑각류를 뜻하는 'Crustacean’에서 따와 'Rustancean’이라고 부른다. (한국에서는 '러스토랑스’가 많이 쓰이는데 더 적절한 것 같기도 하다…) 참고로 Ferris를 부를 때는 젠더 중립적인 &quot;they/them&quot;을 사용한다.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 이것마저 멋지다.</p>
+<p>러스트는 신생 언어인 만큼 업데이트를 거치며 크게 변화해왔다. 각종 블로그나 스택오버플로우 등, 웹상의 많은 자료들이 이젠 유효하지 않다. 그래서 시간이 지나도 아마 크게 바뀌지 않을 것 같은 문법적 특징과 러스트의 주요 컨셉인 오너십(Ownership)을 중심으로 러스트의 안전성을 강조해보려 한다.</p>
+<h1 id="%EA%B8%89%EC%84%B1%EC%9E%A5%ED%95%98%EB%8A%94-%EC%96%B8%EC%96%B4">급성장하는 언어</h1>
+<p>러스트는 2006년 모질라의 개발자 <a href="https://twitter.com/graydon_pub">그레이던 호어(Graydon Hoare)</a>의 사이드 프로젝트에서 출발했다. 이후 모질라가 공식적으로 러스트를 후원하기 시작했고, 2015년 1.0 버전을 릴리즈했다. 모질라의 정책에 따라 러스트는 오픈소스 프로젝트로 진행된다. 코어 팀이 전체적인 방향을 리드하지만 누구나 러스트 개발에 기여할 수 있도록 하고 있으며, <a href="https://github.com/rust-lang/rfcs">RFC(Request For Comments)</a> 문서와 <a href="https://github.com/rust-lang/rust">러스트 저장소</a>에서 확인할 수 있다.</p>
+<p>러스트는 공개 이후 꾸준히 높은 인기를 얻어왔다. 스택오버플로우 서베이에서 매년 사랑받는 언어 1위를 차지하고 있고, 2019년 기준 깃허브에서의 러스트 사용률은 2018년 대비 235% 증가했다.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> 뿐만 아니라 많은 기업들이 프로덕션에도 러스트를 적용하고 있다. 모질라의 브라우저 엔진 프로젝트 <a href="https://github.com/servo/servo">서보</a>가 러스트로 작성되었고, 페이스북의 암호화폐 <a href="https://github.com/libra/libra">리브라</a>의 코어도 러스트로 구현되었다. 국내에서는 <a href="https://www.spoqa.com/">스포카</a>가 POS 통합 SDK에 러스트를 사용한다.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<h1 id="%EC%8B%AC%ED%94%8C%ED%95%9C-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD">심플한 개발 환경</h1>
+<p>러스트를 처음 시작할 때 느낀 첫 번째 장점은 개발 환경이 단순하다는 것이었다. 먼저 러스트 툴체인 인스톨러 <a href="https://rustup.rs/">rustup</a>을 다운로드한다.</p>
+<pre class="hljs"><code>$ curl --proto <span class="hljs-string">&#x27;=https&#x27;</span> --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<p>rustup은 러스트 컴파일러인 rustc와 패키지 매니저인 카고(Cargo)를 설치한다. 러스트 개발은 빌드, 테스트, 문서화, 배포 모든 것을 카고로 커버할 수 있다. <code>cargo new</code> 명령으로 새 프로젝트를 생성한다. 프로젝트 디렉토리의 <code>Cargo.toml</code> 파일에 디펜던시를 추가하면 크레이트(Crate)라고 부르는 외부 패키지를 바로 사용할 수 있다. 또한 <code>cargo build</code> 명령으로 프로젝트를 빌드하며, <code>cargo run</code> 명령으로 컴파일, 실행할 수 있다.</p>
+<pre class="hljs"><code>$ cargo new hello_world --bin
+$ <span class="hljs-built_in">cd</span> hello_world
+$ cargo build
+$ cargo run
+</code></pre>
+<p>러스트의 표준 스타일 가이드를 따르는 포매터 <a href="https://github.com/rust-lang/rustfmt">rustfmt</a>, 코드 상의 실수와 개선점을 제안해주는 린터 <a href="https://github.com/rust-lang/rust-clippy">clippy</a>와 같은 도구도 rustup을 이용하면 쉽게 툴체인에 추가해 사용할 수 있다. 기본적인 컴포넌트들은 미리 설치해두는 것이 좋다.</p>
+<pre class="hljs"><code>$ rustup update
+$ rustup component add rustfmt clippy rls rust-analysis rust-src
+</code></pre>
+<p>랭귀지 서버가 있기 때문에 어떤 도구를 쓰든 높은 수준의 심볼 탐색, 포매팅, 자동완성 등의 개발환경을 보장 받을 수 있다. IntelliJ, VSCode 등 IDE를 사용한다면 플러그인을 설치해 개발을 할 수 있으며, <a href="https://play.rust-lang.org/">Rust Playground</a>에서 러스트를 설치하지 않고 코드를 실행해볼 수도 있다.</p>
+<h1 id="%EC%95%88%EC%A0%84%ED%95%9C-%EB%AC%B8%EB%B2%95">안전한 문법</h1>
+<p>자바스크립트나 파이썬과 같은 언어에 비하면 러스트의 문법은 굉장히 엄격하다. 간단한 예시를 보자.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() { 
+    <span class="hljs-keyword">let</span> x: <span class="hljs-built_in">i8</span> = <span class="hljs-number">10</span>;
+    <span class="hljs-keyword">let</span> y: <span class="hljs-built_in">i8</span> = <span class="hljs-number">20</span>;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, x + y); <span class="hljs-comment">// &quot;30&quot;</span>
+}
+</code></pre>
+<p>러스트 프로그램의 엔트리 포인트는 <code>main</code> 함수다. 변수는 <code>let</code> 키워드로 선언할 수 있으며, 이렇게 선언된 변수는 기본적으로 불변(Immutable)하여 값을 변경할 수 없다. 가변적인(Mutable) 변수를 선언하려면 <code>mut</code> 키워드를 명시해야 한다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() { 
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> x: <span class="hljs-built_in">i8</span> = <span class="hljs-number">10</span>;
+    x = x + <span class="hljs-number">20</span>; <span class="hljs-comment">// 30</span>
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, x); <span class="hljs-comment">// &quot;30&quot;</span>
+}
+</code></pre>
+<p><code>const</code> 키워드로 상수를 선언할 수도 있다. 불변 변수와 다르게 상수는 상수 표현식으로만 초기화할 수 있으며, 함수의 결과 등 런타임에 계산되는 값으로 초기화 할 수 없다.</p>
+<p>코드를 보면 알 수 있지만, 러스트는 정적 타입 언어다. 선언 시에 값을 할당하지 않는 경우 타입을 명시해야 한다. <code>i8</code>, <code>i32</code>는 8비트, 32비트 정수 타입을 의미한다. <code>f32</code>는 32비트 부동소수점 타입, <code>bool</code>은 불리언 타입을 뜻한다. 그 외 튜플(<code>let x: (i32, f64) = (10, 3.14)</code>)과 배열(<code>let x = [1, 2, 3]</code>)도 지원한다.</p>
+<p>러스트에서 구문(Statement)은 특정 동작을 수행하지만 값을 반환하지 않는 명령을 말한다. 한편 표현식(Expression)은 결과값을 반환하는 명령을 말한다. 구문 블록의 값은 블록 내의 마지막 표현식으로 결정된다. 기본적으로 함수 정의도 하나의 구문이기 때문에 마지막 표현식이 함수의 반환값이 된다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">square</span></span>(x: <span class="hljs-built_in">i32</span>) -&gt; <span class="hljs-built_in">i32</span> { 
+    x * x
+}
+</code></pre>
+<p>변수 선언도 구문이다. 따라서 우변에 표현식을 넣을 수 있다:</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">let</span> y = { 
+    <span class="hljs-keyword">let</span> x = <span class="hljs-number">2</span>;
+    x + <span class="hljs-number">1</span>
+};
+</code></pre>
+<p><code>x + 1</code> 뒤에 세미콜론이 붙지 않은 이유는 이것이 표현식이기 때문이다. 세미콜론을 붙이면 구문이 된다. 같은 원리로 아래와 같은 문법도 허용된다:</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> y = <span class="hljs-keyword">if</span> x == <span class="hljs-number">1</span> { 
+        <span class="hljs-number">10</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">1</span> { 
+        <span class="hljs-number">20</span>
+    } <span class="hljs-keyword">else</span> { 
+        <span class="hljs-number">30</span>
+    };
+</code></pre>
+<p>자바스크립트로 같은 표현을 하려면 가변 변수를 선언해야 한다. 아니면 중첩 삼항 조건 연산자를 사용해야 하는데, 권장되는 패턴은 아니다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> y = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">if</span> (x === <span class="hljs-number">1</span>) { 
+  y = <span class="hljs-number">10</span>;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">1</span>) {
+  y = <span class="hljs-number">20</span>;
+} <span class="hljs-keyword">else</span> {
+  y = <span class="hljs-number">30</span>
+}
+</code></pre>
+<p>타 언어의 <code>switch</code>와 비슷한 <code>match</code>라는 컨트롤 플로우 연산자를 사용할 수도 있다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">match</span> x {
+    <span class="hljs-number">1</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;one&quot;</span>),
+    <span class="hljs-number">3</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;three&quot;</span>),
+    <span class="hljs-number">5</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;five&quot;</span>),
+    _ =&gt; (),
+}
+</code></pre>
+<p>러스트 컴파일러는 문법이 조금이라도 잘못되면 에러를 낸다. 이러한 엄격함이 러스트의 러닝 커브를 높이기도 하지만, 동시에 흑마법을 쓰고 싶은 프로그래머의 폭주를 막는 역할도 한다. 또한 러스트에 익숙하지 않은 사람도 컴파일러 말을 잘 듣다보면 기본은 되어 있는 코드를 작성할 수 있도록 만들어준다. 다행히 러스트 컴파일러는 아주 친절하기 때문에 컴파일에 실패하면 어느 부분이 왜 잘못됐고, 어떻게 고쳐야하는지 알려주니까 겁먹을 필요는 없다.</p>
+<h1 id="%EC%95%88%EC%A0%84%ED%95%9C-nullable">안전한 Nullable</h1>
+<p>대부분의 언어에서 null값을 non-null값으로 사용하려 할 때 문제가 발생한다. 러스트에는 null이 없다. 대신 표준 라이브러리가 제공하는 <code>Option</code> 열거형의 멤버로 <code>None</code>과 <code>Some</code>이 있다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Option</span></span>&lt;T&gt; {
+    <span class="hljs-literal">Some</span>(T),
+    <span class="hljs-literal">None</span>,
+}
+</code></pre>
+<p><code>Option</code> 타입은 어떤 값이 존재하지 않을 수 있는 상황에 대응하기 위해 사용한다. <code>Option</code>의 멤버인 <code>None</code>은 값이 존재하지 않음을 의미한다. 반대로 <code>Some</code>은 값이 존재하는 경우의 <code>T</code> 타입 값을 의미한다. <code>Option</code>은 <code>match</code>를 이용해 다룰 수 있다. nullable한 값을 사용하기 위해 <code>Option</code> 타입을 받는 함수 <code>plus_one</code>이 있다:</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">plus_one</span></span>(x: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">i32</span>&gt;) -&gt; <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">i32</span>&gt; {
+    <span class="hljs-keyword">match</span> x {
+        <span class="hljs-literal">None</span> =&gt; <span class="hljs-literal">None</span>,   
+        <span class="hljs-literal">Some</span>(i) =&gt; <span class="hljs-literal">Some</span>(i + <span class="hljs-number">1</span>), 
+    }
+}
+
+<span class="hljs-keyword">let</span> one: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">i32</span>&gt; = <span class="hljs-literal">Some</span>(<span class="hljs-number">1</span>);
+<span class="hljs-keyword">let</span> two = plus_one(one); <span class="hljs-comment">// Some(2)</span>
+<span class="hljs-keyword">let</span> none = plus_one(<span class="hljs-literal">None</span>); <span class="hljs-comment">// None</span>
+</code></pre>
+<p><code>Option&lt;i32&gt;</code> 타입 파라미터 <code>x</code>가 존재하지 않으면 그대로 <code>None</code>을 반환하고, 값이 존재하면 1을 더한 값을 반환한다. <code>match</code>로 <code>Option</code> 타입을 비교할 때는 반드시 <code>Some</code>과 <code>None</code>에 대한 처리를 모두 해야한다. 또한 <code>Option&lt;T&gt;</code> 타입을 <code>T</code> 타입과 연산하려면 <code>Option&lt;T&gt;</code>를 <code>T</code>로 변환하는 과정을 거쳐야 한다. 이렇게 하면 <code>T</code> 타입과 연산하는 대상이 존재한다는 사실을 보장 할 수 있다. 변수에 단순히 null을 할당해 사용하는 것보다 훨씬 안전하다.</p>
+<h1 id="%EC%95%88%EC%A0%84%ED%95%9C-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC">안전한 메모리 관리</h1>
+<p>러스트는 오너십이라는 방식으로 메모리를 관리한다. C에서는 <code>malloc</code>이나 <code>free</code>같은 함수를 이용해 프로그래머가 직접 메모리를 할당, 해제한다. 자바에서는 가비지 컬렉터(Garbage collector)가 돌며 메모리를 정리한다. (<a href="https://parksb.github.io/article/2.html">Java는 어떻게 Garbage Collection을 할까? </a>) 개발자가 직접 메모리를 관리하면 실수할 위험이 너무 크고, 가비지 컬렉터를 이용하면 프로그램 성능이 저하된다. 이런 점에서 오너십이라는 새로운 방식의 메모리 관리 방식은 혁신적이다.</p>
+<p>오너십은 말그대로 값에 대한 변수의 소유권에 관한 것이며, 오너십에는 세 가지 원칙이 있다:</p>
+<ul>
+<li>각 값은 오너(Owner)라고 불리는 변수를 갖는다.</li>
+<li>한 번에 하나의 오너만 가질 수 있다.</li>
+<li>오너가 스코프를 벗어나면 값이 버려진다.</li>
+</ul>
+<h2 id="copy">Copy</h2>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> x = <span class="hljs-number">5</span>;
+<span class="hljs-keyword">let</span> y = x; <span class="hljs-comment">// `y` is 5, and `x` is still valid</span>
+</code></pre>
+<p>위 코드는 정수 <code>5</code>를 변수 <code>x</code>에 바인딩(Binding)한 뒤, <code>x</code> 값의 복사본을 <code>y</code>에 바인딩한다. 두 값은 모두 <code>5</code>다. 값을 '복사’했기 때문이다. 정수, 불리언 등 스택 메모리를 사용하는 대부분의 원시 타입 값은 복사된다. 이처럼 스택 메모리 데이터는 크기가 고정되어 있기 때문에 값을 복사할 수 있지만, 힙 메모리를 사용하는 타입은 그렇지 않다.</p>
+<h2 id="move">Move</h2>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+<span class="hljs-keyword">let</span> s2 = s1; <span class="hljs-comment">// `s2` is &quot;hello&quot;, and `s1` is no longer valid</span>
+</code></pre>
+<p><code>s1</code>에 <code>String::from(&quot;hello&quot;)</code>를 할당했다. <code>let s = &quot;hello&quot;</code>처럼 문자열 리터럴(String literal)을 할당하는 것과는 다르다. 문자열 리터럴은 프로그램에 하드코딩되며, 문자열을 자르거나 이어 붙이는 등의 변경을 할 수 없다. 반면 <code>String</code> 타입은 힙 메모리에 할당되기 때문에 런타임에 문자열을 수정할 수 있다.</p>
+<p>이어서 <code>s2</code>에 <code>s1</code>을 할당했다. <code>s2</code>가 &quot;hello&quot;인 것은 자명하다. 그런데 이제 <code>s1</code>은 유효하지 않다. 오너십이 '이동’했기 때문이다. <code>String</code> 타입은 메모리 포인터(ptr), 길이(len), 용량(capacity) 세 정보를 스택 메모리에 담는다. 처음에 <code>s1</code>의 포인터는 힙 메모리에 있는 데이터 &quot;hello&quot;의 0번 인덱스를 가리켰다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s1.as_ptr()); <span class="hljs-comment">// &quot;0x56397fd89a40&quot;</span>
+
++----------+---+        +---+---+
+| ptr      | ----------&gt;| <span class="hljs-number">0</span> | h |
++----------+---+        +---+---+
+| len      | <span class="hljs-number">5</span> |        | <span class="hljs-number">1</span> | e |
++----------+---+        +---+---+
+| capacity | <span class="hljs-number">5</span> |        | <span class="hljs-number">2</span> | l |
++----------+---+        +---+---+
+       s1               | <span class="hljs-number">3</span> | l |
+                        +---+---+
+                        | <span class="hljs-number">4</span> | o |
+                        +---+---+
+</code></pre>
+<p>또 다른 변수 <code>s2</code>를 만들어 <code>s2</code>에 <code>s1</code>을 할당하면 스택의 <code>s1</code> 데이터가 복사된다. 이때 힙에 있는 데이터는 복사되지 않는다. 단지 <code>s1</code>과 같은 포인터를 가진 <code>s2</code>가 만들어진다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+<span class="hljs-keyword">let</span> s2 = s1;
+
++----------+---+         +---+---+
+| ptr      | -------+---&gt;| <span class="hljs-number">0</span> | h |
++----------+---+    |    +---+---+
+| len      | <span class="hljs-number">5</span> |    |    | <span class="hljs-number">1</span> | e |
++----------+---+    |    +---+---+
+| capacity | <span class="hljs-number">5</span> |    |    | <span class="hljs-number">2</span> | l |
++----------+---+    |    +---+---+
+       s1           |    | <span class="hljs-number">3</span> | l |
+                    |    +---+---+
++----------+---+    |    | <span class="hljs-number">4</span> | o |
+| ptr      | -------+    +---+---+
++----------+---+
+| len      | <span class="hljs-number">5</span> |
++----------+---+ 
+| capacity | <span class="hljs-number">5</span> |
++----------+---+ 
+       s2
+</code></pre>
+<p>합당한 동작같지만 여기엔 함정이 있다. 러스트는 변수가 스코프를 벗어났을 때 자동으로 <code>drop</code> 메소드를 호출해 힙 메모리를 정리한다. 그런데 위와 같이 <code>s1</code>과 <code>s2</code>가 같은 힙 메모리 주소를 가리키면 <code>s1</code>이 스코프를 벗어났을 때 메모리가 한 번 해제되고, 그 뒤에 <code>s2</code>가 스코프를 벗어날 때 같은 메모리 공간를 다시 해제하게 된다. 메모리를 두 번 해제하면 메모리 변형(Corruption)을 일으킬 수 있으며, 이는 보안 취약점으로 이어진다.</p>
+<p>그래서 러스트는 할당된 스택 메모리를 복사할 때 기존에 할당한 변수 <code>s1</code>을 무효화한다. 따라서 <code>s2</code> 변수만이 힙 메모리 데이터 &quot;hello&quot;를 가리킨다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+<span class="hljs-keyword">let</span> s2 = s1;
+
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s1.as_ptr()); <span class="hljs-comment">// error[E0382]: borrow of moved value: `s1`</span>
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s2.as_ptr()); <span class="hljs-comment">// &quot;0x56397fd89a40&quot;</span>
+
+                         +---+---+
+                    +---&gt;| <span class="hljs-number">0</span> | h |
+                    |    +---+---+
+                    |    | <span class="hljs-number">1</span> | e |
+                    |    +---+---+
+                    |    | <span class="hljs-number">2</span> | l |
+                    |    +---+---+
+                    |    | <span class="hljs-number">3</span> | l |
+                    |    +---+---+
++----------+---+    |    | <span class="hljs-number">4</span> | o |
+| ptr      | -------+    +---+---+
++----------+---+
+| len      | <span class="hljs-number">5</span> |
++----------+---+ 
+| capacity | <span class="hljs-number">5</span> |
++----------+---+ 
+       s2
+</code></pre>
+<p>이제 <code>s2</code>가 스코프를 벗어날 때 한 번만 메모리를 해제하면 된다. 이를 <code>s1</code>의 오너십이 <code>s2</code>로 이동했다고 말한다. 힙 메모리를 사용하는 <code>String</code> 타입이나 <code>Vec</code> 타입 등 비원시 타입들은 오너십이 이동한다. 이런 타입들에 대해 깊은 복사를 하고 싶다면 <code>clone</code> 메소드를 사용해야 한다.</p>
+<p>함수 인자로 값을 넘길 때도 마찬가지로 오너십이 이동한다:</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> s = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+takes_ownership(s);
+<span class="hljs-comment">// `s` is no longer valid here</span>
+</code></pre>
+<p>변수 <code>s</code>가 <code>takes_ownership</code> 함수의 인자로 넘어가면서 오너십도 이동한다. 따라서 값을 넘긴 이후에는 <code>s</code>를 사용할 수 없다. 반대로 함수에서 값을 반환할 때도 오너십이 이동한다.</p>
+<h2 id="references-%26-borrowing">References &amp; Borrowing</h2>
+<p>함수의 인자로 값을 넘기되, 오너십을 이동시키고 싶지 않을 때는 값의 참조(Reference)만 넘겨주면 된다. 이를 빌림(Borrowing)이라고 한다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+    <span class="hljs-keyword">let</span> len = get_length(&amp;s1);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}: {}&quot;</span>, s1, len); <span class="hljs-comment">// &quot;hello: 5&quot;</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">get_length</span></span>(s2: &amp;<span class="hljs-built_in">String</span>) -&gt; <span class="hljs-built_in">usize</span> {
+    s2.len()
+}
+</code></pre>
+<p>이렇게 하면 <code>get_length</code> 내에서 <code>s2</code>의 포인터가 <code>s1</code>을 가리키고, <code>s1</code>은 힙 메모리의 “hello” 데이터를 가리키게 된다. 함수가 참조만 받았기 때문에 함수 호출 이후에도 <code>s1</code>은 유효하다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+    <span class="hljs-keyword">let</span> len = get_length(&amp;s1);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s1.as_ptr()); <span class="hljs-comment">// &quot;0x5581762b0a40&quot;</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">get_length</span></span>(s2: &amp;<span class="hljs-built_in">String</span>) -&gt; <span class="hljs-built_in">usize</span> {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s2.as_ptr()); <span class="hljs-comment">// &quot;0x5581762b0a40&quot;</span>
+    s2.len()
+}
+
++----------+---+        +----------+---+        +---+---+
+| ptr      | ----------&gt;| ptr      | ----------&gt;| <span class="hljs-number">0</span> | h |
++----------+---+        +----------+---+        +---+---+
+       s2               | len      | <span class="hljs-number">5</span> |        | <span class="hljs-number">1</span> | e |
+                        +----------+---+        +---+---+
+                        | capacity | <span class="hljs-number">5</span> |        | <span class="hljs-number">2</span> | l |
+                        +----------+---+        +---+---+
+                               s1               | <span class="hljs-number">3</span> | l |
+                                                +---+---+
+                                                | <span class="hljs-number">4</span> | o |
+                                                +---+---+
+</code></pre>
+<p>만약 참조를 이용해 값을 바꾸고 싶다면 가변 참조(Mutable reference)를 빌려야 한다:</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> hello = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+    change(&amp;<span class="hljs-keyword">mut</span> hello);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{}&quot;</span>, hello); <span class="hljs-comment">// &quot;hello, world&quot;</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">change</span></span>(s: &amp;<span class="hljs-keyword">mut</span> <span class="hljs-built_in">String</span>) {
+    s.push_str(<span class="hljs-string">&quot;, world&quot;</span>);
+}
+</code></pre>
+<p><code>&amp;mut</code> 키워드를 이용해 가변 참조를 넘기면 <code>change</code> 함수 안에서 인자로 받은 값을 변경할 수 있다. 이를 가변 빌림(Mutable borrowing)이라고 한다. <code>change</code> 함수에서 가변 참조로 받은 문자열 <code>s</code> 뒤에 “, world” 문자열을 덧붙여 반환했는데, 겉으로 보면 힙 메모리의 “hello” 데이터 뒤에 문자열을 그대로 붙인 것 같다. 하지만 이미 할당한 메모리 공간을 마음대로 늘릴 수 없기 때문에 실제로는 힙 메모리에 새로운 데이터를 만들고 포인터가 가리키는 메모리 주소를 바꿔 값을 재할당해야 한다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s.as_ptr()); <span class="hljs-comment">// &quot;0x55765a598a40&quot;</span>
+
+s.push_str(<span class="hljs-string">&quot;, world&quot;</span>);
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s.as_ptr()); <span class="hljs-comment">// &quot;0x55765a598ba0&quot;</span>
+
+                                          <span class="hljs-number">0</span>   <span class="hljs-number">1</span>   <span class="hljs-number">2</span>   <span class="hljs-number">3</span>   <span class="hljs-number">4</span>
++----------+----+        +----------------+---+---+---+---+---+
+| ptr      |  -------+   | <span class="hljs-number">0x55765a598a40</span> | h | e | l | l | o |
++----------+----+    |   +----------------+---+---+---+---+---+
+| len      | <span class="hljs-number">12</span> |    |
++----------+----+    |                    <span class="hljs-number">0</span>   <span class="hljs-number">1</span>   <span class="hljs-number">2</span>   <span class="hljs-number">3</span>   <span class="hljs-number">4</span>   <span class="hljs-number">5</span>   <span class="hljs-number">6</span>   <span class="hljs-number">7</span>   <span class="hljs-number">8</span>
+| capacity | <span class="hljs-number">12</span> |    |   +----------------+---+---+---+---+---+---+---+---+---+
++----------+----+    +--&gt;| <span class="hljs-number">0x55765a598ba0</span> | h | e | l | l | o | , |   | w | o | ...
+        s                +----------------+---+---+---+---+---+---+---+---+---+
+</code></pre>
+<p>그런데 값을 추가할 때마다 매번 힙 메모리에 새로운 데이터를 만들면 성능에 문제가 생기기 때문에 러스트는 미래를 대비해 처음부터 메모리 공간을 조금 크게 잡아 둔다.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s.as_ptr()); <span class="hljs-comment">// &quot;0x55765a598a40&quot;</span>
+
+s.push_str(<span class="hljs-string">&quot;, world&quot;</span>);
+<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;{:?}&quot;</span>, s.as_ptr()); <span class="hljs-comment">// &quot;0x55765a598a40&quot;</span>
+
+                                          <span class="hljs-number">0</span>   <span class="hljs-number">1</span>   <span class="hljs-number">2</span>   <span class="hljs-number">3</span>   <span class="hljs-number">4</span>         <span class="hljs-number">10</span>  <span class="hljs-number">11</span>  <span class="hljs-number">12</span>  <span class="hljs-number">13</span>
++----------+----+        +----------------+---+---+---+---+---+     +---+---+---+---+
+| ptr      |  ----------&gt;| <span class="hljs-number">0x55765a598a40</span> | h | e | l | l | o | ... | l | d |   |   | ...
++----------+----+        +----------------+---+---+---+---+---+     +---+---+---+---+
+| len      | <span class="hljs-number">12</span> |
++----------+----+
+| capacity | <span class="hljs-number">26</span> |
++----------+----+
+        s
+</code></pre>
+<p><code>capacity</code>가 26이기 때문에 그보다 적은 개수의 문자를 추가할 때는 포인터가 가리키는 힙 메모리 주소나 <code>capacity</code>의 값이 변하지 않는다. 즉, 재할당이 필요하지 않다.</p>
+<p>가변 참조를 빌려줄 때 주의할 점은 한 스코프 안에서 가변 참조는 한 번만 전달할 수 있다는 것이다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">&quot;hello&quot;</span>);
+
+<span class="hljs-keyword">let</span> r1 = &amp;<span class="hljs-keyword">mut</span> s;
+<span class="hljs-keyword">let</span> r2 = &amp;<span class="hljs-keyword">mut</span> s; 
+
+r1.push_str(<span class="hljs-string">&quot;, world&quot;</span>); <span class="hljs-comment">// error[E0499]: cannot borrow `s` as mutable more than once at a time </span>
+</code></pre>
+<p><code>r1</code>에 가변 참조를 빌려준 다음, 바로 <code>r2</code>에 가변 참조를 빌려줬기 때문에 <code>r2</code>가 아닌 <code>r1</code>을 이용해 값을 변경하려 하면 오류가 발생한다. 러스트 컴파일러가 에러의 이유와 위치를 친절하게 알려주기 때문에 쉽게 고칠 수 있다.</p>
+<pre class="hljs"><code>error[E0499]: cannot borrow `s` as mutable more than once at a time
+ --&gt; src/main.rs:5:14
+  |
+4 |     let r1 = &amp;mut s;
+  |              ------ first mutable borrow occurs here
+5 |     let r2 = &amp;mut s; 
+  |              ^^^^^^ second mutable borrow occurs here
+6 |     
+7 |     r1.push_str(&quot;, world&quot;);
+  |     -- first borrow later used here
+</code></pre>
+<p>이런 제약을 만듦으로써 러스트는 컴파일 타임에 경쟁 상태(Race condition)를 방지할 수 있다. 경쟁 상태는 (1)두 개 이상의 포인터가 동시에 같은 데이터에 접근하며 (2)최소 하나의 포인터가 데이터 변경을 시도하고 (3)데이터를 동기화하는 메커니즘이 없는 경우에 충족된다. 데이터 경쟁은 예상치 못한 문제를 일으키며, 런타임에 알아내기도 힘들다.</p>
+<p>오너십 모델의 최대 장점이라면 컴파일 타임에 메모리 오류를 잡을 수 있다는 것이라고 생각한다. 다른 프로그래밍 언어를 사용할 때는 잘못된 메모리 공간을 참조해서 런타임 중에 세그먼트 폴트가 일어나고 프로그램이 죽는 일이 허다했다. 하지만 러스트에선 일단 컴파일만 잘 되면 런타임에 프로그램이 예상치 못하게 죽는 일이 거의 없으며, 코드 레벨에서 안전을 보장하기 때문에 런타임 오버헤드 역시 없다. 뿐만 아니라 동시성 프로그래밍에서 일어나는 많은 이슈를 피할 수도 있다.</p>
+<h1 id="%EC%95%88%EC%A0%84%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81">안전을 위한 에러 핸들링</h1>
+<p><code>panic!</code> 매크로는 에러 메시지를 출력하고 프로그램의 스택을 되돌린 뒤 종료시킨다. 이를 이용하면 프로그램을 중단해야 할 정도로 심각한 문제가 예상될 때 의도적으로 에러를 일으킬 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;crash and burn&quot;</span>); <span class="hljs-comment">// thread &#x27;main&#x27; panicked at &#x27;crash and burn&#x27;</span>
+</code></pre>
+<p>하지만 모든 에러가 프로그램을 중단해야 할 정도로 심각한 것은 아니다. 그런 에러를 유연하게 처리하기 위해 러스트는 <code>Result</code> 열거형을 제공한다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Result</span></span>&lt;T, E&gt; {
+    <span class="hljs-literal">Ok</span>(T),
+    <span class="hljs-literal">Err</span>(E),
+}
+</code></pre>
+<p>함수의 결과를 <code>Result</code>로 반환하면 함수의 호출처에서는 <code>match</code>를 이용해 예외 처리를 해줄 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> file = File::open(<span class="hljs-string">&quot;data&quot;</span>);
+<span class="hljs-keyword">let</span> file = <span class="hljs-keyword">match</span> file {
+    <span class="hljs-literal">Ok</span>(f) =&gt; f,
+    <span class="hljs-literal">Err</span>(error) =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Failed to open the file: {:?}&quot;</span>, error)
+};
+</code></pre>
+<p><code>data</code> 파일을 여는 <code>open</code> 메소드가 잘 동작했으면 오픈한 파일을 그대로 <code>file</code>에 할당하고, 문제가 있으면 <code>panic!</code> 매크로를 통해 에러를 일으킨다. 에러의 종류에 따라 중첩해서 분기할 수도 있다. 아래 코드는 파일 열기를 시도했을 때 해당 파일이 없으면 파일을 생성하며, 그 외에는 에러를 일으킨다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> file = File::open(<span class="hljs-string">&quot;data&quot;</span>);
+<span class="hljs-keyword">let</span> file = <span class="hljs-keyword">match</span> file {
+      <span class="hljs-literal">Ok</span>(f) =&gt; f,
+      <span class="hljs-literal">Err</span>(error) =&gt; <span class="hljs-keyword">match</span> error.kind() {
+          ErrorKind::NotFound =&gt; <span class="hljs-keyword">match</span> File::create(<span class="hljs-string">&quot;data&quot;</span>) {
+              <span class="hljs-literal">Ok</span>(fc) =&gt; fc,
+              <span class="hljs-literal">Err</span>(e) =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Failed to create file: {:?}&quot;</span>, e),
+          },
+          other_error =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">&quot;Failed to open file: {:?}&quot;</span>, other_error),
+      },
+  };
+
+</code></pre>
+<p><code>Result</code> 타입은 좀 더 간단한 에러 핸들링을 위해 <code>unwrap</code> 메소드를 제공한다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> file = File::open(<span class="hljs-string">&quot;data&quot;</span>).unwrap();
+</code></pre>
+<p><code>unwrap</code> 메소드는 <code>Result</code>가 <code>Ok</code>면 <code>Ok</code>의 값을 그대로 반환하고, <code>Err</code>이면 <code>panic!</code> 매크로를 호출해 에러를 일으킨다. <code>unwrap</code>과 비슷하지만 에러 메시지를 직접 설정할 수 있는 <code>expect</code> 메소드도 있다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">let</span> file = File::open(<span class="hljs-string">&quot;data&quot;</span>).expect(<span class="hljs-string">&quot;Failed to open the data file&quot;</span>);
+</code></pre>
+<p><code>unwrap</code>을 남용하는 것보다는 <code>expect</code>를 이용해 에러 메시지를 구체적으로 설정하는 것이 좋다. 함수 안에서 함수의 호출처로 에러를 전파할 수도 있다. 간단히 <code>?</code>를 붙여주면 된다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">open_file</span></span>() -&gt; <span class="hljs-built_in">Result</span>&lt;File, io::Error&gt; {
+    <span class="hljs-keyword">let</span> file = File::open(<span class="hljs-string">&quot;data&quot;</span>)?;
+    <span class="hljs-comment">// do stuff with `file`</span>
+    <span class="hljs-literal">Ok</span>(file)
+}
+</code></pre>
+<p>위 코드는 <code>open</code>의 <code>Result</code>가 <code>Ok</code>면 <code>Ok</code>의 값을 그대로 반환 뒤 다음 내용을 계속 진행한다. 반대로 <code>Err</code>이면 <code>Err</code>을 반환하고 함수를 빠져 나온다. <code>?</code> 연산자는 에러가 발생했을 때 함수의 결과로 <code>Err</code>을 반환하기 때문에 반드시 <code>Result</code> 타입을 반환하는 함수에서만 사용할 수 있다는 점에 주의해야 한다.</p>
+<h1 id="no-silver-bullet">No Silver Bullet</h1>
+<p>사실 어떤 기술을 찬양하는 경우는 그 기술에 대한 이해가 부족하거나, 완벽히 마스터했거나 둘 중 하나다. 나는 전자에 가깝기 때문에 장점만 알고 있다. 단점을 알기 위해서는 더 많은 사용 경험이 필요하다. 이것도 토이 프로젝트에 적용한 경험과 프로덕션에 적용한 경험 사이에 큰 차이가 있는 것이 사실이다.</p>
+<p>현재로써 러스트의 가장 큰 단점은 신생 언어이다 보니 자료가 많지 않고, 그나마 있는 것도 지금은 유효하지 않은 정보라는 점이다. 심지어 <a href="https://store.steampowered.com/app/252490/Rust/">동명의 게임</a>이 있어서 “rust lang” 또는 &quot;러스트 언어&quot;로 검색하지 않는 이상 검색도 잘 안 된다. 이런 상황과 동시에 언어 자체도 러닝커브가 있는 편이다. 사람의 실수를 언어 차원에서 방지하기 위해 다양한 제약 사항이 있고, 오너십 등 러스트의 핵심 개념이 생소하게 다가오기 때문이기도 하다.</p>
+<p>러스트는 비슷한 목표를 가진 Go 언어와 자주 비교되곤 한다. Go는 단순한 문법과 Go 루틴을 이용한 가벼운 동시성 프로그래밍이 장점이다. Go를 설계한 롭 파이크(Rob Pike)가 &quot;갓 졸업해서 훌륭한 언어를 이해할 능력이 없는 어린 구글 직원들을 위해 단순하게 만들었다&quot;<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>라는 발언을 해서 논란이 되기도 했는데, 표현의 적절성과 별개로 학습과 구현이 쉽고 생산성이 높은 것은 큰 장점이다. 특히 러스트의 단점이 러닝 커브이기 때문에 Go의 쉬운 문법이 더욱 부각된다. 언어 스펙만 보면 러스트가 훨씬 안전하고 다양한 기능을 지원하는 것 같지만, 현실의 모든 상황에서 꼭 하나가 우위를 차지할 수는 없을테니 상황에 맞춰서 판단하면 되겠다.</p>
+<p>내가 러스트를 선택한 가장 큰 이유는 언어 차원의 안전성과 더불어 생태계 때문이기도 하다. 러스트는 초기부터 카고를 통한 패키지 관리를 지원한 덕분에 튼튼한 라이브러리 생태계를 가지고 있다. 러스트 생태계와 방대한 웹 생태계 사이 교집합이 있기 때문에 미래도 밝다. 러스트 프로그램을 웹어셈블리로 컴파일하면 npm에 패키지를 배포할 수 있고, 이렇게 배포한 패키지를 자바스크립트 어플리케이션에서 그대로 설치해서 사용할 수 있다.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup> 웹어셈블리 뿐만 아니라 FFI(Foreign Function Interface)를 통해 C/C++, 파이썬 등 다른 언어로 작성된 외부 함수를 러스트로 가져와 사용하거나 러스트로 작성한 함수를 다른 언어에서 사용하도록 할 수 있다. 기술적인 생태계 뿐 아니라 <a href="https://users.rust-lang.org/">커뮤니티</a>도 굉장히 활발하고 친절하다.</p>
+<p>이런 흐름이라면 'C/C++ 대체’라는 러스트의 큰 그림이 정말 이뤄질 수도 있을 것 같다.</p>
+<h1 id="references">References</h1>
+<ul>
+<li>Andrew Gallant, “<a href="https://blog.burntsushi.net/rust-error-handling/">Error Handling in Rust</a>”, Andrew Gallant’s Blog, 2015.</li>
+<li>Steve Klabnik, Carol Nichols, “<a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a>”, 2019.</li>
+<li>Szmozsánszky István, “<a href="https://hacks.mozilla.org/2015/05/diving-into-rust-for-the-first-time/">Diving into Rust for the first time</a>”, Mozilla Hacks, 2015.</li>
+<li>The Rust Programming Language, “<a href="https://prev.rust-lang.org/faq.html">자주 묻는 질문들</a>”, 2018.</li>
+<li>Thomas Countz, “<a href="https://medium.com/@thomascountz/ownership-in-rust-part-2-c3e1da89956e">Ownership in Rust, Part 2</a>”, 2018.</li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Karen Rustad Tölva, “<a href="https://rustacean.net/">Hello, crustaceans</a>”, <a href="http://rustacean.net">rustacean.net</a>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>American Psychological Association, “<a href="https://apastyle.apa.org/style-grammar-guidelines/grammar/singular-they">Singular ‘They’</a>”, <a href="http://apastyle.apa.org">apastyle.apa.org</a>. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>GitHub, “<a href="https://octoverse.github.com/#top-languages">The State of the Octoverse</a>”, 2019. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>The Rust Programming Language, “<a href="https://www.rust-lang.org/production/users">Production users</a>”, <a href="http://rust-lang.org">rust-lang.org</a>. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Rustdoc, “<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#capacity-and-reallocation">Struct Vec - Capacity and reallocation</a>”, <a href="http://doc.rust-lang.org">doc.rust-lang.org</a>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Rob Pike, “<a href="https://channel9.msdn.com/Events/Lang-NEXT/Lang-NEXT-2014/From-Parallel-to-Concurrent">From Parallel to Concurrent</a>”, 2014. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>MDN web docs “<a href="https://developer.mozilla.org/docs/WebAssembly/Rust_to_wasm">Compiling from Rust to WebAssembly</a>”, 2019. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/36.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">인터넷이 동작하는 아주 구체적인 원리</p> <p class="article-navigation-subtitle">학교에서 구글에 접속하는 과정</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/34.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🗞️ 훈련소에서 매일 뉴스 받아보기</p> <p class="article-navigation-subtitle">고립된 훈련병을 위한 종합 뉴스</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/35.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

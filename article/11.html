@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🦕 공룡책으로 정리하는 운영체제 Ch.7 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/11.html"><meta property="og:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.7: Deadlocks "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.7**.png?subtitle=Deadlocks&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.04%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="Operating System Concepts Ch.7 DeadlocksCh.6 Synchronization에서 잠시 언급했듯이 데드락은 프로세스가 리소스를 점유하고 놓아주지 않거나, 어떠한 프로세스도 리소스를 점유하지 못하는 상태가 되어 프로그램이 멈추는 현상을 말한다.System Model프로세스는 다음과 같은 흐름으..."><meta name="twitter:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.7: Deadlocks "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.7**.png?subtitle=Deadlocks&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.04%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="Operating System Concepts Ch.7 DeadlocksCh.6 Synchronization에서 잠시 언급했듯이 데드락은 프로세스가 리소스를 점유하고 놓아주지 않거나, 어떠한 프로세스도 리소스를 점유하지 못하는 상태가 되어 프로그램이 멈추는 현상을 말한다.System Model프로세스는 다음과 같은 흐름으..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🦕 공룡책으로 정리하는 운영체제 Ch.7 </h1> <h2 id="article-subtitle"> Deadlocks </h2> <time id="article-date"> 2018.05.04 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180504_dinosaur-book-ch7.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#operating-system-concepts-ch.7-deadlocks">Operating System Concepts Ch.7 Deadlocks</a></li><li><a href="#system-model">System Model</a></li><li><a href="#deadlock-characterization">Deadlock Characterization</a></li><li><a href="#resource-allocation-graph">Resource Allocation Graph</a></li><li><a href="#methods-for-handling-deadlocks">Methods for Handling Deadlocks</a><ul><li><a href="#deadlock-prevention">Deadlock Prevention</a></li><li><a href="#deadlock-avoidance">Deadlock Avoidance</a></li><li><a href="#banker's-algorithm">Banker's Algorithm</a></li></ul></li><li><a href="#recovery-from-deadlock">Recovery from Deadlock</a><ul><li><a href="#resource-preemption">Resource Preemption</a></li></ul></li></ul></div></p>
+</details>
+<h1 id="operating-system-concepts-ch.7-deadlocks">Operating System Concepts Ch.7 Deadlocks</h1>
+<p><a href="https://parksb.github.io/article/10.html">Ch.6 Synchronization</a>에서 잠시 언급했듯이 데드락은 프로세스가 리소스를 점유하고 놓아주지 않거나, 어떠한 프로세스도 리소스를 점유하지 못하는 상태가 되어 프로그램이 멈추는 현상을 말한다.</p>
+<h1 id="system-model">System Model</h1>
+<p>프로세스는 다음과 같은 흐름으로 리소스를 이용한다.</p>
+<ol>
+<li>Request: 리소스를 요청한다. 만약 다른 프로세스가 리소스를 사용중이라서 리소스를 받을 수 없다면 대기한다.</li>
+<li>Use: 프로세스는 리소스 위에서 수행된다.</li>
+<li>Release: 프로세스가 리소스를 놓아준다.</li>
+</ol>
+<h1 id="deadlock-characterization">Deadlock Characterization</h1>
+<p>데드락은 다음 4가지 상황을 만족해야 발생한다.</p>
+<ul>
+<li>Mutual exclusion: 여러 프로세스 중 하나만 critical section에 진입할 수 있을 때.</li>
+<li>Hold and wait: 프로세스 하나가 리소스를 잡고 있고, 다른 것은 대기중일 때.</li>
+<li>No preemption: OS가 작동중인 프로세스를 임의로 중단시킬 수 없을 때.</li>
+<li>Circular wait: 프로세스가 순환적으로 서로를 기다릴 때.</li>
+</ul>
+<p>만약 위 조건 중 하나만 만족되지 않아도 데드락은 발생하지 않는다.</p>
+<h1 id="resource-allocation-graph">Resource Allocation Graph</h1>
+<p>프로세스 간의 관계를 그래프로 도식화해 보면 데드락이 발생할지 예상할 수 있다. 만약 <strong>그래프에 순환 고리가 있다면 데드락 위험이 있다는 의미</strong>가 된다. 순환 고리가 있다고 무조건 데드락이 발생하는 것은 아니지만, 순환 고리가 없으면 절대로 데드락이 발생하지 않는다.</p>
+<h1 id="methods-for-handling-deadlocks">Methods for Handling Deadlocks</h1>
+<p>데드락을 제어하는 데는 크게 두가지 방법이 있는데, 하나는 데드락을 방지하는 것이고, 또 다른 하나는 데드락을 피하는 것이다.</p>
+<h2 id="deadlock-prevention">Deadlock Prevention</h2>
+<p>데드락을 방지한다는 것은 <strong>데드락 발생 조건 중 하나를 만족시키지 않음으로써 데드락이 발생하지 않도록 하는 것</strong>이다.</p>
+<ul>
+<li>Mutual Exclusion: critical section problem을 해결하기 위해서는 이 조건을 만족해야 하므로, 공유되는 자원이 있다면 이 조건을 만족시킬 수 밖에 없다.</li>
+<li>Hold and wait: 한 프로세스가 실행되기 전 모든 자원을 할당시키고, 이후에는 다른 프로세스가 자원을 요구하도록 한다. starvation 문제가 생길 수 있다.</li>
+<li>No preemption: 리소스를 점유하고 있는 프로세스가 다른 리소스를 요청했을 때 즉시 리소스를 사용할 수 없다면 점유하고 있던 리소스를 release한다.</li>
+<li>Circular wait: 리소스의 타입에 따라 프로세스마다 일대일 함수로 순서를 지정해준다.</li>
+</ul>
+<p>데드락을 방지하는 것은 장치 효율과 시스템 성능을 떨어트리는 문제가 있다.</p>
+<h2 id="deadlock-avoidance">Deadlock Avoidance</h2>
+<p>데드락을 피하는 것은 <strong>데드락이 발생할 것 같을 때는 아예 리소스를 할당하지 않는 것</strong>이다. 여기서는 시스템이 unsafe 상태가 되지 않도록 해야 하며, 만약 unsafe 상태가 되면 최대한 빨리 safe 상태로 복구한다. 데드락 가능성은 포인터로 자원 할당 그래프(Resource allocation graph)를 구현해 판단한다. 만약 리소스 타입이 여러 개라면 banker’s algorithm을 사용한다.</p>
+<h2 id="banker%E2%80%99s-algorithm">Banker’s Algorithm</h2>
+<p>banker’s algorithm은 Dijkstra가 고안한 데드락 회피 알고리즘이다. 이는 프로세스가 리소스를 요청할 때마다 수행되며, 만약 리소스를 할당했을 때 데드락이 발생하는지 시뮬레이션한다.</p>
+<h1 id="recovery-from-deadlock">Recovery from Deadlock</h1>
+<p>만약 시스템이 데드락을 방지하거나 회피하지 못했고, 데드락이 발생했다면 데드락으로부터 복구되어야 한다. 이때는 어떤 프로세스를 종료시킬지 정하는 것이 중요해진다. 여기에는 몇가지 판단 기준이 있다:</p>
+<ol>
+<li>프로세스의 중요도</li>
+<li>프로세스가 얼마나 오래 실행됐는가</li>
+<li>얼마나 많은 리소스를 사용했는가</li>
+<li>프로세스가 작업을 마치기 위해 얼마나 많은 리소스가 필요한가</li>
+<li>프로세스가 종료되기 위해 얼마나 많은 리소스가 필요한가</li>
+<li>프로세스가 batch인가 interactive한가</li>
+</ol>
+<h2 id="resource-preemption">Resource Preemption</h2>
+<p>데드락을 해결하기 위해 리소스 선점(Preemption) 방식을 사용할 때는 다음과 같은 이슈가 있다.</p>
+<ol>
+<li>Selecting a victim: 어떤 프로세스를 종료시킬 지 결정한다.</li>
+<li>Rollback: 데드락이 발생하기 전 상태로 되돌린다.</li>
+<li>Starvation: 계속 같은 프로세스가 victim이 될 수 있다. 이 경우 기아(Starvation) 문제가 발생한다.</li>
+</ol> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/12.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.8</p> <p class="article-navigation-subtitle">Memory-Management Strategies</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/10.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.6</p> <p class="article-navigation-subtitle">Synchronization</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/11.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

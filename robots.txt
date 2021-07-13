@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /navigation.*.html
+Disallow: /magic-conch-shell/
+
+Sitemap: http://parksb.github.io/sitemap.xml

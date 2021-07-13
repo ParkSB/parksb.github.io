@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🦕 공룡책으로 정리하는 운영체제 Ch.5 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/9.html"><meta property="og:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.5: Process Scheduling "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.5**.png?subtitle=Process%20Scheduling&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="운영체제가 어떤 프로세스를 프로세서에 할당할 것인가 정하는 프로세스 스케줄링(Process scheduling)에 대해 다루는 챕터다. FCFS, SJF, RR 등 다양한 프로세스 스케줄링에 대해 소개한다.Scheduling Criteria운영체제가 프로세스를 프로세서에 할당하는 것을 디스패치(Dispatch)라고 한다...."><meta name="twitter:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.5: Process Scheduling "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.5**.png?subtitle=Process%20Scheduling&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="운영체제가 어떤 프로세스를 프로세서에 할당할 것인가 정하는 프로세스 스케줄링(Process scheduling)에 대해 다루는 챕터다. FCFS, SJF, RR 등 다양한 프로세스 스케줄링에 대해 소개한다.Scheduling Criteria운영체제가 프로세스를 프로세서에 할당하는 것을 디스패치(Dispatch)라고 한다...."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🦕 공룡책으로 정리하는 운영체제 Ch.5 </h1> <h2 id="article-subtitle"> Process Scheduling </h2> <time id="article-date"> 2018.05.03 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180503_dinosaur-book-ch5.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#scheduling-criteria">Scheduling Criteria</a></li><li><a href="#fcfs-(first-come%2C-first-served)">FCFS (First-Come, First-Served)</a></li><li><a href="#sjf-(shortest-job-first)">SJF (Shortest Job First)</a></li><li><a href="#srf-(shortest-remaining-time-first)">SRF (Shortest Remaining Time First)</a></li><li><a href="#rr-(round-robin)">RR (Round Robin)</a></li><li><a href="#priority-scheduling">Priority Scheduling</a></li></ul></div></p>
+</details>
+<p>운영체제가 어떤 프로세스를 프로세서에 할당할 것인가 정하는 프로세스 스케줄링(Process scheduling)에 대해 다루는 챕터다. FCFS, SJF, RR 등 다양한 프로세스 스케줄링에 대해 소개한다.</p>
+<h1 id="scheduling-criteria">Scheduling Criteria</h1>
+<p>운영체제가 프로세스를 프로세서에 할당하는 것을 디스패치(Dispatch)라고 한다. (이때 프로세스 상태가 <code>ready</code>에서 <code>running</code>으로 바뀐다.) 그리고 운영체제가 레디 큐(Ready queue)에 있는 프로세스들 중에서 어떤 프로세스를 디스패치할 것인가 정하는 것이 프로세스 스케줄링(Process scheduling)이다.</p>
+<p>스케줄링 알고리즘에는 대표적으로 FCFS, SJF, SRF, RR 네 가지 방식이 있고, 알고리즘을 평가할 때는 수행 시간(Burst time)과 CPU 사용량(CPU utilization), 단위 시간 당 끝마친 프로세스의 수(Throughput), 하나의 프로세스가 레디 큐에서 대기한 시간부터 작업을 마칠 때까지 걸리는 시간(Turnaround time), 프로세스가 레디 큐에서 대기한 시간(Wating time), 프로세스가 처음으로 CPU를 할당받기까지 걸린 시간(Response time)을 기준으로 한다.</p>
+<p>선점(Preemptive) 방식과 비선점(Non-Preemptive) 방식으로 나뉜다. 선점 스케줄링은 운영체제가 강제로 프로세스의 사용권을 통제하는 방식이고, 비선점 스케줄링은 프로세스가 스스로 다음 프로세스에게 자리를 넘겨주는 방식이다. 즉, 선점 스케줄링 방식에서는 CPU에 프로세스가 할당되어 있을 때도 운영체제가 개입해 다른 프로세스에게 CPU를 할당할 수 있다.</p>
+<h1 id="fcfs-(first-come%2C-first-served)">FCFS (First-Come, First-Served)</h1>
+<ul>
+<li>먼저 들어온 프로세스를 먼저 프로세서에 할당하는 방식이다.</li>
+<li>Queue의 FIFO(First-In First-Out)와 동일하다.</li>
+<li>구현이 쉬워서 간단한 시스템에 자주 사용된다.</li>
+<li>프로세스 처리 순서에 따라 성능이 크게 달라질 수 있다.</li>
+<li>수행 시간이 큰 프로세스가 먼저 들어오면 그 뒤에 들어온 프로세스들이 불필요하게 오랜 시간을 기다리게 되는 콘보이 효과(Convoy effect)가 발생한다.</li>
+<li>먼저 온 프로세스가 끝날 때까지 운영체제가 개입하지 않는 <strong>비선점 스케줄링 방식</strong>이다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Burst time</th>
+<th>Response time</th>
+<th>Turnaround time</th>
+<th>Waiting time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>9</td>
+<td>0</td>
+<td>9</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>1</td>
+<td>9</td>
+<td>10</td>
+<td>9</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>1</td>
+<td>10</td>
+<td>11</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>+----+----+----+----+----+----+----+----+----+----+----+
+|                     P1                     | P2 | P3 |
++----+----+----+----+----+----+----+----+----+----+----+
+0                                            9    10   11
+</code></pre>
+<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>Average wating time</mtext><mo>=</mo><mfrac><mrow><mn>0</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>10</mn></mrow><mn>3</mn></mfrac><mo>=</mo><mn>6.33</mn></mrow><annotation encoding="application/x-tex">\text{Average wating time} = {0 + 9 + 10 \over 3} = 6.33</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:.8777699999999999em;vertical-align:-.19444em;"></span><span class="mord text"><span class="mord">Average wating time</span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-.686em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">9</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">1</span><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span><span class="mord">.</span><span class="mord">3</span><span class="mord">3</span></span></span></span></span></eqn></section><p>P1, P2, P3 프로세스가 들어온 순서대로 할당됐다. P2, P3는 수행 시간이 짧음에도 P1이 끝날 때까지 기다리게 되어 평균 대기 시간이 늘어났다.</p>
+<h1 id="sjf-(shortest-job-first)">SJF (Shortest Job First)</h1>
+<ul>
+<li>프로세스의 수행 시간이 짧은 순서에 따라 프로세서에 할당한다.</li>
+<li>FCFS에서 발생하는 콘보이 효과를 해결할 수 있다.</li>
+<li>최적 알고리즘이지만 수행 시간을 정확히 알 수 없다. (앞서 처리한 프로세스들의 기록을 보고 추측한다.)</li>
+<li>버스트 시간이 큰 프로세스는 계속 뒤로 밀려나는 기아(Starvation)가 발생한다.</li>
+<li>버스트 시간이 짧은 프로세스가 끝날 때까지 운영체제가 개입하지 않는 <strong>비선점 스케줄링 방식</strong>이다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Burst time</th>
+<th>Response time</th>
+<th>Turnaround time</th>
+<th>Waiting time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>6</td>
+<td>3</td>
+<td>9</td>
+<td>3</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>8</td>
+<td>16</td>
+<td>24</td>
+<td>16</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>7</td>
+<td>9</td>
+<td>16</td>
+<td>9</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>3</td>
+<td>0</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+|      P4      |              P1             |                P3                |                   P2                  |
++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+0              3                             9                                  16                                      24
+</code></pre>
+<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>Average wating time</mtext><mo>=</mo><mfrac><mrow><mn>3</mn><mo>+</mo><mn>16</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>0</mn></mrow><mn>4</mn></mfrac><mo>=</mo><mn>7</mn></mrow><annotation encoding="application/x-tex">\text{Average wating time} = {3 + 16 + 9 + 0 \over 4} = 7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:.8777699999999999em;vertical-align:-.19444em;"></span><span class="mord text"><span class="mord">Average wating time</span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-.686em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">1</span><span class="mord">6</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">9</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">7</span></span></span></span></span></eqn></section><p>프로세스의 수행 시간을 정확히 예측했다는 가정하에, 수행 시간이 짧은 순서대로 프로세서에 할당됐다.</p>
+<h1 id="srf-(shortest-remaining-time-first)">SRF (Shortest Remaining Time First)</h1>
+<ul>
+<li>프로세스의 남은 수행 시간이 짧은 순서에 따라 프로세서에 할당한다.</li>
+<li>SJF에서 발생하는 기아 문제를 해결할 수 있다.</li>
+<li>수행 중 다른 프로세스보다 남은 수행 시간이 적어지면 운영체제가 개입해 자리를 바꾸는 <strong>선점 스케줄링 방식</strong>이다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Arrival time</th>
+<th>Burst time</th>
+<th>Response time</th>
+<th>Turnaround time</th>
+<th>Waiting time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>0</td>
+<td>8</td>
+<td>0</td>
+<td>17</td>
+<td>9</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>2</td>
+<td>9</td>
+<td>17</td>
+<td>24</td>
+<td>15</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>3</td>
+<td>5</td>
+<td>5</td>
+<td>7</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+| P1 |         P2        |           P4           |                P1                |                     P3                     |
++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+0    1                   5                        10                                 17                                           26
+</code></pre>
+<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>Average wating time</mtext><mo>=</mo><mfrac><mrow><mn>9</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>15</mn><mo>+</mo><mn>2</mn></mrow><mn>4</mn></mfrac><mo>=</mo><mn>26</mn></mrow><annotation encoding="application/x-tex">\text{Average wating time} = {9 + 0 + 15 + 2 \over 4} = 26</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:.8777699999999999em;vertical-align:-.19444em;"></span><span class="mord text"><span class="mord">Average wating time</span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-.686em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">9</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">2</span><span class="mord">6</span></span></span></span></span></eqn></section><p>P1이 수행되던 중, 1ms에 P2가 들어왔다. 이때 P1의 남은 수행 시간은 7ms이고, P2의 남은 수행 시간은 4ms이기 때문에 운영체제가 개입해 P1의 수행을 중단하고 P2를 프로세서에 할당한다. P2가 프로세서에 할당된 사이, 2ms에 P3가 들어왔으나 P2의 남은 수행 시간은 3ms이고, P3의 남은 수행 시간은 9ms이기 때문에 프로세서는 P2를 계속 수행한다. 이어서 3ms일 때 P4가 들어왔지만 P2의 남은 수행 시간은 2ms이고, P4의 남은 수행 시간은 5ms이기 때문에 여전히 P2가 수행된다. 이후에도 같은 방식으로 프로세스의 작업이 끝나거나 새로운 프로세스가 들어올 때마다 남은 수행 시간을 비교해 자리를 바꿔준다.</p>
+<h1 id="rr-(round-robin)">RR (Round Robin)</h1>
+<ul>
+<li>일정 시간 할당량(Time quantum) 단위로 여러 프로세스를 번갈아가며 프로세서에 할당한다.</li>
+<li>시스템의 time-sharing과 같은 방식이다.</li>
+<li>반응성이 좋다.</li>
+<li>주로 우선순위 스케줄링(Priority scheduling)과 결합해 프로세스의 시간 할당량을 조절하는 방식으로 활용한다.</li>
+<li>시간 할당량에 따라 운영체제가 계속 개입하는 <strong>선점 스케줄링 방식</strong>이다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Burst time</th>
+<th>Response time</th>
+<th>Turnaround time</th>
+<th>Waiting time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>15</td>
+<td>0</td>
+<td>19</td>
+<td>4</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+<td>3</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>2</td>
+<td>5</td>
+<td>7</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>Time quantum = 3ms
+
++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+|      P1      |    P2   |    P3   |      P1      |      P1      |      P1      |      P1      |
++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+0              3         5         7              10             13             16             19
+</code></pre>
+<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>Average wating time</mtext><mo>=</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>5</mn></mrow><mn>3</mn></mfrac><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\text{Average wating time} = {4 + 3 + 5 \over 3} = 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:.8777699999999999em;vertical-align:-.19444em;"></span><span class="mord text"><span class="mord">Average wating time</span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-.686em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">4</span></span></span></span></span></eqn></section><p>모든 프로세스들이 동일하게 3ms씩 프로세스에 할당된다. P2와 P3의 경우 수행 시간이 2ms이기 때문에 할당된 3ms를 모두 사용하지 않았다.</p>
+<h1 id="priority-scheduling">Priority Scheduling</h1>
+<ul>
+<li>특정 기준으로 프로세스에게 우선순위를 부여해 우선순위에 따라 프로세서에 할당한다.</li>
+<li>프로세스를 에이징(Aging)해서 오래 대기한 프로세스의 우선순위를 높이는 방식으로 사용된다.</li>
+<li>SRF의 경우 남은 수행 시간을 기준으로 우선순위를 부여한다고 할 수 있다.</li>
+<li>다른 스케줄링 알고리즘과 결합해 사용할 수 있으므로 <strong>선점, 비선점 모두 가능</strong>하다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Priority</th>
+<th>Burst time</th>
+<th>Response time</th>
+<th>Turnaround time</th>
+<th>Waiting time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>3</td>
+<td>5</td>
+<td>4</td>
+<td>9</td>
+<td>4</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>4</td>
+<td>2</td>
+<td>9</td>
+<td>11</td>
+<td>9</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>5</td>
+<td>1</td>
+<td>11</td>
+<td>12</td>
+<td>11</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>+----+----+----+----+----+----+----+----+----+----+----+----+
+| P2 |      P5      |           P1           |    P3   | P4 |
++----+----+----+----+----+----+----+----+----+----+----+----+
+0    1              4                        9         11   12
+</code></pre>
+<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>Average wating time</mtext><mo>=</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>0</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>11</mn><mo>+</mo><mn>1</mn></mrow><mn>5</mn></mfrac><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">\text{Average wating time} = {4 + 0 + 9 + 11 + 1 \over 5} = 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:.8777699999999999em;vertical-align:-.19444em;"></span><span class="mord text"><span class="mord">Average wating time</span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-.686em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">5</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">9</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">1</span><span class="mord">1</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:.2222222222222222em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span class="mspace" style="margin-right:.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">5</span></span></span></span></span></eqn></section><p>우선순위에 따라 프로세스가 할당되었다. 사용자가 자주 사용하는 프로세스의 우선순위를 높게 부여하는 식으로 기준을 만들 수 있다. 다만 특정 프로세스의 우선 순위가 계속 밀려 기아가 발생할 수 있으므로, 시간이 지날 때마다 프로세스의 나이를 증가시켜 오래 대기한 프로세스의 우선순위를 높여주는 조치가 필요하다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/10.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.6</p> <p class="article-navigation-subtitle">Synchronization</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/8.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.4</p> <p class="article-navigation-subtitle">Multithreaded Programming</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/9.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

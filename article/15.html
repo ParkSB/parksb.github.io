@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🌞 개떡같은 코드와 함께한 하루 리뉴얼 이야기 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/15.html"><meta property="og:title" content="🌞 개떡같은 코드와 함께한 하루 리뉴얼 이야기: 거대한 레거시를 수습한 경험 "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%8C%9E%20%EA%B0%9C%EB%96%A1%EA%B0%99%EC%9D%80%20%EC%BD%94%EB%93%9C%EC%99%80%20%ED%95%A8%EA%BB%98%ED%95%9C%20%ED%95%98%EB%A3%A8%20%EB%A6%AC%EB%89%B4%EC%96%BC%20%EC%9D%B4%EC%95%BC%EA%B8%B0**.png?subtitle=%EA%B1%B0%EB%8C%80%ED%95%9C%20%EB%A0%88%EA%B1%B0%EC%8B%9C%EB%A5%BC%20%EC%88%98%EC%8A%B5%ED%95%9C%20%EA%B2%BD%ED%97%98&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.01%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="2개월이나 지났지만, 더 시간이 지나면 잊어버릴 것 같아서 하루 리뉴얼에 대한 이야기를 해보려 한다. 워낙 충격적이고 힘든 경험이어서 아직도 어땠는지 기억이 난다.결과적으로 더러운(…) 경험이었다. 예상치 못한 오류, 쏟아져 나오는 버그, 개떡같은 코드, 완전 뒤죽박죽이었다. 이하 내용은 약 10개월간 내가 무슨 삽질을 ..."><meta name="twitter:title" content="🌞 개떡같은 코드와 함께한 하루 리뉴얼 이야기: 거대한 레거시를 수습한 경험 "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%8C%9E%20%EA%B0%9C%EB%96%A1%EA%B0%99%EC%9D%80%20%EC%BD%94%EB%93%9C%EC%99%80%20%ED%95%A8%EA%BB%98%ED%95%9C%20%ED%95%98%EB%A3%A8%20%EB%A6%AC%EB%89%B4%EC%96%BC%20%EC%9D%B4%EC%95%BC%EA%B8%B0**.png?subtitle=%EA%B1%B0%EB%8C%80%ED%95%9C%20%EB%A0%88%EA%B1%B0%EC%8B%9C%EB%A5%BC%20%EC%88%98%EC%8A%B5%ED%95%9C%20%EA%B2%BD%ED%97%98&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.01%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="2개월이나 지났지만, 더 시간이 지나면 잊어버릴 것 같아서 하루 리뉴얼에 대한 이야기를 해보려 한다. 워낙 충격적이고 힘든 경험이어서 아직도 어땠는지 기억이 난다.결과적으로 더러운(…) 경험이었다. 예상치 못한 오류, 쏟아져 나오는 버그, 개떡같은 코드, 완전 뒤죽박죽이었다. 이하 내용은 약 10개월간 내가 무슨 삽질을 ..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🌞 개떡같은 코드와 함께한 하루 리뉴얼 이야기 </h1> <h2 id="article-subtitle"> 거대한 레거시를 수습한 경험 </h2> <time id="article-date"> 2018.06.01 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180601_harooo-renewal-story.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#%F0%9F%94%A5-%EB%B0%9C%EB%8B%A8">🔥 발단</a></li><li><a href="#%F0%9F%8C%9C-%EC%84%9C%EB%B2%84-%EA%B1%B4%EB%93%9C%EB%A6%AC%EB%8A%94-%EB%82%A0%EC%9D%80-%EB%B0%A4%EC%83%88%EB%8A%94-%EB%82%A0">🌜 서버 건드리는 날은 밤새는 날</a></li><li><a href="#%F0%9F%94%90-ssl-%EC%9D%B8%EC%A6%9D%EC%84%9C%EB%A1%9C-%EC%95%88%EC%A0%84%ED%95%9C-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EA%B8%B0">🔐 SSL 인증서로 안전한 서버 만들기</a></li><li><a href="#%F0%9F%90%9C-%EB%B2%84%EA%B7%B8-%ED%8F%AD%EB%B0%9C!">🐜 버그 폭발!</a></li><li><a href="#%F0%9F%8E%A8-%EB%AF%B8%EC%84%B8%ED%95%9C-ui-%EA%B0%9C%EC%84%A0">🎨 미세한 UI 개선</a></li><li><a href="#%E2%9C%A8-%EB%AF%B8%EC%84%B8%ED%95%9C-%ED%80%84%EB%A6%AC%ED%8B%B0-%EA%B0%9C%EC%84%A0">✨ 미세한 퀄리티 개선</a></li><li><a href="#%F0%9F%A4%AF-%EB%8B%A4%EC%8B%9C%EB%8A%94-%EA%B0%9C%EB%96%A1%EA%B0%99%EC%9D%80-%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%93%B0%EC%A7%80-%EC%95%8A%EA%B2%A0%EC%8A%B5%EB%8B%88%EB%8B%A4">🤯 다시는 개떡같은 코드를 쓰지 않겠습니다</a></li></ul></div></p>
+</details>
+<p>2개월이나 지났지만, 더 시간이 지나면 잊어버릴 것 같아서 <a href="https://harooo.com/harooo/">하루</a> 리뉴얼에 대한 이야기를 해보려 한다. 워낙 충격적이고 힘든 경험이어서 아직도 어땠는지 기억이 난다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/99A6CE3A5B10311A2F" alt="함꼐해서 더러웠고 다신 만나지 말자."></p>
+<p>결과적으로 더러운(…) 경험이었다. 예상치 못한 오류, 쏟아져 나오는 버그, 개떡같은 코드, 완전 뒤죽박죽이었다. 이하 내용은 약 10개월간 내가 무슨 삽질을 했는지에 관한 회고다.</p>
+<h1 id="%F0%9F%94%A5-%EB%B0%9C%EB%8B%A8">🔥 발단</h1>
+<p>'하루’는 내가 중학교 3학년 때(2013년) 친구와 졸업작품으로 만든 SNS다. 게시글은 하루만 유지되며, 페이스북의 좋아요 같은 '오호라’를 누르면 글의 유지 시간을 1시간 더 늘려줄 수 있다. 운좋게 언론사에서 인턴을 하던 학교 선배가 기사를 써줬고, <a href="https://parksb.github.io/about.html">여기저기에 알려졌다</a>.</p>
+<p>그런데 특허 문제에 학업에 이런저런 이유로 더 이상 유지하기가 힘들어져서 제대로 신경쓰지 못했다. 반면 글은 나름 꾸준히 올라오고 있었고, 나는 거의 사골 수준으로 내 커리어에 하루를 우려먹었다. (대입 자소서에도 들어갔고, 우아한형제들 인턴 지원서에도 들어갔고, 공모전 이력에도 들어갔다.) 모르는 사람들이 하루 기사를 봤다며 연락을 해오기도 했고, 서비스에 대한 피드백이 들어오기도 했다. 이런 상황이 계속되다 보니 졸속으로 만들어놓은 사이트를 좀 고쳐놔야겠다는 생각을 하고 있었다.</p>
+<p>그러다가 대학까지 입학하고, 나는 18학점 밖에 되지 않는 텅텅 빈 시간표 덕분에 시간이 남아 도는 상태가 되었다. 그리고 2017년 5월, 나는 무료로 풀린 스타크래프트 브루드워에 매진하고 있었다. (이후 187패 8승을 찍고 그만뒀다.) 그때 스타크래프트 리마스터가 출시됐는데, 아마 거기에 고무되었는지 하루도 리뉴얼할 때가 됐다는 생각이 들었다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/99EA8E4F5B10115118" alt="하루 리마스터 계획에 관한 페이스북 게시글. 서버 이전, 보안 이슈 해결, 각종 버그 해결."></p>
+<p>일단 페이지에 글을 올리고 잤다. 빡센 커리큘럼에 고통을 호소하던 친구를 뒤로하고 나 혼자 개발해야 한다는 생각에 조금 막막해졌다.</p>
+<p>그때는 새벽 3시였고, 다음날 10시반 수업이 있었지만 간단하게 감이라도 잡아보려 했다. 테스트 서버를 만들고 간단하게 세팅한 뒤 SSL 인증서를 발급받아 실서비스 서버의 파일들을 그대로 옮겨와봤다. 무료 도메인인 haroootest.tk도 적용시켰다. 생각보다 쉽게 할 수 있을 것 같았다.</p>
+<p>하지만 순탄치 않았다. 6월부터 10월까지 작업하고, 이후 미뤄지다가 2학기를 마치고 2018년이 되어서야 다시 리뉴얼 작업에 들어갔다. 처음에는 리뉴얼을 '여름 업데이트’라고 불렀지만 결과적으로는 '18업데이트’가 되었다. (글에 &quot;올해 안에는 끝낼 수 있겠죠?&quot;라고 써놔서 더 찔린다.)</p>
+<h1 id="%F0%9F%8C%9C-%EC%84%9C%EB%B2%84-%EA%B1%B4%EB%93%9C%EB%A6%AC%EB%8A%94-%EB%82%A0%EC%9D%80-%EB%B0%A4%EC%83%88%EB%8A%94-%EB%82%A0">🌜 서버 건드리는 날은 밤새는 날</h1>
+<p>가장 먼저 해야될 작업은 서버 이전이었다. 기존 서버는 서버에 대해 1도 모르던 시절 세팅해 놓은 것이었기 때문에 찝찝한 마음을 지울 수 없었다. 옮기는 겸 서버 세팅도 제대로 하고 PHP 버전도 올릴 생각이었다. 먼저 <a href="https://www.ncloud.com/">네이버 클라우드 플랫폼</a>(AWS와 같은 클라우드 컴퓨팅 서비스)에는 두 컨테이너가 있었다. 하나는 SSL 인증서를 발급받은 테스트 서버였고, 다른 하나는 실서비스 서버였다. 테스트 서버를 초기화하고 실서비스 서버로 쓰는 것이 내 목표였다.</p>
+<p>서버를 지우는 것은 어렵지 않다. 그냥 ‘서버 반납’ 버튼만 누르면 된다. 문제는 생성이다. 새로 서버를 생성하면 DNS도 새로 잡아줘야 하고, 세팅도 다시 해줘야 하는데 서버만 건들면 항상 예상치 못한 일이 생겨 밤을 새곤했다. 예전에는 우분투 버전 올리겠다고 뻘짓하다가 새벽 1시부터 시작해 오전 8시까지 잠을 못잔 적도 있다. 한가한 날을 잡고 마음을 다잡은 뒤 새로운 서버를 생성했다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/99B66C365B10216030" alt="생성된 서버. 우분투. 운영중."></p>
+<p>Putty로 서버에 접속하고 <a href="https://blog.lael.be/post/73">한번에 끝내는 Ubuntu 웹서버 세팅</a>을 참고하며 서버를 세팅했다. 그렇게 삽질이 시작됐다. 당시 나는 CLI에 그리 익숙하지 않았고, 블로그에 나온대로 한다고 똑같이 되는 것도 아니었다. 그래도 처음 서버 생성할 때 별짓을 다 해봤기 때문에 웬만한 문제는 직접 해결할 수 있었다. 문제는 SSL이었다.</p>
+<h1 id="%F0%9F%94%90-ssl-%EC%9D%B8%EC%A6%9D%EC%84%9C%EB%A1%9C-%EC%95%88%EC%A0%84%ED%95%9C-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EA%B8%B0">🔐 SSL 인증서로 안전한 서버 만들기</h1>
+<p>기존 서버는 http 프로토콜을 사용했기 때문에 항상 https로 바꿔야한다는 마음의 짐이 있었다. 이건 선택이 아니라 의무였다. 특히 크롬에서 http 사이트에 접속하면 '안전하지 않은 사이트’라는 경고가 떠서 바꾸지 않고는 안 되는 상황이었다. 하지만 생각보다 쉬운 일이 아니었다. 일단 SSL이 뭔지 잘 몰랐다! 먼저 공부부터 했다. 물론 그것이 뭔지 안다는 말이 그것을 사용할 수 있는 말은 아니다. 다만 커맨드를 치면서 내가 뭘하고 있는지 정도는 알 수 있게 되었다.</p>
+<p><a href="https://letsencrypt.org/">Let’s Encrypt</a>는 무료로 SSL 인증서를 발급해준다. (예전에는 StartCom SSL로 테스트했는데, 무슨 이슈가 터져서 여전히 안전하지 않은 사이트라는 경고가 떴다.) 일단 발급받고 커맨드를 쳐서 여차저차 적용을 성공했다. 그런데 <a href="https://harooo.com/">https://harooo.com/</a>은 접속이 잘 됐지만 <a href="http://harooo.com/">http://harooo.com/</a>에 접속했을 때는 <a href="https://harooo.com/">https://harooo.com/</a>으로 리다이렉트가 되지 않았다.</p>
+<p>왜일까? 이 문제로 이틀 정도를 흘려 보냈는데, 답은 생각보다 간단했다. 아파치 서버 설정을 작성할 때 80포트(http) 설정과 443포트(https) 설정을 하나의 파일 안에서 다룬 것이 실수였다. 아무리봐도 이상한 것 같아서 80포트와 443포트를 분리해 다시 설정을 작성했다.</p>
+<p><strong>/etc/apache2/sites-enabled/default-ssl.conf</strong></p>
+<pre class="hljs"><code>&lt;IfModule mod_ssl.<span class="hljs-keyword">c</span>&gt;
+    &lt;VirtualHost _default_:<span class="hljs-number">443</span>&gt;
+        ServerAdmin webmaster@localhost
+    
+        DocumentRoot /var/www
+    
+        ErrorLog ${APACHE_LOG_DIR}/error.<span class="hljs-built_in">log</span>
+        CustomLog ${APACHE_LOG_DIR}/access.<span class="hljs-built_in">log</span> combined
+    
+        SSLEngine <span class="hljs-keyword">on</span>
+    
+        SSLCertificateFile   /etc/ssl/certs/ssl-cert-snakeoil.pem
+        SSLCertificateKeyFile/etc/ssl/private/ssl-cert-snakeoil.key
+    
+        &lt;FilesMatch <span class="hljs-string">&quot;\\.(cgi|shtml|phtml|php)$&quot;</span>&gt;
+            SSLOptions +StdEnvVars
+        &lt;/FilesMatch&gt;
+        &lt;Directory /usr/lib/cgi-bin&gt;
+            SSLOptions +StdEnvVars
+        &lt;/Directory&gt;
+    &lt;/VirtualHost&gt;
+&lt;/IfModule&gt;
+    
+# <span class="hljs-keyword">vim</span>: <span class="hljs-keyword">syntax</span>=apache <span class="hljs-keyword">ts</span>=<span class="hljs-number">4</span> <span class="hljs-keyword">sw</span>=<span class="hljs-number">4</span> <span class="hljs-keyword">sts</span>=<span class="hljs-number">4</span> sr noet
+</code></pre>
+<p>이렇게 하고 설정을 활성화했더니 잘 작동했다. 주소창 앞에 나오는 녹색 자물쇠가 너무 사랑스러워 보였다. 고생하며 서버 세팅과 SSL 적용을 마치니 너무 뿌듯했다. 그리고 무엇보다 vi가 정말 좋았다.</p>
+<h1 id="%F0%9F%90%9C-%EB%B2%84%EA%B7%B8-%ED%8F%AD%EB%B0%9C!">🐜 버그 폭발!</h1>
+<p>예상했던 일이지만 우분투와 PHP, MySQL을 최신으로 업데이트하니 버그가 쏟아져 나왔다. 거의 모든 페이지가 엉망이 되었다. 장난 아니었다. 정말 손댈 엄두가 나지 않았다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/990A1B3B5B102DFC0A" alt="커밋 메시지. 더 이상 손대기 겁난다."></p>
+<p>…그래서 2017년 10월 이후로 거의 손대지 못했다. 코드는 충격적일 정도로 개판이었다. <code>mysql_query(...)</code> 같은 구문을 모두 <code>mysqli_query(...)</code>로 바꿔야 했고, <code>fetch_array(...)</code>도 새로운 방식을 써야 했다. 거기다가 html과 javascript, php가 마구 섞여 있어서 정말 아수라장이 따로 없었다. 이해할 수 없는 코드가 가득했고, 이상한 시점에 쿼리를 날리기도 했다. 애초에 잘못된 로직도 있어서 그 부분도 새로 구현해야 했다.</p>
+<p>사실 구현과 수정보다는 과거 코드를 해석하는 데 더 오랜 시간을 쏟았다. 코드가 너무 복잡해서 그냥 웹에 띄워진 결과물을 보고 아예 새로 구현하는 게 빠를 것 같았다. 과거의 나를 욕했고, 주석의 중요성을 절실히 깨달았다.</p>
+<h1 id="%F0%9F%8E%A8-%EB%AF%B8%EC%84%B8%ED%95%9C-ui-%EA%B0%9C%EC%84%A0">🎨 미세한 UI 개선</h1>
+<p>사실 하루를 처음 만들 때 나는 html과 css를 잘 몰랐다. 정보 수업에서 짧게 배운 내용과 <a href="https://www.w3schools.com/">W3Schools</a>, 그리고 <a href="http://www.hanbit.co.kr/store/books/look.php?p_code=B3047871582">모던 웹 디자인을 위한 HTML5+CSS3 입문</a>으로 공부하면서 만들었다.</p>
+<p>그러다보니 디자인과 실제 웹에서의 결과물은 많이 달랐다. 리뉴얼에서 UI 변화는 빠질 수 없을 것 같아서 미세하게나마 개선 작업을 했다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/996704355B1029D433" alt="과거 랜딩 페이지."></p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/9950C1455B214D5B27" alt="리뉴얼된 랜딩 페이지."></p>
+<p>그나마 index 페이지는 차이가 큰 부분이지 다른 페이지들은 사실 큰 차이가 없다. 그런데 CSS 코드가 워낙 개판이라 이 부분도 완전히 새로 짜야했다. 과거의 나는 왜 그렇게 <code>absolute</code>를 좋아했던걸까.</p>
+<h1 id="%E2%9C%A8-%EB%AF%B8%EC%84%B8%ED%95%9C-%ED%80%84%EB%A6%AC%ED%8B%B0-%EA%B0%9C%EC%84%A0">✨ 미세한 퀄리티 개선</h1>
+<p>잘 눈에 띄지 않지만 비밀번호 찾기, 이용약관, 개인정보취급방침, 설정 페이지 등 자잘한 페이지들의 디자인과 내용을 개선했다. 졸업작품 발표 때 작은 차이가 큰 차이를 만든다 해놓고 이런 부분에 잘 신경을 안 써놨더라.</p>
+<h1 id="%F0%9F%A4%AF-%EB%8B%A4%EC%8B%9C%EB%8A%94-%EA%B0%9C%EB%96%A1%EA%B0%99%EC%9D%80-%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%93%B0%EC%A7%80-%EC%95%8A%EA%B2%A0%EC%8A%B5%EB%8B%88%EB%8B%A4">🤯 다시는 개떡같은 코드를 쓰지 않겠습니다</h1>
+<p>엄청나게 힘들었지만 아무튼 끝내긴 했다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/99747A3A5B1010D311" alt="리뉴얼 공지 게시글."></p>
+<p>다행히 10개월 간의 삽질을 통해 나름 느낀 점이 있다. 첫 번째는 html, css, javascript, php의 완벽한 분리에 목숨을 걸어야겠다는 것. 두 번째는 쓸모있는 주석을 달아야겠다는 것. 세 번째는 한 번 더 생각하고 코드를 짜야한다는 것. 그리고 마지막으로 현재의 편안함이 나중엔 지옥으로 다가올 수 있다는 것.</p>
+<p>많은 수업에서(특히 객체지향프로그래밍) 교수님들은 &quot;당장은 필요없을지 몰라도 나중에 코드를 관리하기 굉장히 편해집니다.&quot;라고 말하지만, 잘 실감이 나지 않을 때가 있다. 역시 경험으로 배워야 한다…</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/16.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">Race condition 발생시키고 Mutex lock으로 해결하기</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/14.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">ES6 화살표 함수의 this에 관하여</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/15.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

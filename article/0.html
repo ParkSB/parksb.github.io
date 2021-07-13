@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 📋 프론트엔드 개발자를 위한 토막상식 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/0.html"><meta property="og:title" content="📋 프론트엔드 개발자를 위한 토막상식"><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%93%8B%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%A5%BC%20%EC%9C%84%ED%95%9C%20%ED%86%A0%EB%A7%89%EC%83%81%EC%8B%9D**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.02.02%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="프로젝트하면서 알게 된 것들과 코딩테스트를 통해 배운 것들, 자바스크립트&amp;amp;제이쿼리: 인터랙티브 프론트엔드 웹 개발 교과서(Jon Duckett)와 JavaScript: The Good Parts(Douglas Crockford)를 통해 공부한 것들, 그리고 Front-end Job Interview Ques..."><meta name="twitter:title" content="📋 프론트엔드 개발자를 위한 토막상식"><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%93%8B%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%A5%BC%20%EC%9C%84%ED%95%9C%20%ED%86%A0%EB%A7%89%EC%83%81%EC%8B%9D**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.02.02%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="프로젝트하면서 알게 된 것들과 코딩테스트를 통해 배운 것들, 자바스크립트&amp;amp;제이쿼리: 인터랙티브 프론트엔드 웹 개발 교과서(Jon Duckett)와 JavaScript: The Good Parts(Douglas Crockford)를 통해 공부한 것들, 그리고 Front-end Job Interview Ques..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 📋 프론트엔드 개발자를 위한 토막상식 </h1> <time id="article-date"> 2018.02.02 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180202_information-pieces-for-fe-developer.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-%EA%B2%83%EB%93%A4">일반적인 것들</a><ul><li><a href="#%ED%97%9D%EA%B0%80%EB%A6%AC%EC%95%88-%ED%91%9C%EA%B8%B0%EB%B2%95">헝가리안 표기법</a></li><li><a href="#%EB%B8%94%EB%A1%9D-%EC%95%88%EC%97%90%EC%84%9C-%EB%B3%80%EC%88%98-%EC%84%A0%EC%96%B8">블록 안에서 변수 선언</a></li><li><a href="#%EC%A0%90%EC%A7%84%EC%A0%81-%ED%96%A5%EC%83%81%EB%B2%95(progressive-enhancement)%EA%B3%BC-%EC%9A%B0%EC%95%84%ED%95%9C-%EC%84%B1%EB%8A%A5%EC%A0%80%ED%95%98%EB%B2%95(graceful-degradation)">점진적 향상법(Progressive enhancement)과 우아한 성능저하법(Graceful degradation)</a></li><li><a href="#fouc(flash-of-unstyled-content)">FOUC(Flash Of Unstyled Content)</a></li><li><a href="#aria(accessible-rich-internet-applications)%EC%99%80-%EC%8A%A4%ED%81%AC%EB%A6%B0%EB%A6%AC%EB%8D%94">ARIA(Accessible Rich Internet Applications)와 스크린리더</a></li><li><a href="#css-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%EA%B3%BC-javascript-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%EC%9D%98-%EC%B0%A8%EC%9D%B4">CSS 애니메이션과 Javascript 애니메이션의 차이</a></li><li><a href="#%EB%8F%99%EC%9D%BC%EC%B6%9C%EC%B2%98%EC%A0%95%EC%B1%85(same-origin-policy)%EA%B3%BC-cors(cross-origin-resource-sharing)">동일출처정책(Same-origin policy)과 CORS(Cross-origin resource sharing)</a></li><li><a href="#%EC%BD%94%EB%93%9C-%EC%9D%98%EC%A1%B4%EC%84%B1%EA%B3%BC-dry%EC%9B%90%EC%B9%99">코드 의존성과 DRY원칙</a></li></ul></li><li><a href="#html">HTML</a><ul><li><a href="#doctype">DOCTYPE</a></li><li><a href="#%ED%91%9C%EC%A4%80%EB%AA%A8%EB%93%9C(standard-mode)%EC%99%80-%ED%98%B8%ED%99%98%EB%AA%A8%EB%93%9C(quirks-mode)">표준모드(Standard mode)와 호환모드(Quirks mode)</a></li><li><a href="#xml%EA%B3%BC-xhtml">XML과 XHTML</a></li><li><a href="#data-*-%EC%86%8D%EC%84%B1">data-* 속성</a></li><li><a href="#cookie%2C-sessionstorage%2C-localstorage">Cookie, sessionStorage, localStorage</a></li><li><a href="#script-%ED%83%9C%EA%B7%B8%EC%9D%98-async%EC%99%80-defer">script 태그의 async와 defer</a></li><li><a href="#progressive-rendering">Progressive rendering</a></li></ul></li><li><a href="#css">CSS</a><ul><li><a href="#reset-css">Reset CSS</a></li><li><a href="#bfc(block-formatting-context)%EC%99%80-ifc(inline-formatting-context)">BFC(Block Formatting Context)와 IFC(Inline Formatting Context)</a></li><li><a href="#%ED%81%B4%EB%A6%AC%EC%96%B4%EB%A7%81(clearing)-%EA%B8%B0%EC%88%A0">클리어링(Clearing) 기술</a></li><li><a href="#image-replacement">Image Replacement</a></li><li><a href="#ie-box-model%EA%B3%BC-w3c-box-model%EC%9D%98-%EC%B0%A8%EC%9D%B4">IE box model과 W3C box model의 차이</a></li><li><a href="#%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-(grid-system)">그리드 시스템 (Grid system)</a></li></ul></li><li><a href="#css-%EC%A0%84%EC%B2%98%EB%A6%AC%EA%B8%B0">CSS 전처리기</a><ul><li><a href="#%EB%B0%98%EC%9D%91%ED%98%95-%EB%94%94%EC%9E%90%EC%9D%B8(responsive-design)%EA%B3%BC-%EC%A0%81%EC%9D%91%ED%98%95-%EB%94%94%EC%9E%90%EC%9D%B8(adaptive-design)">반응형 디자인(Responsive design)과 적응형 디자인(Adaptive design)</a></li></ul></li><li><a href="#javascript">Javascript</a><ul><li><a href="#%EC%B6%94%EC%83%81%EC%A0%81-%EA%B0%99%EC%9D%8C-%EB%B9%84%EA%B5%90(abstract-equality-comparison)%EC%99%80-%EC%97%84%EA%B2%A9%ED%95%9C-%EA%B0%99%EC%9D%8C-%EB%B9%84%EA%B5%90(strict-equality-comparison)">추상적 같음 비교(Abstract equality comparison)와 엄격한 같음 비교(Strict equality comparison)</a></li><li><a href="#%EA%B3%A0%EA%B8%89-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC(advanced-exception-handling)">고급 예외처리(Advanced exception handling)</a></li><li><a href="#event-delegation">Event delegation</a></li><li><a href="#prototype-%EA%B8%B0%EB%B0%98-%EC%83%81%EC%86%8D">Prototype 기반 상속</a></li><li><a href="#null%2C-undefined%2C-undeclared%EC%9D%98-%EC%B0%A8%EC%9D%B4">null, undefined, undeclared의 차이</a></li><li><a href="#%ED%81%B4%EB%A1%9C%EC%A0%80(closure)">클로저(Closure)</a></li><li><a href="#%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%AA%A8%EB%93%88-%ED%8C%A8%ED%84%B4(module-pattern)">자바스크립트 모듈 패턴(Module pattern)</a></li><li><a href="#%EB%84%A4%EC%9D%B4%ED%8B%B0%EB%B8%8C-%EA%B0%9D%EC%B2%B4(native-object)%2C-%ED%98%B8%EC%8A%A4%ED%8A%B8-%EA%B0%9D%EC%B2%B4(host-object)%2C-built-in-%EA%B0%9D%EC%B2%B4">네이티브 객체(Native object), 호스트 객체(Host object), Built-in 객체</a></li><li><a href="#%EA%B8%B0%EB%8A%A5-%EA%B2%80%EC%B6%9C(feature-detection)%EA%B3%BC-%EA%B8%B0%EB%8A%A5-%EC%B6%94%EB%A1%A0(feature-inference)">기능 검출(Feature detection)과 기능 추론(Feature inference)</a></li><li><a href="#%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85(hoisting)">호이스팅(Hoisting)</a></li><li><a href="#%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%9D%90%EB%A6%84(event-flow)">이벤트 흐름(Event flow)</a></li><li><a href="#document-load-event%EC%99%80-domcontentloaded-event">document load event와 DOMContentLoaded event</a></li><li><a href="#%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%82%BC%ED%95%AD-%EC%97%B0%EC%82%B0%EC%9E%90(conditional-ternary-operator)">조건부 삼항 연산자(Conditional ternary operator)</a></li><li><a href="#use-strict">use strict</a></li><li><a href="#call-stack%EA%B3%BC-task-queue">Call stack과 Task queue</a></li></ul></li></ul></div></p>
+</details>
+<p>프로젝트하면서 알게 된 것들과 코딩테스트를 통해 배운 것들, 자바스크립트&amp;제이쿼리: 인터랙티브 프론트엔드 웹 개발 교과서(Jon Duckett)와 JavaScript: The Good Parts(Douglas Crockford)를 통해 공부한 것들, 그리고 <a href="https://github.com/h5bp/Front-end-Developer-Interview-Questions">Front-end Job Interview Questions</a>에 나와있는 질문들에 대한 대답을 간략하게 정리했다.</p>
+<h1 id="%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-%EA%B2%83%EB%93%A4">일반적인 것들</h1>
+<h2 id="%ED%97%9D%EA%B0%80%EB%A6%AC%EC%95%88-%ED%91%9C%EA%B8%B0%EB%B2%95">헝가리안 표기법</h2>
+<p>변수 이름에 데이터 타입을 접두어로 붙이는 표기법이다. 숫자라면 <code>nVar</code>, 배열이라면 <code>aVar</code> 이런 식으로 붙인다. 2015년 네이버에서 인턴십을 할 때 코딩컨벤션이 헝가리언 표기법 + 캐멀케이스여서 그때 처음 접하고 사용하기 시작했는데, 요즘에는 헝가리언 표기법을 지양한다고 한다. 가독성과 유지보수 효율성이 떨어진다고. (<a href="https://stackoverflow.com/questions/111933/why-shouldnt-i-use-hungarian-notation">참고</a>)</p>
+<h2 id="%EB%B8%94%EB%A1%9D-%EC%95%88%EC%97%90%EC%84%9C-%EB%B3%80%EC%88%98-%EC%84%A0%EC%96%B8">블록 안에서 변수 선언</h2>
+<p>Java의 경우 한 블록 안에서만 쓰이는 변수를 코드 위쪽에 선언하지 않고 블록 안에 변수를 선언하면 코드를 파악하기 더욱 쉬워지고, 스코프를 제한할 수 있어 안전하다. 자바스크립트의 <code>var</code>타입은 블록 스코프가 아닌 함수 스코프를 적용하기 때문에 어디에 선언하든 아무런 차이가 없다. 하지만 <code>let</code>이나 <code>const</code>를 사용한다면 얘기가 달라진다. 이 둘은 블록 스코프이다. (<a href="https://stackoverflow.com/questions/3684923/javascript-variables-declare-outside-or-inside-loop">참고</a>)</p>
+<h2 id="%EC%A0%90%EC%A7%84%EC%A0%81-%ED%96%A5%EC%83%81%EB%B2%95(progressive-enhancement)%EA%B3%BC-%EC%9A%B0%EC%95%84%ED%95%9C-%EC%84%B1%EB%8A%A5%EC%A0%80%ED%95%98%EB%B2%95(graceful-degradation)">점진적 향상법(Progressive enhancement)과 우아한 성능저하법(Graceful degradation)</h2>
+<p>사용자가 항상 최신 기술을 사용할 수 있는 환경에서 서비스를 사용하지는 않는다. 특히 웹사이트를 만들 때는 최신 브라우저와 구식 브라우저를 모두 신경써야 한다. 점진적 향상법과 우아한 성능저하법은 최신과 구식에 대응하기 위한 방법을 말한다. (<a href="http://www.clearboth.org/51_graceful_degradation_versus_progressive_enhancement/">참고</a>)</p>
+<p>점진적 향상법은 기본적으로 구식 기술 환경에서 동작할 수 있는 기능을 구현하고, 최신 기술을 사용할 수 있는 환경에서는 더 나은 사용자 경험을 제공할 수 있는 최신 기술을 제공하는 방법이다. 즉, 구식 환경에서도 충분히 서비스를 사용할 수 있고, 최신 환경이라면 더 나은 기능들을 사용할 수 있도록 만드는 것이다. 구식 브라우저를 사용하는 사용자에게 100만큼의 기능을 제공하고, 최신 브라우저를 사용하는 사용자에게는 130정도의 기능을 제공하도록 웹사이트를 만든다고 보면 된다.</p>
+<p>우아한 성능저하법은 점진적 향상법과 반대이다. 이는 최신 기술을 기반으로 기능을 구현한 뒤, 구형 기술에 기반한 환경에서도 유사하게 동작하도록 만드는 방법이다. 최신 브라우저에서는 100만큼의 기능을 제공하고, 구식 브라우저에서는 50정도의 기능만을 제공하게 웹사이트를 만드는 것이다. img 태그에 alt 속성을 지정함으로써 이미지를 보여주지 못하는 환경에서 이미지를 텍스트로 대체하는 것이 대표적인 예시다.</p>
+<h2 id="fouc(flash-of-unstyled-content)">FOUC(Flash Of Unstyled Content)</h2>
+<p>FOUC는 외부의 CSS 코드를 불러오기 전 스타일이 적용되지 않은 페이지가 잠시 나타나는 현상이다. 특히 IE에서 자주 발생하는 현상으로, 사옹자 경험을 저하하는 요인이 된다. FOUC가 발생하는 이유는 브라우저가 마크업에 참조된 파일들을 모아 DOM을 생성할 때 가장 빠르게 분석할 수 있는 부분(HTML)을 먼저 화면에 표시한 뒤, 화면에 출력된 마크업 순서에 따라 스타일(CSS)을 적용하고 스크립트(Javascript)를 실행하기 때문이다.</p>
+<p>FOUC를 해결하기 위해서는 head 태그 안에 CSS를 링크하고, <code>@import</code>의 사용을 자제해야 한다. 또한 자바스크립트를 head 태그 안에서 로드하는 것도 방법될 수 있다. (하지만 별로 추천하지 않는다.) 어떤 방법으로도 해결되지 않는다면 FOUC가 발생하는 구역을 숨겼다가 브라우저가 준비됐을 때 다시 보여주는 방법이 있다. (<a href="http://webdir.tistory.com/416">참고</a>)</p>
+<h2 id="aria(accessible-rich-internet-applications)%EC%99%80-%EC%8A%A4%ED%81%AC%EB%A6%B0%EB%A6%AC%EB%8D%94">ARIA(Accessible Rich Internet Applications)와 스크린리더</h2>
+<p>ARIA는 접근가능한 인터넷 어플리케이션을 의미한다. 이는 웹 콘텐츠를 개발할 때 장애인을 위한 접근성 향상 방법을 정의한다. ARIA를 사용해 웹사이트여러 곳의 접근성을 향상할 수 있다. ARIA는 <code>&lt;html&gt;</code> 태그에 <code>role</code> 속성을 지정하는 방식으로 사용할 수 있으며, 대부분의 브라우저와 스크린리더가 ARIA를 지원하고 있다. 스크린리더는 웹사이트의 구성 요소들을 읽어주는 프로그램으로, 시각장애를 가진 사용자가 컴퓨터 화면에 무엇이 있는지 인지할 수 있게 돕는다. (<a href="https://developer.mozilla.org/ko/docs/Web/Accessibility/ARIA">참고1</a>) (<a href="http://www.bloter.net/archives/148889">참고2</a>)</p>
+<h2 id="css-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%EA%B3%BC-javascript-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%EC%9D%98-%EC%B0%A8%EC%9D%B4">CSS 애니메이션과 Javascript 애니메이션의 차이</h2>
+<p>자바스크립트는 메인 쓰레드가 무거운 작업을 하고 있을 때 애니메이션 처리의 우선순위를 미뤄두는 반면 CSS는 독립적인 쓰레드가 애니메이션을 처리해준다. 때문에 CSS 애니메이션은 최적화가 쉽다. 하지만 항상 CSS 애니메이션이 우수한 것은 아니다. UI 요소가 작은 경우 CSS를 사용하고, 애니메이션을 세밀하게 제어해야 하는 경우 자바스크립트를 사용하는 것이 좋다. (<a href="https://developer.mozilla.org/ko/docs/Web/Security/Same-origin_policy">참고1</a>) (<a href="https://brunch.co.kr/@99-life/2">참고2</a>)</p>
+<h2 id="%EB%8F%99%EC%9D%BC%EC%B6%9C%EC%B2%98%EC%A0%95%EC%B1%85(same-origin-policy)%EA%B3%BC-cors(cross-origin-resource-sharing)">동일출처정책(Same-origin policy)과 CORS(Cross-origin resource sharing)</h2>
+<p>동일출처정책은 한 출처의 문서가 다른 출처의 문서와 상호작용하지 못하도록하는 정책이다. 두 문서의 프로토콜, 포트, 호스트가 같으면 동일출처라고 한다. CORS는 어떤 웹페이지에 있는 자바스크립트가 해당 도메인이 아닌 다른 도메인에 XMLHttpRequests 요청을 허용하는 기법을 말한다. 브라우저는 서버와 통신할 때마다 서로에 대한 정보를 HTTP 헤더를 이용해 전달한다. CORS는 HTTP 헤더에 정보를 추가해 브라우저와 서버가 서로 통신해야 한다는 사실을 알게 한다. CORS를 통하지 않을 경우, Cross-domain 요청은 동일출처정책에 의해 브라우저가 금지한다. CORS는 다른 출처에서 온 요청을 허용할 지 결정하기 위해 브라우저와 서버가 상호교류하는 방법을 정의한 것이다. CORS는 W3C 명세에 포함되어 있지만 IE의 경우에는 비표준 XDomainRequest 객체를 사용하여 CORS 요청을 처리한다. (<a href="https://developer.mozilla.org/ko/docs/Web/Security/Same-origin_policy">참고1</a>) (<a href="http://www.internetmap.kr/entry/Crossorigin-resource-sharing">참고2</a>)</p>
+<h2 id="%EC%BD%94%EB%93%9C-%EC%9D%98%EC%A1%B4%EC%84%B1%EA%B3%BC-dry%EC%9B%90%EC%B9%99">코드 의존성과 DRY원칙</h2>
+<p>어떤 스크립트는 다른 추가적인 스크립트를 필요로 하기도 한다. 이때 다른 스크립트에 의존하는 스크립트를 작성할 때 해당 스크립트에 의존성이 있다고 표현한다. jQuery를 활용하는 스크립트는 의존성이 있다고 할 수 있다. 이런 경우 주석을 통해 의존성을 명시하는 것이 좋다.</p>
+<p>DRY원칙은 Don’t Repeat Yourself의 줄임말로, 소프트웨어 개발 원칙을 말한다. 한국어로는 중복배제라고 한다. 같은 작업을 수행하는 코드를 두 번 작성했다는 이를 코드 중복이라고 하는데, DRY원칙은 이러한 코드 중복을 지양하자는 원칙이다. 코드 중복의 반대 개념으로는 코드 재사용(Code reuse)이 있다. 코드 재사용은 같은 코드가 스크립트의 다른 곳에서 한 번 이상 사용되는 것을 말한다. 함수를 활용하는 것은 코드 재사용의 좋은 예로, 재사용 가능한 함수를 헬퍼 함수(Helper function)라고 한다. 코드 재사용을 권장하기 위해 개발자들은 작은 스크립트를 작성하는데, 이때문에 코드 재사용은 코드 사이에 더 많은 의존성을 만든다.</p>
+<h1 id="html">HTML</h1>
+<h2 id="doctype">DOCTYPE</h2>
+<p>DOCTYPE은 문서형을 말하며, 해당 문서가 어떤 버전의 어떤 마크업 언어로 구성되어있는지를 의미한다. DOCTYPE을 선언하는 것을 DTD(Dodumenttation Type Declaration)라고 한다. DTD는 각 마크업의 각 버전에서 사용가능한 태그나 속성 등을 정의하기 때문에 문서의 최상단에 위치해야 한다. HTML5 이전 버전은 SGML(Standard Generalized Markup Language)에 기반했기 때문에 DTD 참조가 필수적이었다. HTML5는 DTD 참조가 필요하지 않으며, 하위 호환을 위해 <code>&lt;!DOCTYPE html&gt;</code>만으로 선언한다. (<a href="http://webdir.tistory.com/40">참고</a>)</p>
+<h2 id="%ED%91%9C%EC%A4%80%EB%AA%A8%EB%93%9C(standard-mode)%EC%99%80-%ED%98%B8%ED%99%98%EB%AA%A8%EB%93%9C(quirks-mode)">표준모드(Standard mode)와 호환모드(Quirks mode)</h2>
+<p>표준모드와 호환모드는 브라우저가 가진 두 가지 렌더링 모드다. 브라우저는 DTD에 따라 렌더링할 모드를 선택하는데, 이 과정을 Doctype sniffing또는 Doctype switching이라고 한다. 브라우저가 출력하고자 하는 문서가 최신이라면 W3C나 IETF의 표준을 엄격히 준수하는 표준모드로 렌더링을 한다. 반면 문서가 오래된 버전이라면 호환모드로 렌더링한다. 호환모드는 이전 세대의 브라우저에 맞는 비표준 규칙을 문서에 적용해 오래된 웹페이지들이 최신 브라우저에서 깨져보이지 않게 한다. 브라우저는 문서가 최신인지 아닌지를 DTD로 판단한다. 만약 DTD가 존재하지 않거나 일부가 누락된 경우 호환모드로 문서를 해석한다. 또한 IE의 경우 DTD 앞에 주석이나 다른 문자가 들어갔을 때도 문서를 호환모드로 해석한다. (<a href="https://developer.mozilla.org/ko/docs/Web/HTML/Quirks_Mode_and_Standards_Mode">참고</a>)</p>
+<h2 id="xml%EA%B3%BC-xhtml">XML과 XHTML</h2>
+<p>XML과 XHTML모두 웹 문서 규격이다. XML은 W3C에서 여러 특수 목적의 마크업 언어를 만드는 용도에서 권장되는 다목적 마크업 언어다. XML은 문서 상의 데이터 이름과 값 등을 구분하기 위해 만들어졌는데, XML은 SGML(참고로 SGML은 인터넷이 등장하기 이전에 만들어졌다.)을 기반으로한 HTML의 한계를 극복하여 XHTML을 이끌었다. XML을 기반으로 한 HTML을 만든 셈이다. XHTML은 XML의 문법을 따르며, HTML 문법과 매우 유사하지만 더 엄격하다.</p>
+<p>XHTML이 더 표준인 것처럼 보이지만 사실 그렇게 권장하지 않는 사람들도 있다. 일단 HTML의 호환성이 더 높기 때문이다. XHTML은 1.1버전부터 비표준이나 비권장 태그를 호환하지 못하게 되면서 지나치게 엄격하다는는 비판을 받았다. IE가 XHTML을 해석하지 못하는 것 역시 XHTML의 호환성을 떨어뜨리는 요인이 됐다. 또한 XHTML과 HTML의 요소와 속성에는 차이가 거의 없다. 단지 HTML에서는 <code>&lt;br&gt;</code>로 써도 되지만 XHTML에서는 반드시 <code>&lt;br/&gt;</code>로 써야한다는 정도의 문법이 다를 뿐이다. 이런 점에서 굳이 XHTML을 써야할 기술적 이유는 없다는 것이다. 한편 HTML5가 발표되면서 XHTML은 거의 사용되지 않고 있다. (<a href="http://blog.wystan.net/2007/05/24/xhtml-vs-html">참고</a>)</p>
+<h2 id="data-*-%EC%86%8D%EC%84%B1">data-* 속성</h2>
+<p>HTML5에서 새로 추가된 data- <em>속성은 커스텀 데이터 속성으로, 개발자가 임의로 이름을 붙일 수 있는 속성이다. data-</em> 속성은 <code>&lt;html&gt;</code> 태그 상에서 별다른 작용을 하지 않는다. 자바스크립트가 DOM의 데이터에 접근하거나 서버에서 받아온 데이터를 활용해야 할 때 사용된다. (<a href="https://developer.mozilla.org/ko/docs/Web/HTML/Global_attributes/data-*">참고</a>)</p>
+<h2 id="cookie%2C-sessionstorage%2C-localstorage">Cookie, sessionStorage, localStorage</h2>
+<p>쿠키(Cookie), 세션 저장소(sessionStorage), 로컬 저장소(localStorage)는 브라우저에 데이터를 저장하기 위한 공간들이다. HTML5 이전에는 쿠키를 주로 사용했다. 하지만 쿠키는 많은 양의 데이터를 저장할 수 없고, 동일한 도메인에 페이지를 요청할 때마다 서버로 함께 전송되며, 변조가 쉬워 보안이 취약해진다. 그래서 HTML5부터는 저장소 객체(Storage object)를 정의하고 있다. 저장소 객체는 세션 저장소와 로컬 저장소 두 가지를 제공한다. 로컬 저장소에 데이터를 자장하면 창이나 탭을 닫아서 세션이 종료돼도 데이터가 보존되고, 열려 있는 모든 창이나 탭이 데이터를 공유하게 된다. 세션 저장소는 반대다. 일반적으로 브라우저는 저장소에 5mb 정도의 공간을 할당하며, 데이터는 키-값 쌍(KVP; Key-Value Pair)을 이용하는 저장소 객체의 속성으로 저장된다. 또한 브라우저는 데이터를 보호하기 위해 동일출처정책에 의거, 서로 다른 페이지는 같은 도메인에 저장된 데이터에만 접근이 가능하도록 제한하고 있다. (<a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies">참고1</a>) (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage">참고2</a>) (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">참고3</a>)</p>
+<h2 id="script-%ED%83%9C%EA%B7%B8%EC%9D%98-async%EC%99%80-defer">script 태그의 async와 defer</h2>
+<p><code>&lt;script&gt;</code> 태그에 <code>async</code> 속성과 <code>defer</code> 속성이 추가된 것은 HTML5부터다. 브라우저가 웹 문서에서 외부 스크립트를 불러오는 <code>&lt;script&gt;</code> 태그를 만나면 해당 스크립트를 내려받아 해석하고 실행할 때까지 HTML 코드 파싱 작업을 뒤로 미룬다. 그래서 무거운 스크립트 문서를 해석할 때는 페이지 전체가 느려지는 현상이 발생한다. 그런데 <code>&lt;script&gt;</code> 태그에 <code>async</code>나 <code>defer</code> 속성을 지정하면 마크업 코드 작업을 중단하지 않고 스크립트를 동시에 내려받게 된다. <code>defer</code>는 마크업 파싱을 마친 다음 스크립트를 실행하며, <code>async</code>는 스크립트를 내려받는 즉시 스크립트를 실행한다. (<a href="https://appletree.or.kr/blog/web-development/javascript/script-%ED%83%9C%EA%B7%B8%EC%9D%98-async%EC%99%80-defer-%EC%86%8D%EC%84%B1/">참고</a>)</p>
+<h2 id="progressive-rendering">Progressive rendering</h2>
+<p>Progressive rendering은 콘텐츠를 빠르게 화면에 렌더링하는 기법이다. 브로드밴드 인터넷이 등장하기 전에 매우 중요한 기술이었고, 모바일 플랫폼을 고려한다면 여전히 무시할 수 없는 부분이다. 가시영역의 이미지만 로딩해주는 jQuery 플러그인 Lazy loading이 좋은 예다. (<a href="https://stackoverflow.com/questions/33651166/what-is-progressive-rendering">참고</a>)</p>
+<h1 id="css">CSS</h1>
+<h2 id="reset-css">Reset CSS</h2>
+<p>모든 브라우저에서 통일된 화면을 볼 수 있도록 CSS의 기본값을 초기화하는 것을 말한다. <a href="https://meyerweb.com/eric/tools/css/reset/">Eric Meyer’s Reset</a>과 <a href="https://necolas.github.io/normalize.css/">Normalize.css</a>가 주로 쓰인다.</p>
+<h2 id="bfc(block-formatting-context)%EC%99%80-ifc(inline-formatting-context)">BFC(Block Formatting Context)와 IFC(Inline Formatting Context)</h2>
+<p>모든 HTML 요소는 사각형 박스 형태를 취하고 있다. 박스는 Box-model이라는 모델을 가지고 있다. CSS요소에는 <code>display</code>가 존재하는데, 이는 블록(Block)과 인라인(Inline) 두 가지 값을 가질 수 있다. <code>block</code>은 블록 레벨 요소(Block-level elements)를 의미하며, 블록 레벨 요소는 BFC에 속하는 박스이다. 블록 레벨 요소 박스는 수직으로 계속 쌓인다. <code>inline</code>은 인라인 레벨 요소(Inline-level elements)를 의미한다. 인라인 레벨 요소는 인라인 레벨 박스를 생성하며, 이는 IFC에 속한다. 인라인 레벨 요소 박스는 수평으로 계속 쌓인다. 또한 인라인 레벨 박스에 <code>border</code>나 <code>padding</code>이 눈에 보이더라도 사실은 <code>line-height</code>에 의해 높이가 조절된다. <code>inline-block</code>은 특이한데, 이 요소는 인라인 요소처럼 수평으로 쌓이지만 블록 레벨 요소의 박스처럼 높이를 계산한다. 즉 <code>line-height</code>에 의존하지 않는다. (<a href="https://brunch.co.kr/@techhtml/21">참고</a>)</p>
+<h2 id="%ED%81%B4%EB%A6%AC%EC%96%B4%EB%A7%81(clearing)-%EA%B8%B0%EC%88%A0">클리어링(Clearing) 기술</h2>
+<p>클리어링은 <code>float</code> 속성이 주변 요소의 배치에 영향을 미치지 않도록하는 것이다. <code>float</code> 속성을 가진 요소는 자신의 위치를 주변 콘텐츠로부터 상대적으로 배치하기 때문에 다른 콘텐츠가 그 주위로 흐르게 된다. 클리어링를 통해 이를 방지할 수 있는데, 여기에는 4가지 방법이 있다.</p>
+<p>첫 번째는 <code>float</code>에 <code>float</code>으로 대응하는 것이다. 자식 요소 뿐만 아니라 부모 요소에게도 <code>float</code> 속성을 지정하면 부모 요소가 자식 요소의 높이를 반영한다. 단, 이렇게 하면 부모 요소의 너비가 자식 요소를 담을 정도로 줄어든다.</p>
+<p>두 번째는 <code>float</code>에 <code>overflow</code> 속성으로 대응하는 것이다. 자식 요소의 높이를 부모에게 반영하는 방법으로, 부모 요소의 <code>overflow</code> 속성에 <code>auto</code> 또는 <code>hidden</code> 값을 부여한다. 하지만 <code>auto</code> 값의 경우 자식 요소가 부모 요소보다 클 때 스크롤바가 생기며, <code>hidden</code> 값의 경우 넘치는 부분이 잘려버린다.</p>
+<p>세 번째로 <code>float</code>을 빈 엘리먼트로 클리어링할 수도 있다. <code>float</code>이 지정된 요소 뒤에 빈 요소를 추가하고 빈 요소의 <code>clear</code> 속성에 <code>both</code> 값을 부여하는 것인데, 의미없는 요소를 사용하게 되기 때문에 권장하지 않는다.</p>
+<p>마지막으로 <code>float</code>을 가상 선택자 <code>:after</code>로 클리어링하는 방법이 있다. 가상 선택자는 가상 클래스(pseudo-class)와 가상 요소(pseudo-element)로 나뉜다. 가상 클래스는 특정 요소에 아무런 class를 부여하지 않았지만 마치 class를 변경한 것과 같은 역동적인 효과를 낼 수 있는 것들이다. <code>:hover</code>, <code>:active</code>, <code>:focus</code> 등이 여기에 속한다. 가상 요소는 존재하지 않는 요소를 가상으로 생성하는 선택자다. <code>:first-line</code>, <code>:before</code>, <code>:after</code>가 여기에 속한다. 가상 요소는 HTML 문서에 존재하지 않는 콘텐츠를 출력하기도 한다. 이렇게 가상 요소를 생성한 다음 <code>display: block; clear: both;</code> 처리를 하면 깔끔하게 클리어링을 할 수 있다. 가장 권장하는 방법이다.</p>
+<h2 id="image-replacement">Image Replacement</h2>
+<p>요소를 이미지로 교체하는 기법이다. 기본적으로 다음과 같이 하면 된다:</p>
+<pre class="hljs"><code><span class="hljs-selector-class">.elements</span> {
+  <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&quot;image.png&quot;</span>);
+}
+</code></pre>
+<p>그리고 <a href="https://www.sitepoint.com/css-image-replacement-text-indent-negative-margins-and-more/">A History of CSS Image Replacement</a>에서 더 많은 예시를 볼 수 있다.</p>
+<h2 id="ie-box-model%EA%B3%BC-w3c-box-model%EC%9D%98-%EC%B0%A8%EC%9D%B4">IE box model과 W3C box model의 차이</h2>
+<p>브라우저에 따라 박스 모델이 달라 요소에 지정된 너비와 높이가 같아도 서로 다르게 렌더링된다. 박스 모델은 기본적으로 <code>margin</code>, <code>border</code>, <code>padding</code>, <code>content</code>로 구성되어 있다.</p>
+<p><img src="https://cloud.githubusercontent.com/assets/11814588/9597163/cb8fdf6a-50b9-11e5-80f0-da960d3f88cc.gif" alt="두 박스 모델."></p>
+<p>W3C의 표준 박스 모델은 콘텐츠의 너비, 높이만을 <code>width</code>와 <code>height</code>로 계산하는 반면, IE의 박스 모델은 콘텐츠와 <code>padding</code>, <code>border</code>를 포함한 너비와 높이를 <code>width</code>, <code>height</code>로 계산한다. 이를 위한 해결책은 (1)DTD를 통해 브라우저가 쿽스 모드로 동작하지 않도록 하거나 (2)wrapper 요소를 사용해 wrapper 요소에 <code>width</code>, <code>height</code> 값을 할당하고 내부 엘리먼트에 <code>padding</code>, <code>border</code> 값을 할당하거나 (3)Conditional comment를 추가하거나 (3)css hack을 사용하는 방법이 있다. (<a href="https://github.com/nhnent/fe.javascript/wiki/%EB%B0%95%EC%8A%A4%EB%AA%A8%EB%8D%B8">참고</a>)</p>
+<h2 id="%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-(grid-system)">그리드 시스템 (Grid system)</h2>
+<p>반응형 웹페이지를 만들기 위해 자주 쓰이는 기술이다. 페이지 위에 격자를 그리고 그 위에 요소를 그 위에 배치하는 방법으로, 기술적인 이유만이 아니라 디자인적인 이유로도 사용한다. <a href="https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout">그리드 레이아웃은 CSS를 이용해 만들 수 있다.</a> 쉽게 그리드 시스템을 사용하기 위해서 <a href="http://bootstrapk.com/css/#grid">부트스트랩</a>을 사용하기도 한다.</p>
+<h1 id="css-%EC%A0%84%EC%B2%98%EB%A6%AC%EA%B8%B0">CSS 전처리기</h1>
+<p>CSS 문서가 방대해짐에 따라 작업 효율을 높이기 위해 등장한 기술이다. 전처리기를 사용하면 CSS 상의 반복적인 부분을 스크립트나 변수로 처리할 수 있고, 다양한 연산이 가능해진다. <a href="http://lesscss.org/">Less</a>나 <a href="https://sass-lang.com/">Sass</a>가 대표적인 CSS 전처리기이다.</p>
+<pre class="hljs"><code><span class="hljs-variable">@bgColor:</span> <span class="hljs-number">#DFDFDF</span>;
+<span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-variable">@bgColor</span>;
+}
+</code></pre>
+<p>위는 Less의 예시다. 컴파일을 하면 <code>body</code>의 <code>background-color</code> 값이 <code>#DFDFDF</code>로 치환된 CSS 코드를 얻을 수 있다.</p>
+<h2 id="%EB%B0%98%EC%9D%91%ED%98%95-%EB%94%94%EC%9E%90%EC%9D%B8(responsive-design)%EA%B3%BC-%EC%A0%81%EC%9D%91%ED%98%95-%EB%94%94%EC%9E%90%EC%9D%B8(adaptive-design)">반응형 디자인(Responsive design)과 적응형 디자인(Adaptive design)</h2>
+<p>반응형 디자인은 디스플레이의 너비에 따라 레이아웃을 변형시키고, 적응형 디자인은 고정적 레이아웃을 가진다. 반응형 웹이 미디어쿼리를 사용해 스타일 분기를 나누는 방법이라면 적응형 웹은 디바이스를 체크해 그 디바이스에 최적화된 마크업을 호출하는 방법이다. (<a href="https://studio-jt.co.kr/%EB%B0%98%EC%9D%91%ED%98%95-%EC%9B%B9-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%A0%81%EC%9D%91%ED%98%95-%EC%9B%B9/">참고</a>)</p>
+<h1 id="javascript">Javascript</h1>
+<h2 id="%EC%B6%94%EC%83%81%EC%A0%81-%EA%B0%99%EC%9D%8C-%EB%B9%84%EA%B5%90(abstract-equality-comparison)%EC%99%80-%EC%97%84%EA%B2%A9%ED%95%9C-%EA%B0%99%EC%9D%8C-%EB%B9%84%EA%B5%90(strict-equality-comparison)">추상적 같음 비교(Abstract equality comparison)와 엄격한 같음 비교(Strict equality comparison)</h2>
+<p>추상적 같음 비교(<code>==</code>)는 두 변수를 같은 데이터 타입으로 변환한 다음 값을 비교하는 반면, 엄격한 같음 비교(<code>===</code>)는 두 변수의 값과 데이터 타입을 함께 비교한다. 따라서 값과 타입이 완전히 일치해야 <code>true</code>를 반환한다. 엄격한 같음 비교를 사용한 비교 결과는 예측이 쉽고 타입 강제가 일어나지 않기 때문에 추상적 같음 비교를 사용하는 것보다 낫다. (<a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Equality_comparisons_and_sameness">참고</a>)</p>
+<h2 id="%EA%B3%A0%EA%B8%89-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC(advanced-exception-handling)">고급 예외처리(Advanced exception handling)</h2>
+<p><code>try...catch</code>와 <code>throw</code>로 고급 예외처리를 할 수 있다. 참고로 프로그램 실행 중에 발생하는 오류는 예외(Exception)이라고 하며, 코드의 문법적 오류는 에러(Error)라고 한다. <code>try...catch</code>는 구동 중 코드상에서 발생할 수 있는 오류들을 잡아준다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">try</span> {
+  <span class="hljs-comment">// try 블록은 예외가 발생할 수도 있는 부분</span>
+} <span class="hljs-keyword">catch</span>(e) {
+  <span class="hljs-comment">// catch 블록은 try 블록에서 예외가 발생했을 때 호출되는 부분</span>
+  <span class="hljs-comment">// 객체 e는 name과 message 속성을 가짐</span>
+} <span class="hljs-keyword">finally</span> {
+  <span class="hljs-comment">// 선택적으로 finally 블록을 추가할 수 있음</span>
+  <span class="hljs-comment">// 예외 발생 여부를 떠나 무조건 실행되어야 할 부분</span>
+}
+</code></pre>
+<p><code>throw</code>문은 강제로 예외를 발생시킬 때 사용한다. <code>throw</code>의 문법은 다음과 같다:</p>
+<pre class="hljs"><code><span class="hljs-keyword">throw</span> expression;
+</code></pre>
+<p>표현식의 값은 숫자, 문자 등 어떤 것이든 상관없다. <code>throw</code>가 발생하면 가장 가까운 <code>catch</code> 블록으로 이동한다. 다음과 같이 사용하면 된다:</p>
+<pre class="hljs"><code><span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">if</span>(a &gt; <span class="hljs-number">100</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-string">&quot;Value too high&quot;</span>;
+  }
+} <span class="hljs-keyword">catch</span>(e) {
+  alert(e);
+}
+</code></pre>
+<p>(<a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC%EB%AC%B8">참고1</a>) (<a href="http://webclub.tistory.com/71">참고2</a>)</p>
+<h2 id="event-delegation">Event delegation</h2>
+<p>이벤트 리스너를 등록하는 것은 DOM 입장에서는 부담스러운 일이며, 리소스를 상당히 잡아먹는 작업이다. 그래서 요소 하나하나에 이벤트를 등록하는 대신 위임을 하는 것이 바람직하다. 자식 요소들을 감싼 부모 요소에 이벤트를 등록해 이벤트를 위임하면 각각의 자식 요소들에 이벤트를 등록하는 효과를 낼 수 있다. 이벤트를 위임하면 리소스를 절약할 수 있을 뿐만 아니라 DOM 트리에 새로운 요소를 추가했을 때 코드를 추가할 필요가 없어지고, 코드의 양을 줄일 수도 있다. 다음은 ul 요소의 자식 요소인 li 요소를 클릭하면 해당 li 요소가 사라지는 코드이다.</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;todoList&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>TODO: A<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>TODO: B<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>TODO: C<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+</code></pre>
+<p>아주 평범한 리스트이다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTarget</span>(<span class="hljs-params">e</span>) </span>{
+  <span class="hljs-keyword">if</span>(!e) { <span class="hljs-comment">// event 객체가 존재하지 않으면</span>
+    e = <span class="hljs-built_in">window</span>.event; <span class="hljs-comment">// IE의 event 객체를 사용</span>
+  }
+
+  <span class="hljs-keyword">return</span> e.target || e.srcElement; <span class="hljs-comment">// 이벤트가 발생한 요소를 가져옴</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">itemDone</span>(<span class="hljs-params">e</span>) </span>{
+  <span class="hljs-keyword">var</span> elTarget, elParent;
+
+  elTarget = getTarget(e); <span class="hljs-comment">// 이벤트가 발생한 요소 가져옴 (li)</span>
+  elParent = target.parentNode; <span class="hljs-comment">// 해당 요소의 부모 요소를 가져옴 (ul)</span>
+  elParent.removeChild(elTarget); <span class="hljs-comment">// 이벤트가 발생한 요소를 제거함 (li)</span>
+}
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;todoList&#x27;</span>);
+
+  <span class="hljs-keyword">if</span>(el.addEventListener) { <span class="hljs-comment">// 이벤트 리스너가 지원되면</span>
+    el.addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{ <span class="hljs-comment">// 클릭 이벤트에 리스너를 지정</span>
+      itemDone(e);
+    }, <span class="hljs-literal">false</span>); <span class="hljs-comment">// 이벤트 버블링을 사용</span>
+  } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// 이벤트 리스너가 지원되지 않으면</span>
+    el.attachEvent(<span class="hljs-string">&#x27;onclick&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{ <span class="hljs-comment">// IE의 onclick 이벤트를 사용</span>
+      itemDone(e);
+    }
+  });
+})();
+</code></pre>
+<p>IE까지 고려한 코드다. 하나의 이벤트 리스너로 요소 3개를 제어하고 있다다. jQuery는 보다 편하게 이벤트를 바인딩할 수 있도록 <a href="http://api.jquery.com/delegate/"><code>.delegate()</code></a> 메소드를 제공하고 있다.</p>
+<h2 id="prototype-%EA%B8%B0%EB%B0%98-%EC%83%81%EC%86%8D">Prototype 기반 상속</h2>
+<p>자바스크립트는 클래스라는 개념이 없기 때문에 프로토타입(Prototype)이 클래스를 대신해 객체지향 프로그래밍의 핵심을 맡는다. 다만 ES6부터 클래스 문법이 추가됐기 때문에 프로토타입에 직접 접근할 필요가 없어졌다. <a href="https://parksb.github.io/article/1.html">자바스크립트의 OOP는 진정한 OOP가 아닌가?</a>를 참고해보자. 그래도 프토로타입은 여전히 자바스크립트의 기반이기 때문에 알아두는 것이 좋다. 자바스크립트에서는 이 프로토타입을 통해 다른 객체지향 언어에서 쓰이는 클래스를 구현할 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Player</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-built_in">this</span>.hp = <span class="hljs-number">100</span>;
+  <span class="hljs-built_in">this</span>.mp = <span class="hljs-number">50</span>;
+}
+
+<span class="hljs-keyword">var</span> kim = <span class="hljs-keyword">new</span> Player();
+<span class="hljs-keyword">var</span> park = <span class="hljs-keyword">new</span> Player();
+
+<span class="hljs-built_in">console</span>.log(kim.hp); <span class="hljs-comment">// 100</span>
+<span class="hljs-built_in">console</span>.log(kim.mp); <span class="hljs-comment">// 50</span>
+
+<span class="hljs-built_in">console</span>.log(park.hp); <span class="hljs-comment">// 100</span>
+<span class="hljs-built_in">console</span>.log(park.mp); <span class="hljs-comment">// 50</span>
+</code></pre>
+<p><code>kim</code>과 <code>park</code>은 <code>hp</code>와 <code>mp</code>를 각각 100, 50씩 가지고 있다. 만약 객체를 100개 만들면 200개의 변수가 메모리에 할당된다. 프로토타입을 활용하면 메모리를 아낄 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Player</span>(<span class="hljs-params"></span>) </span>{}
+Player.prototype.hp = <span class="hljs-number">100</span>;
+Player.prototype.mp = <span class="hljs-number">50</span>;
+
+<span class="hljs-keyword">var</span> kim = <span class="hljs-keyword">new</span> Player();
+<span class="hljs-keyword">var</span> park = <span class="hljs-keyword">new</span> Player();
+</code></pre>
+<p><code>kim</code>과 <code>park</code>은 프로토타입에 연결된 <code>Player</code> 객체의 값을 가져다 쓸 수 있다. <code>hp</code>와 <code>mp</code>를 <code>kim</code>과 <code>park</code>이 공유하는 것이다. 이러한 매커니즘으로 프로토타입을 이용해 상속을 구현할 수 있다. (<a href="https://medium.com/@bluesh55/javascript-prototype-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-f8e67c286b67">참고1</a>) (<a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain">참고2</a>)</p>
+<h2 id="null%2C-undefined%2C-undeclared%EC%9D%98-%EC%B0%A8%EC%9D%B4">null, undefined, undeclared의 차이</h2>
+<p>이건 종종 헷갈리는 경우가 있다. <code>null</code>은 어떠한 값도 가리키지 않는다는 의미의 원시값이다. 변수를 선언하고 <code>null</code>을 할당한 경우 해당 변수가 어떠한 값도 가지지 않았다는 의미가 된다. <code>undefined</code>는 변수가 선언됐지만 값이 할당되지 않았다는 것을 의미하는 값이다. 즉, <code>null</code>은 개발자로부터 할당되는 값이고, <code>undefined</code>는 아예 할당을 하지 않은 상태다. <code>undeclared</code>는 변수 자체가 선언되지 않았다는 의미다. 콘솔에서는 <code>undefined</code>와 똑같이 표기되기 때문에 변수가 초기화되지 않았다는 것인지, 아예 선언되지 않았다는 것인지 확인할 필요가 있다.</p>
+<h2 id="%ED%81%B4%EB%A1%9C%EC%A0%80(closure)">클로저(Closure)</h2>
+<p>자바스크립트에서는 함수 안에 또 다른 함수를 선언할 수 있는데, 함수 안의 함수인 내부함수(inner function)는 외부함수(outer function)의 지역변수에 접근할 수 있다. 외부함수의 실행이 끝나서 외부함수가 소멸된 이후에도 내부함수는 외부함수에 접근할 수 있다. 이러한 메커니즘을 클로저라고 한다. MDN에 클로저를 활용한 재밌는 예제가 있다:</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeAdder</span>(<span class="hljs-params">x</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">y</span>) </span>{
+    <span class="hljs-keyword">return</span> x + y;
+  };
+}
+
+<span class="hljs-keyword">var</span> add5 = makeAdder(<span class="hljs-number">5</span>);
+<span class="hljs-keyword">var</span> add10 = makeAdder(<span class="hljs-number">10</span>);
+
+<span class="hljs-built_in">console</span>.log(add5(<span class="hljs-number">2</span>));  <span class="hljs-comment">// 7</span>
+<span class="hljs-built_in">console</span>.log(add10(<span class="hljs-number">2</span>)); <span class="hljs-comment">// 12</span>
+</code></pre>
+<p>여기서 <code>makeAdder(x)</code>는 <code>x</code>를 인자로 받아서 새로운 함수를 반환한다. 그리고 반환되는 내부 함수는 <code>y</code>를 인자로 받아 <code>x + y</code>를 반환한다. (<a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Closures">참고1</a>) (<a href="https://opentutorials.org/course/743/6544">참고2</a>)</p>
+<h2 id="%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%AA%A8%EB%93%88-%ED%8C%A8%ED%84%B4(module-pattern)">자바스크립트 모듈 패턴(Module pattern)</h2>
+<p>모듈 패턴(Module pattern)은 코드 설계 방법을 말한다. 여기서는 객체를 public과 private으로 나누는 캡슐화가 핵심이다. 자바스크립트는 public이나 private와 같은 접근 제한자를 제공하지 않지만, 클로저를 이용해 구현할 수 있다. private method는 코드 접근을 제한할 수 있을뿐만 아니라 추가적인 자바스크립트가 다른 스크립트와 이름이 충돌하는 것을 막을 수 있다. 매우 기본적인 방법은 모든 코드를 익명함수 안에 집어넣어 private 스코프로 만드는 것이다. 하지만 이렇게 하면 코드를 재사용하기 불편해지기 때문에 별도의 네임스페이스를 적용해야 한다. (<a href="http://asfirstalways.tistory.com/234">참고1</a>)</p>
+<h2 id="%EB%84%A4%EC%9D%B4%ED%8B%B0%EB%B8%8C-%EA%B0%9D%EC%B2%B4(native-object)%2C-%ED%98%B8%EC%8A%A4%ED%8A%B8-%EA%B0%9D%EC%B2%B4(host-object)%2C-built-in-%EA%B0%9D%EC%B2%B4">네이티브 객체(Native object), 호스트 객체(Host object), Built-in 객체</h2>
+<p>객체는 크게 3가지로 구분된다. 네이티브 객체는 ECMAScript 명세에 정의된 객체로, 자바스크립트의 모든 엔진에 구현된 표준객체이다. BOM(Browser Object Model)과 DOM 등은 모두 네이티브 객체며, 자바스크립트 엔진을 구동하는 측에서 빌드되는 객체이다. 호스트 객체는 개발자가 정의한 객체이다. 마지막으로 Built-in 객체는 자바스크립트 엔진을 구성하는 기본 객체들을 포함한다. <code>Number</code>, <code>String</code>, <code>Array</code>, <code>Date</code> 등의 내장객체들이 있다. (<a href="https://github.com/hckoo/javascriptstudy2013/blob/master/1209/6%EC%9E%A5%20%EA%B0%9D%EC%B2%B4.md">참고</a>)</p>
+<h2 id="%EA%B8%B0%EB%8A%A5-%EA%B2%80%EC%B6%9C(feature-detection)%EA%B3%BC-%EA%B8%B0%EB%8A%A5-%EC%B6%94%EB%A1%A0(feature-inference)">기능 검출(Feature detection)과 기능 추론(Feature inference)</h2>
+<p>기능 검출이란 스크립트가 호출하는 기능을 사용자의 브라우저가 지원하는지 체크하는 것을 말한다. 다음은 브라우저가 GPS를 지원하는지 확인하는 코드다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">if</span>(navigator.geolocation) {...}
+</code></pre>
+<p>기능 추론도 기능 검출처럼 브라우저가 특정 기능을 지원하는지 체크하는 것이다. 하지만 'A기능을 지원하면 B기능도 지원할 것이다.'라는 추론이 바탕이 된다. 별로 좋지 않은 방법이다. (<a href="https://stackoverflow.com/questions/20104930/whats-the-difference-between-feature-detection-feature-inference-and-using-th">참고</a>)</p>
+<h2 id="%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85(hoisting)">호이스팅(Hoisting)</h2>
+<p>호이스팅은 인터프리터가 스크립트를 해석할 때, 변수의 정의가 스코프에 따라 선언과 할당으로 분리되어 선언을 항상 컨텍스트의 최상위로 끌어올리는 것을 의미한다. 즉, 변수를 어디에서 선언하든 인터프리터는 최상단에서 선언한 것으로 해석한다. 이는 변수 뿐 아니라 함수에도 적용된다. 따라서 상단에서 함수를 호출하고, 하단에서 함수를 정의해도 기능적인 문제는 없다. (<a href="https://stackoverflow.com/questions/20104930/whats-the-difference-between-feature-detection-feature-inference-and-using-th">참고</a>)</p>
+<h2 id="%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%9D%90%EB%A6%84(event-flow)">이벤트 흐름(Event flow)</h2>
+<p>HTML 요소가 다른 요소의 내부에 중첩되어 있을 때 자식 요소를 클릭하면 부모 요소를 클릭한 셈이 된다. 이처럼 이벤트는 흐름을 가지고 있으며, 이것을 이벤트 흐름이라고 부른다. 이벤트 흐름에는 두 가지 방식이 있다. 먼저 이벤트 버블링(Event bubbling)은 이벤트가 직접적으로 발생한 노드로부터 시작해 바깥 노드로 이벤트가 퍼져 나가는 방식을 말한다. 대부분의 브라우저가 기본적으로 이 방식을 지원한다. 반대로 이벤트 캡쳐링(Event capturing)은 바깥 노드부터 시작해서 안쪽으로 퍼지는 방식이다. IE8 혹은 그 이전 버전에서는 지원되지 않는다.</p>
+<h2 id="document-load-event%EC%99%80-domcontentloaded-event">document load event와 DOMContentLoaded event</h2>
+<p>DOM을 제어하는 스크립트는 마크업의 모든 요소에 대한 처리가 끝난 뒤에 로드되어야 한다. 그래서 보통 <code>&lt;body&gt;</code> 태그 최하단에서 스크립트를 불러오도록한다. 또 다른 방법은 이벤트를 이용하는 것이다. document load event는 페이지의 모든 리소스가 로드된 이후에 실행된다. 때문에 구동이 지연되어 사용자 경험을 저하할 수 있다. 반면 DOMContentLoaded event는 스크립트 로드를 마치고 실행이 가능한 시점에 바로 실행된다. (<a href="https://opentutorials.org/module/904/6765">참고</a>)</p>
+<h2 id="%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%82%BC%ED%95%AD-%EC%97%B0%EC%82%B0%EC%9E%90(conditional-ternary-operator)">조건부 삼항 연산자(Conditional ternary operator)</h2>
+<p>보통 그냥 '삼항 연산자’이라고 부른다. if문을 축약해서 쓸 수 있는 유용한 연산자이지만, 과하게 사용하면 코드의 가독성을 떨어뜨릴 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span>, b = <span class="hljs-number">2</span>;
+
+<span class="hljs-built_in">console</span>.log(a &lt; b ? <span class="hljs-string">&quot;True&quot;</span> : <span class="hljs-string">&quot;False&quot;</span>); <span class="hljs-comment">// &quot;True&quot;</span>
+<span class="hljs-built_in">console</span>.log(a &gt; b ? <span class="hljs-string">&quot;True&quot;</span> : <span class="hljs-string">&quot;False&quot;</span>); <span class="hljs-comment">// &quot;False&quot;</span>
+
+a &lt; b ? (
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;True&quot;</span>);
+  alert(<span class="hljs-string">&quot;True&quot;</span>);
+) : (
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;False&quot;</span>);
+  alert(<span class="hljs-string">&quot;False&quot;</span>);
+); <span class="hljs-comment">// &quot;True&quot;</span>
+</code></pre>
+<p>조건이 <code>true</code>면 전자의 값을 반환하고, <code>false</code>면 후자의 값을 반환한다.</p>
+<h2 id="use-strict">use strict</h2>
+<p>ES6에서 새로 추가된 기능으로, 스크립트에 <code>&quot;use strict;&quot;</code> 구문을 추가하면 strict mode에서 실행하게 된다. strict mode는 코딩 실수를 찾아 예외를 발생시키고, 전역 객체에 접근하는 것과 같은 위험한 액션을 막는다. 스크립트 전체에 적용할 수도 있고 특정 함수에만 적용할 수도 있다. (<a href="https://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it">참고</a>)</p>
+<h2 id="call-stack%EA%B3%BC-task-queue">Call stack과 Task queue</h2>
+<p>자바스크립트 엔진은 요청이 들어올 때마다 요청을 순차적으로 call stack에 담아 하나씩 처리한다. call stack은 하나만 존재하기 때문에 요청도 하나씩만 처리할 수 밖에 없다. task queue는 처리해야 하는 task를 임시로 저장해두는 큐다. call stack이 비워지면 task queue에 있던 task들이 순서대로 call stack에 push된다. 가령 <code>setTimeout()</code> 함수로 10초의 딜레이를 둔다면, 그동안 <code>setTimeout()</code>이 처리할 task는 task queue에 쌓이고 다른 부분의 스크립트들이 실행된다. 따라서 딜레이를 0으로 줘도 <code>setTimeout()</code>의 task는 다른 것들보다 나중에 처리된다. (<a href="https://github.com/nhnent/fe.javascript/wiki/June-13-June-17,-2016">참고</a>)</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/1.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">ES6와 함께 JavaScript로 OOP하기</p> <p class="article-navigation-subtitle">자바스크립트의 OOP는 진정한 OOP가 아닌가?</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/0.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

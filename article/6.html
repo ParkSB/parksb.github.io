@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🦕 공룡책으로 정리하는 운영체제 Ch.2 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/6.html"><meta property="og:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.2: System Structures "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.2**.png?subtitle=System%20Structures&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="챕터1에서 다룬 시스템에 대해 보다 자세히 다루는 챕터인데, 그렇게 어렵지는 않다. 복잡한 내용이 별로 없어서 쉽게 읽을 수 있다.Operating-System Services운영체제는 사용자와 시스템에게 다양한 서비스를 제공한다.+--------------------------------------------------..."><meta name="twitter:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.2: System Structures "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.2**.png?subtitle=System%20Structures&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="챕터1에서 다룬 시스템에 대해 보다 자세히 다루는 챕터인데, 그렇게 어렵지는 않다. 복잡한 내용이 별로 없어서 쉽게 읽을 수 있다.Operating-System Services운영체제는 사용자와 시스템에게 다양한 서비스를 제공한다.+--------------------------------------------------..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🦕 공룡책으로 정리하는 운영체제 Ch.2 </h1> <h2 id="article-subtitle"> System Structures </h2> <time id="article-date"> 2018.05.03 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180503_dinosaur-book-ch2.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#operating-system-services">Operating-System Services</a></li><li><a href="#system-calls">System Calls</a></li><li><a href="#types-of-system-calls">Types of System Calls</a></li><li><a href="#operating-system-structure">Operating System Structure</a><ul><li><a href="#simple-structure">Simple Structure</a></li><li><a href="#layered-approach">Layered Approach</a></li><li><a href="#microkernels">Microkernels</a></li><li><a href="#modules">Modules</a></li><li><a href="#hybrid-systems">Hybrid Systems</a></li></ul></li></ul></div></p>
+</details>
+<p>챕터1에서 다룬 시스템에 대해 보다 자세히 다루는 챕터인데, 그렇게 어렵지는 않다. 복잡한 내용이 별로 없어서 쉽게 읽을 수 있다.</p>
+<h1 id="operating-system-services">Operating-System Services</h1>
+<p>운영체제는 사용자와 시스템에게 다양한 서비스를 제공한다.</p>
+<pre class="hljs"><code>+-----------------------------------------------------------------------------------------------------------------------+
+| user and other system programs                                                                                        |
++-----------------------------------------------------------------------------------------------------------------------+
+| +-----+-------+-------------+                                                                                         |
+| | GUI | batch | commandline |                                                                                         |
+| +-----+-------+-------------+                                                                                         |
+| | user interfaces           |                                                                                         |
+| +---------------------------+                                                                                         |
++-----------------------------------------------------------------------------------------------------------------------+
+| system calls                                                                                                          |
++-----------------------------------------------------------------------------------------------------------------------+
+| +-------------------------------------------------------------------------------------------------------------------+ |
+| | +-------------------+ +----------------+ +-------------+ +---------------+ +---------------------+ +------------+ | |
+| | | program execution | | I/O operations | | file systems| | communication | | resource allocation | | accounting | | |
+| | +-------------------+ +----------------+ +-------------+ +---------------+ +---------------------+ +------------+ | |
+| | +-----------------+                                                                   +-------------------------+ | |
+| | | error detection |                                                                   | protection and security | | |
+| | +-----------------+                                                                   +-------------------------+ | |
+| +------------------------------------------------------services-----------------------------------------------------+ |
++----------------------------------------------------operating system---------------------------------------------------+
+| hardware                                                                                                              |
++-----------------------------------------------------------------------------------------------------------------------+
+</code></pre>
+<ul>
+<li><strong>UI(User Interface)</strong>: UI는 말그대로 사용자와 컴퓨터 시스템이 만나는 지점을 말한다. 키보드 타이핑이나 마우스 클릭과 같은 행동으로 사용자는 컴퓨터를 조작할 수 있다. 인터페이스는 크게 CLI(Command-Line Interface)와 배치 인터페이스(Batch interface), 그리고 GUI(Graphical User Interface)로 나눌 수 있다. CLI는 사용자가 텍스트 명령을 통해 명령을 내리는 인터페이스다. 그리고 이러한 인터페이스를 제공하는 프로그램을 셸(Shell)이라고 부른다.과거 MS-DOS나 애플소프트 베이직이 CLI를 기반으로 했다. 배치 인터페이스는 명령을 파일에 넣어두고, 파일이 실행되면서 명령을 실행하는 인터페이스다. CLI가 널리 쓰이기 이전, 40~60년대 컴퓨터는 이러한 방식을 사용했다. GUI는 현재 가장 흔하게 찾아볼 수 있는 인터페이스다. GUI 환경에서 사용자는 키보드 타이핑, 마우스 클릭, 손가락 터치 등 다양한 방법으로 화면에 띄워진 그래픽을 조작하며, 이를 통해 컴퓨터에게 명령을 내린다.</li>
+<li><strong>프로그램 실행(Program execution)</strong>: 시스템은 프로그램을 메모리에 로드하고, 이를 실행할 수 있어야 한다. 또한 프로그램은 정상적으로든 그렇지 않든 실행을 끝낼 수 있어야 한다.</li>
+<li><strong>입출력 명령(I/O operations)</strong>: 만약 프로그램이 입출력을 필요로한다면, 운영체제는 입출령 명령을 수행해야 한다. 이때 효율과 보안을 위해 운영체제는 사용자가 직접 입출력 장치를 조작하지 않고, 자신을 거치도록한다.</li>
+<li><strong>파일 시스템 조작(File-system manipulation)</strong>: 파일을 쓰고, 읽고, 만들고, 지운다. 또한 사용자가 파일에 접근하지 못하도록 막기도 한다.</li>
+<li><strong>통신(Communications)</strong>: 어떤 프로세스가 다른 프로세스와 정보를 교환해야 하는 상황에서 운영체제는 공유 메모리(Shared memory)나 메세지 패싱(Message passing)이라는 방법을 사용한다. 공유 메모리는 여러개의 프로세스가 메모리의 한 부분을 공유하도록 하는 것이고, 메세지 패싱은 프로세스 간에 정보 패킷(Packets)을 주고 받는 것을 말한다. (공유 메모리 방식보다 메세지 패싱 방식의 속도가 더 느리다.)</li>
+<li><strong>에러 탐지(Error detection)</strong>: 운영체제는 CPU나 메모리와 같은 하드웨어, 입출력장치, 그리고 사용자 프로그램 등에서 일어나는 에러를 탐지하고, 바로 잡아야 한다.</li>
+</ul>
+<p>운영체제는 사용자에게 직접적인 도움은 안 되지만, 시스템을 위한 작업도 수행한다.</p>
+<ul>
+<li><strong>자원 할당(Resource allocation)</strong>: 여러 사용자나 여러 작업을 동시에 처리해야 한다면, 컴퓨팅 자원은 각각 잘 배분되어야 한다. 이러한 상황에서 운영체제는 다양한 종류의 자원을 관리한다.</li>
+<li><strong>회계(Accounting)</strong>: 시스템은 어떤 유저가 어떤 종류의 자원을 얼마나 사용하고 있는지 계속 추적해야 한다. 이 기록은 회계나 사용량 통계를 위해 사용될 수 있다. 직역하면 회계지만, 대략 관리, 통계 정도로 받아들이면 될 것 같다.</li>
+<li><strong>보호와 보안(Protection and security)</strong>: 몇 번을 말해도 모자랄 정도로 중요한 부분이다. <a href="https://parksb.github.io/article/31.html">인텔 CPU의 멜트다운, 스펙터 취약점 사태</a>를 생각해보자…</li>
+</ul>
+<h1 id="system-calls">System Calls</h1>
+<p>시스템 콜은 커널과 사용자 프로그램을 이어주는 인터페이스 역할을 한다. 좀 생소하게 느껴질 수도 있겠지만, 그냥 로우 레벨 작업을 하는 코드라고 생각하면 된다.</p>
+<pre class="hljs"><code>                           +------------------+
+                      +----+ user application |&lt;----+
+               open() |    +------------------+     |
+user                  v                             |
+mode    +-------------------------------------------+--------------+
+--------+ system call interface                                    |
+kernel  +---+------------------------------------------------------+
+mode        |     +-----+                                      ^
+            +----&gt;| ... |                  open()              |
+                  +-----+                    implementation    |
+                i |     +------------------&gt; of open()         |
+                  +-----+                    system call       |
+                  | ... |                    ...               |
+                  +-----+                    return -----------+
+</code></pre>
+<p>사용자 프로그램이 디스크에 있는 파일을 연다는 것은 파일 시스템에 접근한다는 의미다. 시스템에 접근하기 위해서는 커널 모드로 전환되어야 하는데, 이때 시스템 콜을 사용한다. 메모리의 특정 주소 범위에는 어떤 동작들이 할당되어 있다. 이것을 시스템 콜 테이블(System call table)이라고 부르며, 인터럽트 벡터(Interrupt vector)라고도 부른다. 예를 들어 <code>fopen()</code> 함수를 호출한다면, 운영체제는 파일을 여는 함수를 찾기 위해 시스템 콜 테이블을 참조한다. 시스템 콜 테이블은 메모리 주소의 모음인데, 해당 메모리 주소는 인터럽트 서비스 루틴(Interrupt service routine)을 가리키고 있다. 인터럽트 서비스 루틴은 일반적으로 C로 짜여진 코드이며, 시스템 콜 테이블이 가리키는 특정 메모리 주소가 구체적으로 어떤 동작을할지 정의해놓은 것이다.</p>
+<p>시스템 콜에는 <code>fork()</code>, <code>exit()</code>, <code>read()</code>, <code>write()</code>와 같은 함수들이 있다. 하지만 개발자가 이것을 직접 조작하는 것은 불편하고 위험한 일이므로, 표준 라이브러리(Standard library)를 사용한다. <code>stdio.h</code>가 그 일종이다.</p>
+<p>사용자 프로그램이 운영체제에게 매개변수를 넘기는 방법은 3가지가 있다.</p>
+<ol>
+<li><strong>Call by value</strong>: 매개변수의 값 자체를 복사해서 CPU 레지스터에 전달한다.</li>
+<li><strong>Call by reference</strong>: 값의 메모리 주소를 전달한다. 많은 값을 전달한다면 이렇게 하는 것이 효율적이다.</li>
+<li>프로그램에을 통해 스택(Stack)에 매개변수를 추가하고, 운영체제를 통해 값을 뺀다.</li>
+</ol>
+<h1 id="types-of-system-calls">Types of System Calls</h1>
+<p>시스템 콜은 크게 6가지로 분류할 수 있다.</p>
+<ul>
+<li>프로세스 제어: end, abort, load, execute</li>
+<li>파일 관리: create, delete, open, close, read, write</li>
+<li>장치 관리: read, write, request, release</li>
+<li>정보 유지: get/set time or date</li>
+<li>통신: send/receive messages, transfer status</li>
+<li>보호</li>
+</ul>
+<h1 id="operating-system-structure">Operating System Structure</h1>
+<p>현대 운영체제는 계층을 나눠서 시스템을 관리한다.</p>
+<h2 id="simple-structure">Simple Structure</h2>
+<pre class="hljs"><code>+-------------------------------------+
+| application program                 |
++--+-------------------------------+--+
+   |                               |
+   v                               |
++------------------------------+   |
+| resident system program      |   |
++--+------------------------+--+   |
+   |                        |      |
+   v                        |      |
++-----------------------+   |      |
+| MS-DOS device drivers |   |      |
++--+--------------------+   |      |
+   |                        |      |
+   v                        v      v
++-------------------------------------+
+| ROM BIOS device drivers             |
++-------------------------------------+
+</code></pre>
+<p>과거에는 사실상 계층이 구분되어 있지 않았다. MS-DOS에서는 사용자 프로그램이 입출력 루틴에 접근해 디스플레이와 디스크 드라이브에 직접 쓰기를 할 수 있었다. 따라서 만약 사용자 프로그램에 문제가 생기면 전체 시스템에 문제가 생겼다. UNIX 시스템은 이것을 개선했다.</p>
+<pre class="hljs"><code>+------------------------------------------------------------------+
+| (the users)                                                      |
++------------------------------------------------------------------+
+| shells and commands                                              |
+| compilers and interpreters                                       |
+| system libraries                                                 |
++------------------------------------------------------------------+ -+
+| system-call interface to the kernel                              |  |
++------------------------------------------------------------------+  |
+| signals terminal       file system              CPU scheduling   |  |
+| handling               swapping block I/O      page replacement  |  | kernel
+| character I/O system   system                  demand paging     |  |
+| terminal drivers       disk and tape drivers   virtual memory    |  |
++------------------------------------------------------------------+  |
+| kernel interface to the hardware                                 |  |
++----------------------+--------------------+----------------------+ -+
+| terminal controllers | device controllers | memory controllers   |
+| terminals            | disks and tapes    | physical memory      |
++----------------------+--------------------+----------------------+
+</code></pre>
+<p>전통적인 UNIX 시스템 구조는 MS-DOS에 비해 기능이 분리되었지만, 여전히 하나의 계층이 너무 많은 일을 했다. 하드웨어 계층 위, 사용자 계층 아래에 있는 커널이 모든 기능을 제공했다. 이러한 모놀리딕(Monolithic) 구조는 구현과 유지보수가 쉽지 않았다.</p>
+<h2 id="layered-approach">Layered Approach</h2>
+<pre class="hljs"><code>+-------------------------------+
+| layer N: user interface       |
+| +---------------------------+ |
+| | ...                       | |
+| | +-----------------------+ | |
+| | | layer 1               | | |
+| | | +-------------------+ | | |
+| | | | layer 0: hardware | | | |
+| | | +-------------------+ | | |
+| | +-----------------------+ | |
+| +---------------------------+ |
++-------------------------------+
+</code></pre>
+<p>운영체제를 더 세분화해 계층을 분리한 것이 계층적 접근(Layered approach) 방식이다. 가장 아래에 있는 계층(레이어 0)은 하드웨어고, 가장 높은 계층(레이어 N)은 사용자 인터페이스다. 이 방식은 유지보수가 아주 편한데, 하나의 계층에만 신경쓰면 다른 계층에는 아무런 신경을 쓰지 않아도 되기 때문이다.</p>
+<h2 id="microkernels">Microkernels</h2>
+<p>마이크로커널(Microkernel)은 커널에서 핵심적인 요소만 남긴 가벼운 커널을 말한다. 커널이 커질수록 문제가 생길 가능성이 높아지고, 유지보수가 힘들어지기 때문에 커널을 더 가볍게 만들 필요가 있었다. 마이크로커널은 코드 양이 훨씬 적어 컴파일, 테스트 시간이 비교적 짧고, 다른 시스템에 이식(Porting)하기도 쉽다. 다만 시스템 프로그램을 추가해 기능을 늘리려하면 속도가 느려진다.</p>
+<p>OS X의 커널(Darwin)의 일부가 마이크로커널 Mach를 기반으로 만들어졌으며, IoT에도 마이크로커널이 사용된다.</p>
+<h2 id="modules">Modules</h2>
+<p>모듈은 커널을 확장하기 위한 기술로, OOP에서 말하는 그 모듈화와 같은 개념이다. 프로세스에 실시간으로 모듈을 붙여 작동시킬 수 있고, 각 기능들을 독립적으로 관리할 수 있어 효과적으로 시스템을 유지할 수 있다. 장치 드라이버는 모두 모듈로 구현되어 있으며, 윈도우에서 .dll파일이 바로 모듈이다.</p>
+<h2 id="hybrid-systems">Hybrid Systems</h2>
+<p>스마트폰은 OS 구조의 최신판이라고 할 수 있다. 하이브리드 시스템은 커널의 핵심만 남기고 나머지는 따로 구현한 시스템이다. OS X의 경우 BSD가 핵심이지만 나머지는 모두 애플이 자체 구현했다. 안드로이드는 리눅스 커널위에 자체 구현한 라이브러리를 올린 시스템이다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/7.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.3</p> <p class="article-navigation-subtitle">Process Concept</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/5.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.1</p> <p class="article-navigation-subtitle">Overview</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/6.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

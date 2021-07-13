@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 📊 파이썬으로 정리하는 Quick-Sort </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/18.html"><meta property="og:title" content="📊 파이썬으로 정리하는 Quick-Sort"><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%93%8A%20%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20Quick-Sort**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.22%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="quick sort는 말 그대로 빠른 정렬을 의미한다. 큰 문제를 쪼개 작은 문제로 만들어서 정복하는 divide-and-conquer 패러다임에 바탕을 두고 있어 퍼포먼스가 좋다.기본적인 매커니즘은 그리 어렵지 않다.리스트에서 값 하나를 골라 pivot으로 정한다.pivot보다 작은 것은 pivot의 왼쪽으로 보낸다.p..."><meta name="twitter:title" content="📊 파이썬으로 정리하는 Quick-Sort"><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%93%8A%20%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20Quick-Sort**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.22%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="quick sort는 말 그대로 빠른 정렬을 의미한다. 큰 문제를 쪼개 작은 문제로 만들어서 정복하는 divide-and-conquer 패러다임에 바탕을 두고 있어 퍼포먼스가 좋다.기본적인 매커니즘은 그리 어렵지 않다.리스트에서 값 하나를 골라 pivot으로 정한다.pivot보다 작은 것은 pivot의 왼쪽으로 보낸다.p..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 📊 파이썬으로 정리하는 Quick-Sort </h1> <time id="article-date"> 2018.06.22 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180622_sum-up-quick-sort-with-python.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul></ul></div></p>
+</details>
+<p>quick sort는 말 그대로 빠른 정렬을 의미한다. 큰 문제를 쪼개 작은 문제로 만들어서 정복하는 divide-and-conquer 패러다임에 바탕을 두고 있어 퍼포먼스가 좋다.</p>
+<p><img src="https://idea-instructions.com/quick-sort.png" alt="퀵 소트 매커니즘. 크게 5단계."></p>
+<p>기본적인 매커니즘은 그리 어렵지 않다.</p>
+<ol>
+<li>리스트에서 값 하나를 골라 pivot으로 정한다.</li>
+<li>pivot보다 작은 것은 pivot의 왼쪽으로 보낸다.</li>
+<li>pivot보다 큰 것은 pivot의 오른쪽으로 보낸다.</li>
+<li>pivot의 왼쪽에 있는 값들로 새로운 리스트를 만들어 또 pivot을 정하고, pivot보다 작은 것은 왼쪽, 큰 것은 오른쪽으로 보낸다. 그리고 다시 왼쪽, 오른쪽 값들로 새로운 리스트를 만들어 이동하는 과정을 반복한다.</li>
+<li>pivot의 오른쪽에 있는 값들로 새로운 리스트를 만들어 또 pivot을 정하고 pivot보다 작은 것은 왼쪽, 큰 것은 오른쪽으로 보낸다. 그리고 다시 왼쪽, 오른쪽 값들로 새로운 리스트를 만들어 이동하는 과정을 반복한다.</li>
+</ol>
+<p>위 과정을 재귀적으로 반복하면 리스트의 값들이 정렬된다. 단계적으로 살펴보면 이렇다.</p>
+<pre class="hljs"><code><span class="hljs-comment"># input</span>
+[<span class="hljs-number">85</span>, <span class="hljs-number">24</span>, <span class="hljs-number">63</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-number">31</span>, <span class="hljs-number">96</span>, <span class="hljs-number">50</span>]
+
+<span class="hljs-comment"># 50을 pivot으로 정한다.</span>
+[<span class="hljs-number">85</span>, <span class="hljs-number">24</span>, <span class="hljs-number">63</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-number">31</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># pivot(50)보다 작은 것은 pivot의 왼쪽으로, 큰 것은 오른쪽으로 보낸다. </span>
+[<span class="hljs-number">24</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-number">31</span>, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+
+<span class="hljs-comment"># pivot(50)의 왼쪽에 있는 값들로 새로운 리스트를 만들고, 31을 pivot으로 정한다.</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[<span class="hljs-number">24</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-string">&quot;31&quot;</span>]
+
+<span class="hljs-comment"># pivot(31)보다 작은 것은 pivot(31)의 왼쪽으로, 큰 것은 오른쪽으로 보낸다.</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[<span class="hljs-number">24</span>, <span class="hljs-number">17</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+
+<span class="hljs-comment"># pivot(31)의 왼쪽에 있는 값들로 새로운 리스트를 만들고, 17을 pivot으로 정한다.</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[_, _, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[<span class="hljs-number">24</span>, <span class="hljs-string">&quot;17&quot;</span>]
+
+<span class="hljs-comment"># pivot(17)보다 작은 것은 pivot(17)의 왼쪽으로, 큰 것은 오른쪽으로 보낸다.</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[_, _, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[<span class="hljs-string">&quot;17&quot;</span>, <span class="hljs-number">24</span>]
+
+<span class="hljs-comment"># pivot(17)의 왼쪽에 있는 값들로 새로운 리스트를 만든다. (왼쪽에 값이 없으므로 패스)</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[_, _, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[<span class="hljs-string">&quot;17&quot;</span>, <span class="hljs-number">24</span>]
+[]
+
+<span class="hljs-comment"># pivot(17)의 오른쪽에 있는 값들로 새로운 리스트를 만든다. (값이 하나이므로 패스)</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[_, _, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[<span class="hljs-string">&quot;17&quot;</span>, _]
+[] [<span class="hljs-number">24</span>]
+
+<span class="hljs-comment"># 리스트를 pivot(17) 오른쪽에 넣는다. (호출한 값이 return되는 과정)</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[_, _, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[<span class="hljs-string">&quot;17&quot;</span>, <span class="hljs-number">24</span>]
+[] [_]
+
+<span class="hljs-comment"># 리스트를 pivot(31) 왼쪽에 넣는다. (호출한 값이 return되는 과정)</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[<span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[_, _]
+[] [_]
+
+<span class="hljs-comment"># pivot(31)의 오른쪽에 있는 값들로 새로운 리스트를 만든다. (값이 하나이므로 패스)</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[<span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[_, _] [<span class="hljs-number">45</span>]
+[] [_]
+
+<span class="hljs-comment"># 리스트를 pivot(31) 오른쪽에 넣는다. (호출한 값이 return되는 과정)</span>
+[_, _, _, _, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[<span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">45</span>]
+[_, _] [_]
+[] [_]
+
+<span class="hljs-comment"># 리스트를 pivot(50) 왼쪽에 넣는다. (호출한 값이 return되는 과정)</span>
+[<span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-number">31</span>, <span class="hljs-number">45</span>, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">63</span>, <span class="hljs-number">96</span>]
+[_, _, _, _]
+[_, _] [_]
+[] [_]
+
+<span class="hljs-comment"># 위 과정을 pivot(50)의 오른쪽 리스트에 대해 반복한다.</span>
+[<span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-number">31</span>, <span class="hljs-number">45</span>, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">63</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>]
+[_, _, _, _]   [_, _, _]
+[_, _] [_] [_, _] []
+[] [_] [_] []
+
+<span class="hljs-comment"># output</span>
+[<span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-number">31</span>, <span class="hljs-number">45</span>, <span class="hljs-number">50</span>, <span class="hljs-number">63</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>]
+</code></pre>
+<p>여기서는 리스트의 마지막 값을 항상 pivot으로 정했지만, random하게 pivot을 정할 수도 있고, 중앙값을 pivot으로 정할 수도 있다. 중앙값을 pivot으로 정하는 정렬 과정을 시각화하면 <a href="https://www.youtube.com/embed/8hEyhs3OV1w?rel=0">이 영상</a>처럼 보인다. (quick sort를 이해하는 데 별로 도움은 안 되지만 재밌다.)</p>
+<p>그리고 좀 더 최적화된 방법으로 inplace quick sort를 쓸 수 있다. inplace 방식은 pivot을 정하고 왼쪽, 오른쪽으로 값들을 이동시키는 과정을 개선한 것이다.</p>
+<ol>
+<li>먼저 왼쪽에서 출발하는 인덱스 <code>l</code>과 오른쪽에서 출발하는 인덱스 <code>r</code>을 만든다.</li>
+<li><code>l</code>은 pivot보다 큰 값을 만나면 정지하고, <code>r</code>은 pivot보다 작은 값을 만나면 정지한다.</li>
+<li>두 인덱스가 모두 정지하면 값을 교체한다.</li>
+<li>이 과정을 <code>l</code>과 <code>r</code>이 같아질 때까지 반복한다.</li>
+</ol>
+<p>이런 식으로 구현하면 더 적은 메모리를 사용할 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-comment"># pivot = 50</span>
+<span class="hljs-comment"># l = 85, r = 96, (l &gt; pivot)</span>
+[<span class="hljs-string">&quot;85&quot;</span>, <span class="hljs-number">24</span>, <span class="hljs-number">63</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-number">31</span>, <span class="hljs-string">&quot;96&quot;</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l = 85, r = 31, (l &gt; pivot) (r &lt; pivot)</span>
+[<span class="hljs-string">&quot;85&quot;</span>, <span class="hljs-number">24</span>, <span class="hljs-number">63</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l과 r을 교체</span>
+[<span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-number">24</span>, <span class="hljs-number">63</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-string">&quot;85&quot;</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l = 24, r = 17, (r &lt; pivot)</span>
+[<span class="hljs-number">31</span>, <span class="hljs-string">&quot;24&quot;</span>, <span class="hljs-number">63</span>, <span class="hljs-number">45</span>, <span class="hljs-string">&quot;17&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l = 63, r = 17 (l &gt; pivot) (r &lt; pivot)</span>
+[<span class="hljs-number">31</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;63&quot;</span>, <span class="hljs-number">45</span>, <span class="hljs-string">&quot;17&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l과 r을 교체</span>
+[<span class="hljs-number">31</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;17&quot;</span>, <span class="hljs-number">45</span>, <span class="hljs-string">&quot;63&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l = 45, r = 45 (l == r)</span>
+[<span class="hljs-number">31</span>, <span class="hljs-number">24</span>, <span class="hljs-number">17</span>, <span class="hljs-string">&quot;45&quot;</span>, <span class="hljs-number">63</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l(45)과 r(45)이 pivot보다 작거나 같으므로 l += 1</span>
+<span class="hljs-comment"># l = 63, r = 45</span>
+[<span class="hljs-number">31</span>, <span class="hljs-number">24</span>, <span class="hljs-number">17</span>, <span class="hljs-string">&quot;45&quot;</span>, <span class="hljs-string">&quot;63&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>, <span class="hljs-string">&quot;50&quot;</span>]
+
+<span class="hljs-comment"># l과 pivot을 교체</span>
+[<span class="hljs-number">31</span>, <span class="hljs-number">24</span>, <span class="hljs-number">17</span>, <span class="hljs-number">45</span>, <span class="hljs-string">&quot;50&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-number">96</span>, <span class="hljs-number">63</span>]
+</code></pre>
+<p>파이썬으로 구현하면 다음과 같다.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quick_sort</span>(<span class="hljs-params">S, a, b</span>):</span>
+  <span class="hljs-keyword">if</span> a &gt;= b:
+    <span class="hljs-keyword">return</span>
+
+  pivot = S[b]
+  left = a
+  right = b - <span class="hljs-number">1</span>
+
+  <span class="hljs-keyword">while</span> left &lt;= right:
+    <span class="hljs-keyword">while</span> left &lt;= right <span class="hljs-keyword">and</span> S[left] &lt; pivot:
+      left += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">while</span> left &lt;= right <span class="hljs-keyword">and</span> pivot &lt; S[right]:
+      right -= <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">if</span> left &lt;= right:
+      S[left], S[right] = S[right], S[left]
+      left, right = left + <span class="hljs-number">1</span>, right - <span class="hljs-number">1</span>
+
+  S[left], S[b] = S[b], S[left]
+
+  quick_sort(S, a, left - <span class="hljs-number">1</span>)
+  quick_sort(S, left + <span class="hljs-number">1</span>, b)
+</code></pre>
+<p>이미 정렬되어 있는 리스트를 quick sort로 정렬하는 경우 <eq><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-.25em;"></span><span class="mord mathdefault" style="margin-right:.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.8141079999999999em;"><span style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></eq> 시간이 걸린다. 즉, worst case에서 <eq><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-.25em;"></span><span class="mord mathdefault" style="margin-right:.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.8141079999999999em;"><span style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></eq> 시간이 걸린다는 말이다. 재밌는 것은 average case에서도 <eq><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord mathdefault" style="margin-right:.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:.01389em;">g</span></span><span class="mspace" style="margin-right:.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></eq> 시간이 걸리는데, 이는 quick sort라는 이름이 붙을 정도로 빠른 것은 아니다. 그럼에도 quick sort인 이유는 알고리즘의 캐시 hit ratio가 높기 때문이다. (컴퓨터 아키텍처에 관한 부분이다.) 그래서 이론적으로는 평균 <eq><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord mathdefault" style="margin-right:.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:.01389em;">g</span></span><span class="mspace" style="margin-right:.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></eq>이지만 실제로는 더 빠르게 정렬된다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/19.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🐧 윈도우에서 우분투 돌리기</p> <p class="article-navigation-subtitle">개발을 위한 WSL 세팅</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/17.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">Java Design Pattern: Singleton</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/18.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

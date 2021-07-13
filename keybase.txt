@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/parksb
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://parksb.github.io
+  * I am parksb (https://keybase.io/parksb) on keybase.
+  * I have a public key ASADCeIfcyTmOwTWfFizBMTo2wE_S-gRUJHw0uHXKax-hQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01200309e21f7324e63b04d67c58b304c4e8db013f4be8115091f0d2e1d729ac7e850a",
+      "host": "keybase.io",
+      "kid": "01200309e21f7324e63b04d67c58b304c4e8db013f4be8115091f0d2e1d729ac7e850a",
+      "uid": "d7d88ae6892cbbf4ac00d64a2c08a319",
+      "username": "parksb"
+    },
+    "merkle_root": {
+      "ctime": 1577625158,
+      "hash": "cdef2ea6e810a17c9ef4148ca7114aed60b0bd2ea37c39d4960c74a44e09b97617175c6a9cf24cab1e1d055e9f9963c506964d2dcbe5714147b7be7684d13e1a",
+      "hash_meta": "7c664ec06304e58e54f8aba9efed4dda8e7b079f33cf0027830dc79ffe014932",
+      "seqno": 14002626
+    },
+    "service": {
+      "entropy": "Wo+s5OiS2MS6LZq58vajEpL4",
+      "hostname": "parksb.github.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.1.1"
+  },
+  "ctime": 1577625180,
+  "expire_in": 504576000,
+  "prev": "239854bf101f433d5c4f9bb2980d6ea6ac9a2340726b0a01f3c2fdc8f16657da",
+  "seqno": 7,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgAwniH3Mk5jsE1nxYswTE6NsBP0voEVCR8NLh1ymsfoUKp3BheWxvYWTESpcCB8QgI5hUvxAfQz1cT5uymA1upqyaI0ByawoB88L9yPFmV9rEII9iX1xXgz+hE0G2/xL6psMB/wSizPngs+RLj/x5LYxmAgHCo3NpZ8RADPQZ3u/UfmpNPyhdik8erAIYo78iwFhTuMxSdqMh3CRRqjViwcdpKEVkHqlO9V8gTtjo7V5qVSeub7u3FN32D6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIJKmDb64UanfLwLpXkMYUP9itJ46rFPHMQRwIakJkJ18o3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/parksb
+
+==================================================================

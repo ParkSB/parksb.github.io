@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🦕 공룡책으로 정리하는 운영체제 Ch.1 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/5.html"><meta property="og:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.1: Overview "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.1**.png?subtitle=Overview&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="Abraham Silberschatz의 Operating System Concepts는 운영체제의 바이블로 불린다. 이번에 운영체제 수업을 들으면서 Operating System Concepts 9th Edition의 내용을 정리해보기로 했다.Ch.1은 책 전체 내용이 담겨있는 가장 중요한 챕터다. 이 부분을 제대로 정독..."><meta name="twitter:title" content="🦕 공룡책으로 정리하는 운영체제 Ch.1: Overview "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%A6%95%20%EA%B3%B5%EB%A3%A1%EC%B1%85%EC%9C%BC%EB%A1%9C%20%EC%A0%95%EB%A6%AC%ED%95%98%EB%8A%94%20%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20Ch.1**.png?subtitle=Overview&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.05.03%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="Abraham Silberschatz의 Operating System Concepts는 운영체제의 바이블로 불린다. 이번에 운영체제 수업을 들으면서 Operating System Concepts 9th Edition의 내용을 정리해보기로 했다.Ch.1은 책 전체 내용이 담겨있는 가장 중요한 챕터다. 이 부분을 제대로 정독..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🦕 공룡책으로 정리하는 운영체제 Ch.1 </h1> <h2 id="article-subtitle"> Overview </h2> <time id="article-date"> 2018.05.03 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180503_dinosaur-book-ch1.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#what-operating-systems-do">What Operating Systems Do</a><ul><li><a href="#user-view">User View</a></li><li><a href="#system-view">System View</a></li></ul></li><li><a href="#computer-system-organization">Computer-System Organization</a><ul><li><a href="#computer-startup">Computer Startup</a></li><li><a href="#computer-system-operation">Computer-System Operation</a></li><li><a href="#common-functions-of-interrupts">Common Functions of Interrupts</a></li><li><a href="#interrupt-handling">Interrupt Handling</a></li></ul></li><li><a href="#storage-structure">Storage Structure</a></li><li><a href="#i%2Fo-structure">I/O Structure</a></li><li><a href="#direct-memory-access-structure">Direct Memory Access Structure</a></li><li><a href="#computer-system-architecture">Computer-System Architecture</a><ul><li><a href="#single-processor-systems">Single-Processor Systems</a></li><li><a href="#multiprocessor-systems">Multiprocessor Systems</a></li><li><a href="#a-dual-core-design">A Dual-Core Design</a></li><li><a href="#clustered-systems">Clustered Systems</a></li></ul></li><li><a href="#operating-system-structure">Operating System Structure</a></li><li><a href="#operating-system-operations">Operating-System Operations</a></li><li><a href="#dual-mode-and-multimode-operation">Dual-Mode and Multimode Operation</a></li><li><a href="#timer">Timer</a></li><li><a href="#process-management">Process Management</a></li><li><a href="#memory-management">Memory Management</a></li><li><a href="#storage-management">Storage Management</a><ul><li><a href="#file-system-management">File-System Management</a></li><li><a href="#mass-storage-management">Mass-Storage Management</a></li><li><a href="#caching">Caching</a></li><li><a href="#i%2Fo-system">I/O System</a></li></ul></li><li><a href="#protection-and-security">Protection and Security</a></li><li><a href="#kernel-data-structures">Kernel Data Structures</a></li><li><a href="#computing-environments">Computing Environments</a></li><li><a href="#open-source-operating-systems">Open-Source Operating Systems</a></li></ul></div></p>
+</details>
+<p>Abraham Silberschatz의 Operating System Concepts는 운영체제의 바이블로 불린다. 이번에 운영체제 수업을 들으면서 Operating System Concepts 9th Edition의 내용을 정리해보기로 했다.</p>
+<p>Ch.1은 책 전체 내용이 담겨있는 가장 중요한 챕터다. 이 부분을 제대로 정독하고 책을 읽으면 훨씬 읽기 수월하다.</p>
+<h1 id="what-operating-systems-do">What Operating Systems Do</h1>
+<p>운영체제(Operating System)는 컴퓨터의 하드웨어를 관리하고, 하드웨어와 소프트웨어, 사용자를 매개하는 프로그램이다. 커널(Kernel)은 운영체제의 핵심이며, 실체다. 운영체제는 커널과 커널 모듈(Kernel module)들로 구성되는데, 커널이 운영체제의 핵심이다보니 일반적으로 운영체제와 커널은 동일시 된다. 커널이 같다면 같은 운영체제로 취급한다.</p>
+<p>컴퓨터 시스템의 요소는 하드웨어(CPU, 메모리, 입출력장치 등), 운영체제, 어플리케이션 프로그램(웹 브라우저, 워드프로세서 등), 유저로 나뉜다. 운영체제는 정부와 비슷하다. 정부 그 자체만으로는 쓸모있는 기능을 못하지만, 사람들에게 더 나은 환경을 제공한다. 마찬가지로 운영체제는 프로그램들이 유용한 일을 할 수 있는 환경을 제공한다. 운영체제의 역할은 사용자 관점(User View)과 시스템 관점(System View)으로 나눠볼 수 있다.</p>
+<h2 id="user-view">User View</h2>
+<p>일반적으로 사용자는 컴퓨터 앞에 앉아 키보드와 마우스를 조작한다. 이 경우 운영체제는 사용자가 컴퓨터 자원 사용(Resource utilization)을 신경쓰지 않게 도우며, 사용자가 컴퓨터를 쉽게 이용할 수 있도록 만든다. 또 다른 경우, 사용자는 메인프레임(Mainframe)에 연결된 터미널을 사용하거나 미니컴퓨터(Minicomputer)를 사용한다. 이 상황에서는 컴퓨터의 자원을 여러 사용자가 나눠쓰게 되는데, 운영체제는 사용자들이 자원을 공평하게 사용할 수 있도록 돕는다.</p>
+<h2 id="system-view">System View</h2>
+<p>시스템에게 운영체제는 <strong>자원 할당자</strong>(Resource allocator)다. 컴퓨터 시스템은 CPU 시간, 메모리 공간, 파일 저장소 공간, 입출력 장치 등 다양한 문제를 해결해야 한다. 운영체제는 이러한 컴퓨터 자원들을 관리하는 <strong>제어 프로그램</strong>(Control program)으로서 동작한다.</p>
+<h1 id="computer-system-organization">Computer-System Organization</h1>
+<p>현대의 일반적인 컴퓨터 시스템은 여러개의 CPU와 장치 컨트롤러(Device controllers)로 구성되어 있다. 그리고 이들은 공통버스(Commmon bus)로 이어져 메모리를 공유한다.</p>
+<pre class="hljs"><code>               disks     mouse, keyborad, printer     monitor
+                 |                   |                   |
++-----+ +--------+--------+ +--------+-------+ +---------+--------+
+| CPU | | disk controller | | USB controller | | graphics adapter |
++--+--+ +--------+--------+ +--------+-------+ +---------+--------+
+   |             |                   |                   |
+   +-------------+---------+---------+-------------------+
+                           |
+                       +---+----+
+                       | memory |
+                       +--------+
+</code></pre>
+<h2 id="computer-startup">Computer Startup</h2>
+<p>컴퓨터를 켜면 <strong>부트스트랩 프로그램</strong>(Bootstrap program)이라는 초기화 프로그램이 실행된다. 이 프로그램을 컴퓨터의 ROM(Read-Only Memory)이나 EEPROM(Electrically Erasable Programmable Read-Only Memory)에 저장되어 있으며, 주로 펌웨어(Firmware)라고 불린다. 부트스트랩 프로그램은 시스템을 초기화하고, 부트로더(Boot loader)를 실행한다. (멀티부팅 컴퓨터의 경우 부트로더가 여러 운영체제를 가리키고 있는데, 이 경우엔 어떤 운영체제를 실행할지 선택해야 한다.) 그리고 부트로더는 최종적으로 운영체제를 실행하게 된다.</p>
+<p>커널이 로드, 실행되면 시스템과 사용자에게 서비스를 제공해야 한다. 이때 일부 서비스는 커널 외부에서 제공되는데, 이들은 부팅할 때 메모리에 로드되는 시스템 프로세스(System processes)나 시스템 데몬(System daemons)이다. UNIX의 경우 첫 시스템 프로세스는 <code>init</code>이며, 이 프로세스는 또 다른 데몬들을 실행시킨다. 데몬은 프로세스로 백그라운드에서 돌면서 시스템 로그는 남기는 등의 여러 작업을 한다. 이러한 과정이 끝나면 시스템이 완전히 부팅되고, 이벤트가 발생하기를 기다리게 된다.</p>
+<h2 id="computer-system-operation">Computer-System Operation</h2>
+<p>입출력 장치와 CPU는 동시에 실행될 수 있다. 장치 컨트롤러는 CPU에게 이벤트 발생을 알리는데, 이벤트 발생을 알리는 것을 <strong>인터럽트</strong>(Interrupt)라고 부른다. 인터럽트는 '방해하다’라는 뜻인데, 컴퓨터에서는 신호를 보내 이벤트 발생을 알리는 것을 의미한다. 보통 컴퓨터는 여러 작업을 동시에 처리하는데, 이때 당장 처리해야 하는 일이 생겨서 기존의 작업을 잠시 중단해야 하는 경우 인터럽트 신호를 보낸다. 그러면 커널은 작업을 멈추고 인터럽트를 처리한 뒤 다시 기존 작업으로 돌아온다.</p>
+<pre class="hljs"><code>CPU     user          |                |                |          |
+        process       |                |                |          |
+        executing ----|----------------|--+  +----------|----------|--+    +-----
+                      |                |  |  |          |          |  |    |
+        I/O interrupt |                |  +--+          |          |  +----+
+        processing    |                |                |          |
+                      |                |                |          |
+I/O     idle      ----|---+            +----------------|--+       +-------------
+device                |   |            |                |  |       |
+        transferring  |   +------------+                |  +-------+
+                      |                |                |          |
+======================+================+================+==========+=============
+                      I/O              transfer         I/O        transfer
+                      request          done             request    done
+</code></pre>
+<p>인터럽트는 하드웨어나 소프트웨어에 의해 발생할 수 있으며, 소프트웨어에 의해 발생하는 인터럽트는 트랩(Trap)이라고 부른다. 하드웨어의 경우 시스템 버스(System bus)를 통해 CPU에 신호를 보냄으로써 인터럽트를 발생시키고, 소프트웨어는 시스템 콜(System call)이라는 특별한 명령으로 인터럽트를 발생시킨다.</p>
+<h2 id="common-functions-of-interrupts">Common Functions of Interrupts</h2>
+<p>보통 컴퓨터는 여러 작업을 동시에 처리하는데, 만약 CPU가 인터럽트 신호를 받으면, 앞서 말했듯이 하던 일을 잠시 멈추고 메모리의 어떤 고정된 위치(Fixed location)를 찾는다. 이 위치는 <strong>인터럽트 벡터</strong>(Interrupt vector)에 저장되어 있다. 인터럽트 벡터는 인터럽트를 처리할 수 있는 <strong>서비스 루틴</strong>(Service routine)들의 주소를 가지고 있는 공간으로, 파일 읽기/쓰기와 같은 중요한 동작들이 하드코딩되어 있다. 이렇게 인터럽트를 처리하고나면 CPU는 다시 원래 작업으로 돌아온다. 이 과정은 사용자가 눈치채지 못할 정도로 매우 빠르게 일어날 수도 있고, 너무 느려서 오랜 시간을 기다려야 할 수도 있다. 참고로 어떤 값을 0으로 나누는 것(Division by zero)도 인터럽트이며, 이러한 내부 인터럽트(Internal interrupt)는 예외(Exception)라고 부른다.</p>
+<h2 id="interrupt-handling">Interrupt Handling</h2>
+<p>현대 운영체제들은 대부분 <strong>인터럽트 주도적</strong>(Interrupt driven)이다. 인터럽트가 발생하기 전까지 CPU는 대기상태에 머문다. 반면 <strong>폴링</strong>(Polling)의 경우 주기적으로 이벤트를 감시해 처리 루틴을 실행한다. 이렇게 하면 컴퓨팅 자원을 낭비하게 되기 때문에 인터럽트 주도적으로 설계하는 것이다.</p>
+<h1 id="storage-structure">Storage Structure</h1>
+<p>커널은 실행기(Executor)를 통해 프로그램을 실행시킨다. 실행기는 기억장치(Storage)에서 exe파일(Windows의 경우)을 가져오고, 커널이 이것을 메모리에 할당해 실행시킨다. 이처럼 모든 프로그램은 메인 메모리에 로드되어 실행되며, 메인 메모리는 보통 RAM(Random-Access Memory)이라고 부른다. 하지만 RAM은 모든 프로그램을 담기엔 너무 작고 비싸다. 또한 전원이 나가면 저장된 데이터가 모두 사라지는 휘발성(Volatile) 장치다. 그래서 보조기억장치(Secondary storage)가 필요하다. 자기테이프(Magnetic tapes), 광학디스크(Optical disk), 자기디스크(Magnetic disk), SSD(Soli-State Disk)는 비휘발성(Non-volatile) 기억장치다. 반면 메인 메모리, 캐시(Cache), 레지스터(Registers)는 휘발성 기억장치다. 보조기억장치는 용량이 크고 저렴한 반면, 캐시나 레지스터는 용량이 작고 비싸다. (공학도에겐 가격이 중요하다.)</p>
+<p>요즘 컴퓨터에는 최대절전 모드가 있는데, 이 방식이 꽤 재밌다. 컴퓨터가 절전모드에 들어가면 메모리의 모든 데이터를 덤프해서 보조기억장치에 담아두고, 다시 절전모드 빠져나오면 덤프해둔 데이터를 불러와 그대로 작업을 수행한다. 영어로는 하이버네이트(Hibernate)라고 한다.</p>
+<h1 id="i%2Fo-structure">I/O Structure</h1>
+<p>기억장치는 여러 입출력장치(I/O devices) 중 하나일 뿐이다. 컴퓨터는 다양한 입출력 장치를 가지고 있으며, 입출력 컨트롤러는 각각 다른 장치를 담당한다. 컴퓨터는 이 컨트롤러 덕분에 다양한 장치를 사용할 수 있다. 또한 운영체제는 각 장치 컨트롤러를 제어하기 위한 장치 드라이버(Device driver)를 가지고 있다.</p>
+<p>입출력 명령을 수행하기 위해 장치 드라이버는 장치 컨트롤러의 레지스터를 로드한다. 장치 컨트롤러는 레지스터에서 &quot;키보드로부터 문자 읽어오기&quot;와 같은 동작을 읽고, 장치에서 로컬 버퍼(Local buffer)로 데이터를 전송하기 시작한다. 데이터의 전송이 끝나면 장치 컨트롤러는 장치드라이버에게 인터럽트를 보내 동작이 끝났음을 알리고, 장치 드라이버는 통제권을 운영체제에게 돌려준다. 이때 입력받은 데이터나 상태 정보를 넘겨주기도 한다.</p>
+<p>사용자 프로그램은 커널과 사용자 프로그램을 매개하는 인터페이스인 <strong>시스템 콜</strong>(System call)을 통해 입출력을 요청할 수 있다.</p>
+<h1 id="direct-memory-access-structure">Direct Memory Access Structure</h1>
+<p>과거에는 장치 데이터를 처리하기 위해 CPU를 거쳐 메모리에 로드하는 방식을 사용했으나, CPU 자원이 너무 많이 소모되기 때문에 이젠 <strong>DMA</strong>(Direct Memory Access)를 사용한다. DMA는 장치와 메모리를 직접 연결하는 방식으로, 버스가 지원하는 기능이다. 메모리의 일정 부분은 DMA에 사용될 영역으로 지정되며, DMA를 제어하는 컨트롤러는 DMA 컨트롤러라고 부른다. 참고로 CPU를 거치는 방식은 PIO(Programmed I/O)라고 부른다. 장치의 데이터는 장치 컨트롤러에 의해 직접 메모리에 전달되며, CPU에서는 데이터 이동이 완료되었다는 인터럽트만 한 번 일어난다. 이렇게 하면 결과적으로 CPU가 하는 일이 줄어드니까 성능이 좋아진다.</p>
+<h1 id="computer-system-architecture">Computer-System Architecture</h1>
+<p>현대 컴퓨터 시스템은 기본적으로 폰 노이만 구조를 따른다.</p>
+<pre class="hljs"><code>CPU (*N)                                                                        Memory
++------------------------------+-------+&lt;-insruction execution cycle-&gt;+--------------+
+| thread of execution          | cache |                              |              |
++---+--------------------------+-------+&lt;--------data movement-------&gt;|              |
+    |           ^        ^                                            |              |
+    | I/O       | data   | interrupt                                  | instructions |
+    | request   |        |                                            | and data     |
+    v           v        |                                            |              |
++------------------------+-------------+                              |              |
+| device (*M)                          |&lt;-------------DMA------------&gt;|              |
++--------------------------------------+                              +--------------+
+</code></pre>
+<h2 id="single-processor-systems">Single-Processor Systems</h2>
+<p>과거 대부분의 컴퓨터는 싱글 프로세서를 사용했다. 싱글 프로세서 컴퓨터에는 하나의 메인 CPU만 탑재되며, 장치에 따라 특별한 목적을 가진 프로세서가 들어갔다. 가령 디스크 프로세서는 디스크 연산만 수행하고, 키보드 프로세서는 키보드 연산만 수행하는 식이다.</p>
+<h2 id="multiprocessor-systems">Multiprocessor Systems</h2>
+<p>멀티 프로세서 시스템은 이젠 일반적인 컴퓨터 시스템이 되었다. 멀티 프로세서 컴퓨터는 2개 이상의 프로세서를 가지고 있다. 처음에는 서버 컴퓨터에 처음 적용됐는데, 지금은 모바일 기기도 멀티 프로세서 시스템으로 만들어진다. 멀티 프로세서 시스템은 몇가지 장점을 가지고 있다.</p>
+<ol>
+<li>처리량(Throughput)의 증가: 당연하겠지만 프로세서가 늘어나면 더 빠른 시간 안에 연산을 수행할 수 있다. 물론 프로세서를 계속 늘린다고 성능이 한없이 좋아지는 것은 아니며, 증가 비율이 1:1인 것도 아니다.</li>
+<li>규모의 경제: 멀티 프로세서 시스템은 여러 대의 싱글 프로세서 시스템을 구축하는 것보다 돈이 적게 든다. 멀티 프로세서 시스템은 주변장치(Peripherals)를 공유할 수 있기 때문이다.</li>
+<li>신뢰성의 증가: 만약 기능이 여러 프로세서에 분산될 수 있다면, 하나의 프로세서가 작동을 멈춰도 전체 시스템은 느려질 뿐 멈추지 않는다. 이런 식으로 성능이 나빠지지만 작동은 가능하도록 하는 것을 우아한 성능저하(Graceful degradation)라고 부른다. 그리고 이렇게 성능을 저하함으로써 작업을 계속 유지하는 시스템을 장애 허용 시스템(Fault tolerant)이라고 부른다.</li>
+</ol>
+<p>멀티 프로세서 컴퓨터는 2개 이상의 프로세서를 가지고 있다. 멀티 프로세서 시스템은 <strong>비대칭 멀티프로세싱</strong>(Asymmetric multiprocessing)과 <strong>대칭 멀티프로세싱</strong>(Symmetric multiprocessing) 두 가지로 나뉜다. 비대칭 멀티프로세싱은 관료주의적인 회사다. 보스 프로세서(Boss processor)가 시스템을 제어하고, 다른 프로세서들은 보스의 지시를 받게 된다. 이렇게 하면 부하 분산(Loadbalancing)을 효율적으로 할 수 있다. 대신 보스 프로세서가 작동을 멈추면 일꾼 프로세서들도 멈추게 된다. 대칭 멀티프로세싱은 보스가 없는 자유로운 회사다. 모든 프로세서들은 하나의 메모리를 공유하고, 동일한 작업을 병렬적으로 수행한다. 만약 프로세서에 이상이 생겨 작동을 멈춰야 한다면 자신이 수행하던 작업을 다른 프로세서들에게 나눠주고 자신만 재부팅한다.</p>
+<p>대부분의 컴퓨터 시스템은 대칭 멀티프로세싱을 사용한다. 대칭 멀티프로세싱은 보스가 없는 자유로운 회사다. 모든 프로세서들은 하나의 메모리를 공유하고, 동일한 작업을 병렬적으로 수행한다. 만약 프로세서에 이상이 생겨 작동을 멈춰야 한다면 자신이 수행하던 작업을 다른 프로세서들에게 나눠주고 자신만 재부팅한다. 그리고 재부팅 후 문제가 해결된다면 다시 작업을 나눠 받는다. 비대칭 멀티프로세싱 시스템의 단점을 보완할 수 있는 아키텍처다.</p>
+<p>멀티 프로세서 시스템의 CPU들은 각자의 레지스터와 캐시를 갖고 있다. 만약 CPU가 여러 개라면 돌아가면서 작업을 해야 하는데, 그러면 다른 CPU가 작업을 하는 동안 다른 CPU들은 놀게 된다.</p>
+<pre class="hljs"><code>+---------------+  +---------------+  +---------------+
+| CPU 0         |  | CPU 1         |  | CPU 2         |
+| +-----------+ |  | +-----------+ |  | +-----------+ |
+| | registers | |  | | registers | |  | | registers | |
+| +-----+-----+ |  | +-----+-----+ |  | +-----+-----+ |
+|       |       |  |       |       |  |       |       |
+| +-----+-----+ |  | +-----+-----+ |  | +-----+-----+ |
+| |   cache   | |  | |   cache   | |  | |   cache   | |
+| +-----+-----+ |  | +-----+-----+ |  | +-----+-----+ |
+|       |       |  |       |       |  |       |       |
++-------+-------+  +-------+-------+  +-------+-------+
+        |                  |                  |
+        +------------------+------------------+
+                           |
+                       +---+----+
+                       | memory |
+                       +--------+
+</code></pre>
+<h2 id="a-dual-core-design">A Dual-Core Design</h2>
+<p>CPU가 늘어나면 프로세서간 통신을 하는 데 많은 비용이 들기 때문에 효율이 계속 좋아지지는 않는다. x축을 CPU 수, y축을 성능이라고 하면 그래프는 로그함수 형태로 나타난다. 조별 과제를 생각해보자. 내 아이큐 150, 네 아이큐 150을 합치면 총 300이지만, 머리가 많다고 좋은 것은 아니다. 사람이 늘어날수록 커뮤니케이션의 어려움은 커진다.</p>
+<p>최근 CPU 설계 트렌드는 하나의 칩(Chip)에 코어(Cores)를 늘리는 것이다. 이러한 멀티 프로세서 시스템을 멀티코어(Multicore)라고 부른다. 코어는 동일한 성능의 CPU 여러 개를 1개의 칩 속에 집접한 것이라고 보면 된다. 칩 내부의 통신(On-chip communication)이 칩 사이의 통신(Between-chip communication)보다 더 빠르기 때문에 여러 개의 칩에 하나의 코어만 두는 시스템보다 더 효율적이다. 뿐만 아니라 하나의 칩에 여러 코어를 담으면 전력을 더 적게 사용한다.</p>
+<pre class="hljs"><code>+---------------+   +---------------+
+| CPU core 0    |   | CPU core 1    |
+| +-----------+ |   | +-----------+ |
+| | registers | |   | | registers | |
+| +-----+-----+ |   | +-----+-----+ |
+|       |       |   |       |       |
+| +-----+-----+ |   | +-----+-----+ |
+| |   cache   | |   | |   cache   | |
+| +-----+-----+ |   | +-----+-----+ |
+|       |       |   |       |       |
++-------+-------+   +-------+-------+
+        |                   |
+        +---------+---------+
+                  |
+              +---+----+
+              | memory |
+              +--------+
+</code></pre>
+<p>위 사진은 듀얼 코어 시스템이다. 각 코어는 자신만의 레지스터와 로컬 캐시를 갖는다. (하나의 캐시를 공유하기도 한다.)</p>
+<h2 id="clustered-systems">Clustered Systems</h2>
+<p>멀티프로세서 시스템의 일종인 클러스터 시스템(Clustered system)은 여러개의 CPU을 모아 놓은 구조다. 클러스터 시스템은 여러개의 개별 시스템(또는 노드)들이 하나로 모여있다는 점에서 앞서 설명한 멀티프로세서 시스템과는 조금 다르다. 멀티프로세서 시스템은 여러CPU가 하나의 시스템을 이루는 것이지만, 클러스터 시스템은 여러 독립적인 시스템이 모여 하나의 시스템을 이루는 것이다. 이런 시스템을 약결합(Loosely coupled)라고 부르며, 각 노드들은 싱글 프로세서 시스템일수도 있고, 멀티코어 시스템일 수도 있다.</p>
+<p>클러스터의 정의가 딱 명확히 정해져 있지는 않다. 단지 클러스터 컴퓨터들이 하나의 저장소를 공유하고, 이를 LAN(Local-Area Network)과 같은 네트워크로 연결한 시스템을 보통 클러스터 시스템이라고 부른다. 클러스터링은 고가용성(High-availability) 서비스를 제공하기 위해 사용되며, 단일 컴퓨터보다 훨씬 저렴하게 비슷한 성능을 낼 수 있다.</p>
+<p>클러스터 시스템은 비대칭 클러스터링(Asymmetric clustering)과 대칭 클러스터링(Symmetric clustering)으로 나뉜다. 비대칭 클러스터링에서 하나의 장비는 상시 대기 모드(Hot-standby mode)로 작동하며, 서버를 동작시키고 있는 다른 노드들을 모니터링할 뿐 별도의 작업은 수행하지 않는다. 만약 서버에 문제가 생기면 이 상시 대기 노드가 서버로서 작동하게 된다. 대칭 클러스터링은 두개 이상의 노드가 작업을 수행하는 동시에 다른 노드들을 모니터링하는 구조다. 이러한 구조는 하드웨어의 자원을 최대로 사용할 수 있어 더 효율적이다.</p>
+<p>클러스터 시스템은 여러개의 컴퓨터 시스템이 네트워크로 연결되어 있는 구조이기 때문에 고성능 컴퓨팅 환경(High-performance computing environments)을 제공할 수 있다. 다만 단일 시스템에 비해 유지보수가 힘들고, 시스템의 성능이 네트워크 환경에 많은 영향을 받는다는 단점이 있다.</p>
+<h1 id="operating-system-structure">Operating System Structure</h1>
+<p>운영체제의 가장 중요한 부분 중 하나는 멀티프로그램(Multiprogram) 능력이다. <strong>멀티프로그래밍</strong>(Multiprogramming)은 여러 프로그램을 메모리에 로드해 두고 한 프로세스가 대기 상태가 되면 다른 프로세스의 작업을 수행하는 시스템이다. 이렇게 하면 CPU의 사용 효율을 높일 수 있다. (디스크에 있는 것은 프로그램, 메인 메모리에 있는 것은 프로세스다.)</p>
+<p>여기서 더 확장된 시스템이 <strong>시분할</strong>(Time sharing) 시스템이다. 다른 말로는 <strong>멀티태스킹</strong>(Multitasking)이라고도 부른다. 이는 프로세스마다 작업 시간을 정해두고 번갈아가면서 작업하는 방식이다. 프로세스들이 빠르게 번갈아가며 메모리를 사용하면 사용자 입장에서는 마치 동시에 작동하는 것처럼 보이게 된다. 이때는 반응 시간(Response time)을 줄이는 것이 중요하다.</p>
+<p>시분할 시스템과 멀티프로그래밍 시스템은 여러 작업들을 동시에 메모리에 올리는 방식이다. 때문에 운영체제는 메모리에 자리가 없는 경우를 고려해 어떤 작업을 먼저 처리할지 정해야한다. 이러한 과정을 작업 스케줄링(Job scheduling), CPU 스케줄링(CPU Scheduling)이라고 하는데, 이건 5장에서 다룬다. 만약 메모리를 너무 많이 사용하게 되는 경우, 반응 시간을 줄이기 위해 가상 메모리(Virtual memory)를 사용한다. 가상 메모리는 보조기억장치의 일부를 메인 메모리처럼 사용하는 기술로, 실제 물리 메모리(Physical memory)보다 더 큰 프로그램을 구동할 수 있도록 해준다.</p>
+<h1 id="operating-system-operations">Operating-System Operations</h1>
+<p>앞서 언급했듯이 운영체제는 인터럽트 주도적이다. 인터럽트가 없다면 시스템은 조용히 인터럽트를 기다린다. 만약 사용자의 프로그램이 멋대로 하드웨어에 접근해 인터럽트를 보낸다면 큰 문제가 생기길 것이다. 운영체제와 사용자는 컴퓨터의 하드웨어, 소프트웨어 자원을 공유하기 때문에 사용자 프로그램이 오류를 일으키지 않도록 방지해야 한다.</p>
+<h1 id="dual-mode-and-multimode-operation">Dual-Mode and Multimode Operation</h1>
+<p>운영체제는 사용자 프로그램이 함부로 시스템에 접근하지 못하도록 모드(Mode)를 나눠둔다. 유저 모드(User mode)와 커널 모드(Kernel mode)가 그것이며, 하드웨어의 모드 비트(Mode bit)가 <code>0</code>은 커널 모드, <code>1</code>은 유저 모드임을 가리킨다.</p>
+<pre class="hljs"><code>user process
++-----------------------------------------------------------------------------------------+
+| +------------------------+   +-------------------+          +-------------------------+ |
+| | user process executing +--&gt;| calls system call |          | return from system call | | user mode
+| +------------------------+   +--------------+----+          +-------------------------+ | (mode bit = 1)
++---------------------------------------------|--------------------^----------------------+
+==============================================|====================|======================================
++---------------------------------------------|--------------------|----------------------+
+|                                             | trap               | trap                 |
+|                                             v mode bit = 0       | mode bit = 1         | kernel mode
+|                                         +------------------------+----+                 | (mode bit = 0)
+|                                         |      calls system call      |                 |
+|                                         +-----------------------------+                 |
++-----------------------------------------------------------------------------------------+
+kernel
+</code></pre>
+<p>이러한 이중 모드(Dual-mode) 방식을 사용하면 나쁜 의도를 가진 사용자로부터 운영체제, 하드웨어를 비롯한 시스템과 사용자를 보호할 수 있다. 하드웨어는 커널 모드일 때만 <strong>특권 명령</strong>(Privileged instructions)를 실행한다. 만약 유저 모드에서 특권 명령을 실행하려 한다면 하드웨어는 이 동작을 막고 운영체제에게 트랩을 보낼 것이다. 유저 모드에서 합법적으로(?) 커널 모드의 기능을 호출하고 싶다면 시스템 콜(System call)이라는 인터페이스를 통해야 한다.</p>
+<h1 id="timer">Timer</h1>
+<p>운영체제는 사용자의 프로그램이 제어권을 운영체제에게 넘겨주지 않는 상황을 방지하기 위해 타이머(Timer)를 사용한다. 타이머는 운영체제에게 제어권을 보장하기 위해 특정 주기에 인터럽트를 발생시킨다. 운영체제는 카운터를 설정하고, 타이머의 시간은 매 틱(Ticks)마다 감소한다. 그렇게 카운터가 0에 도달하면 인터럽트가 발생한다.</p>
+<h1 id="process-management">Process Management</h1>
+<p>디스크에 있으면 프로그램, 메모리에 로드되면 프로세스다. 프로그램은 하나지만 프로세스는 여러 개일 수 있다. 강조할 점은, 프로그램은 디스크에 저장되어 있는 수동적(Passive) 존재인 반면 프로세스는 능동적(Active) 존재다. 프로그램은 하나지만 프로세스는 여러 개일 수 있다. 또한 프로세스는 프로그램이 어디까지 실행되었는지 북마크하는 프로그램 카운터(Program counter)를 가지고 있다. 싱글쓰레드(Single-thread) 프로세스는 하나의 프로그램 카운터를 가지고 있으며, 멀티쓰레드(Multi-threads) 프로세스는 여러개의 프로그램 카운터를 가지고 있다.</p>
+<p>운영체제는 프로세스 관리를 위해 CPU에게 프로세스와 쓰레드를 스케줄링하고, 프로세스를 생성하거나 제거하는 활동을 한다. 뿐만 아니라 일시정지하거나 재실행하고, 프로세스의 동기화(Synchronization)와 통신도 제공한다.</p>
+<h1 id="memory-management">Memory Management</h1>
+<p>메인 메모리는 현대 컴퓨터 시스템의 핵심이며, 방대한 바이트의 배열이다. 그리고 각 바이트는 그들만의 주소를 가지고 있다. 이후 프로그램이 실행될 때 프로그램은 절대 주소(Abolute addresses)로 매핑(Mapping)되어 메모리에 로드된다. 메모리 관리는 여러 요인을 고려해야 하는 작업이며, 특히 시스템의 하드웨어 설계를 신경써야 한다.</p>
+<p>운영체제는 메모리 관리를 위해 메모리의 어떤 부분이 어디에 쓰이는지, 누가 사용하는지 추적하고, 어떤 프로세스와 데이터가 메모리의 안팎으로 옮겨질지 결정한다. 또한 메모리 공간을 할당하고 해제하는 것도 운영체제가 하는 일이다.</p>
+<h1 id="storage-management">Storage Management</h1>
+<p>운영체제는 저장장치의 물리적 속성을 추상화해 파일(File)이라는 논리적 저장 단위로 정의하며, 파일을 물리적 매체(Physical media)에 담거나 저장장치의 파일에 접근하기도 한다.</p>
+<h2 id="file-system-management">File-System Management</h2>
+<p>파일 관리는 운영체제가 하는 일 중 가장 눈에 잘 보이는 요소다. 운영체제는파일을 생성, 제거하며, 당연히 읽기, 쓰기도 한다.</p>
+<h2 id="mass-storage-management">Mass-Storage Management</h2>
+<p>프로그램은 디스크에 담겨 있으며, 메인 메모리에 로드되어 실행된다. 많은 사람들이 제3의 저장 장치(Tertiary storage devices)를 사용한다. 저장 장치들은 WORM(Write-Once, Read-Many-Times)과 RW(Read-Write) 형식에 차이가 있다. 한번쯤 봤을 NTFS, FAT가 파일 저장 형식이며, 이를 파일 시스템(File system)이라고 부른다. 파일 시스템이 다르면 읽기는 가능하지만 쓰기가 불가능하다.</p>
+<h2 id="caching">Caching</h2>
+<p>캐싱(Caching)은 컴퓨터 시스템에 있어 정말 중요한 부분이다. 캐시는 굉장히 빠르고 작은 저장장치이며, 캐싱은 캐시 메모리를 사용해 컴퓨터의 속도를 높이는 기술이다. 데이터를 디스크에서 직접 가져오는 것은 너무 느리기 때문에 캐시에 자주 사용될 것 같은 데이터를 미리 담아두고, CPU나 디스크가 캐시의 데이터를 참조할 수 있도록 한다. 파일의 중복성이 증가하지만, 속도 역시 증가한다. 캐싱은 <strong>지역성</strong>(Locality) 원리를 사용한다. 지역성은 시간지역성(Temporal locality)과 공간지역성(Spatial Locality)으로 나뉜다. 시간지역성은 한 번 접근한 데이터에 다시 접근할 확률이 높다는 것이다. 공간지역성은 특정 데이터와 가까운 메모리 주소에 있는 다른 데이터들에도 접근할 가능성이 높다는 것이다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) { ... }
+</code></pre>
+<p>위 코드에서 변수 <code>i</code>가 그 예시다.</p>
+<p>공간지역성은 특정 데이터와 가까운 메모리 주소에 있는 다른 데이터들에도 접근할 가능성이 높다는 것이다. 다음 코드를 보자.</p>
+<pre class="hljs"><code><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+  arr[i] += <span class="hljs-number">1</span>;
+}
+</code></pre>
+<p>배열 변수 <code>arr</code>의 0번 요소부터 순서대로 9번 요소까지 접근한다. 메모리 공간에 배열의 요소들은 그 순서대로 붙어 할당되니까 실제로 가까운 메모리 공간에 연속적으로 접근하고 있다. 캐시는 한 메모리 주소에 접근했을 때 그 주변의 메모리 주소도 함께 가져온다.</p>
+<p>캐시에 대한 보다 자세한 내용은 <a href="https://parksb.github.io/article/29.html">캐시가 동작하는 아주 구체적인 원리</a>에서 설명했다.</p>
+<h2 id="i%2Fo-system">I/O System</h2>
+<p>운영체제는 모든 입출력장치를 파일로 취급한다. 오직 장치드라이버(Device driver)만이 장치의 자세한 정보를 알고 있다.</p>
+<h1 id="protection-and-security">Protection and Security</h1>
+<p>컴퓨터 시스템은 여러 사람들이 사용하기 때문에 보호와 보안도 매우 중요하다. 운영체제는 내외부로부터 컴퓨터를 위험하게 만드는 요소를 막기 위해 다양한 활동을 한다. (유저 모드와 커널 모드를 나눈 것도 보호의 일종이다.) <strong>권한 확대</strong>(Privilege escalation)는 컴퓨터 시스템의 권한을 여러 층으로 나누고, 사용자의 권한을 구분해 어떤 행동이나 기준에 따라 사용자의 권한을 상승시키는 시스템이다. 참고로 권한 확대는 수직 권한 확대와 수평 권한 확대로 나눌 수 있는데, 가령 임의의 코드를 실행시켜 더 높은 권한을 얻는 행위는 수직 권한 확대, 안드로이드 루팅, iOS 탈옥은 수평 권한 확대라고 한다.</p>
+<h1 id="kernel-data-structures">Kernel Data Structures</h1>
+<p>커널 구현에는 기본적인 리스트(List), 스택(Stack), 큐(Queue), 링크드리스트(Linked list) 등의 자료구조가 사용된다. 특히 트리(Tree)는 상당히 효율적인 <eq><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord mathdefault" style="margin-right:.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:.01389em;">g</span></span><span class="mspace" style="margin-right:.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></eq>의 시간복잡도를 가질 수 있기 때문에 자주 사용된다.</p>
+<h1 id="computing-environments">Computing Environments</h1>
+<p>모바일 컴퓨팅(Mobile computing) 환경은 컴퓨터의 접근성을 높였고, 다양한 센서를 통해 사용자와의 인터페이스를 확장시켰다. 또한 분산형 컴퓨팅(Distributed computing), 클라이언트-서버 컴퓨팅(Client-Server computing), P2P 컴퓨팅(Peer-to-Peer computing) 등 다양한 컴퓨팅 환경이 있다. 특히 클라우드 컴퓨팅(Cloud computing)은 AWS(Amazon Web Service)를 통해 상당히 잘 알려졌다. 현대 컴퓨팅 환경의 가장 큰 특징을 꼽자면 휴대성, 가상화, 멀티코어가 있다.</p>
+<h1 id="open-source-operating-systems">Open-Source Operating Systems</h1>
+<p>세상에는 많은 오픈소스 운영체제들이 있다. 당장 깃허브에서도 <a href="https://github.com/torvalds/linux">리눅스의 코드를 찾아볼 수 있다.</a> 오픈소스 운영체제 개발에는 누구나 참여할 수 있고, 이를 이용해 새로운 운영체제를 만들 수도 있다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/6.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">🦕 공룡책으로 정리하는 운영체제 Ch.2</p> <p class="article-navigation-subtitle">System Structures</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/4.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">차이를 중심으로 살펴본 UI디자인과 UX디자인</p> <p class="article-navigation-subtitle">UI는 심미성, UX는 사용성?</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/5.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

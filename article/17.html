@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> Java Design Pattern: Singleton </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/17.html"><meta property="og:title" content="Java Design Pattern: Singleton"><meta property="og:image" content="https://og-image-parksb.vercel.app/**Java%20Design%20Pattern:%20Singleton**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.15%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="Singleton 패턴은 하나만 존재해야 하는 오브젝트를 만들 때 유용한 디자인 패턴이다. 간단히 구현해보자.public class Singleton {  private static Singleton instance;  private Singleton() {}  public static Singleton getInstan..."><meta name="twitter:title" content="Java Design Pattern: Singleton"><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**Java%20Design%20Pattern:%20Singleton**.png?subtitle=&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.06.15%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="Singleton 패턴은 하나만 존재해야 하는 오브젝트를 만들 때 유용한 디자인 패턴이다. 간단히 구현해보자.public class Singleton {  private static Singleton instance;  private Singleton() {}  public static Singleton getInstan..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> Java Design Pattern: Singleton </h1> <time id="article-date"> 2018.06.15 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180615_java-design-pattern-singleton.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul></ul></div></p>
+</details>
+<p>Singleton 패턴은 하나만 존재해야 하는 오브젝트를 만들 때 유용한 디자인 패턴이다. 간단히 구현해보자.</p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Singleton instance;
+
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>{}
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Singleton <span class="hljs-title">getInstance</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (instance == <span class="hljs-keyword">null</span>) {
+      instance = <span class="hljs-keyword">new</span> Singleton();
+    }
+
+    <span class="hljs-keyword">return</span> instance;
+  }
+}
+</code></pre>
+<p>constructor를 private으로 정의하고, instance에 접근하기 위해서는 반드시 <code>getInstance</code> 메소드를 거치도록했다. 이제 한 번 인스턴스가 생성된 이후에는 또 다른 인스턴스가 생성될 일이 없다.</p>
+<p>하지만 이렇게만 하면 멀티스레딩 환경에서 동기화가 제대로 되지 않을 경우 인스턴스가 두 개 만들어질 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span> </span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Singleton instance;
+
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">Singleton</span><span class="hljs-params">()</span> </span>{}
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">synchronized</span> Singleton <span class="hljs-title">getInstance</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (instance == <span class="hljs-keyword">null</span>) {
+      instance = <span class="hljs-keyword">new</span> Singleton();
+    }
+
+    <span class="hljs-keyword">return</span> instance;
+  }
+}
+</code></pre>
+<p><code>getInstance</code>를 synchronized로 해주면 한 번에 하나의 스레드만 메소드에 접근할 수 있기 때문에 동기화 문제가 해결된다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/18.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">📊 파이썬으로 정리하는 Quick-Sort</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/16.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">Race condition 발생시키고 Mutex lock으로 해결하기</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/17.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

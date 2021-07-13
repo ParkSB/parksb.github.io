@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> 🎅 요정을 착취하는 방치형 게임 개발한 이야기 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/26.html"><meta property="og:title" content="🎅 요정을 착취하는 방치형 게임 개발한 이야기: ES6 OOP와 타입스크립트, 그리고 제이쿼리(?) "><meta property="og:image" content="https://og-image-parksb.vercel.app/**%F0%9F%8E%85%20%EC%9A%94%EC%A0%95%EC%9D%84%20%EC%B0%A9%EC%B7%A8%ED%95%98%EB%8A%94%20%EB%B0%A9%EC%B9%98%ED%98%95%20%EA%B2%8C%EC%9E%84%20%EA%B0%9C%EB%B0%9C%ED%95%9C%20%EC%9D%B4%EC%95%BC%EA%B8%B0**.png?subtitle=ES6%20OOP%EC%99%80%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8,%20%EA%B7%B8%EB%A6%AC%EA%B3%A0%20%EC%A0%9C%EC%9D%B4%EC%BF%BC%EB%A6%AC(?)&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.12.26%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="Santa Inc.는 초국적 블랙 기업 '산타 주식회사’를 운영하는 방치형 게임(Idle game)이다. 산타의 목적은 오직 선물 생산을 최대로 끌어올리는 것. 산타는 직원을 고용하고, 정책을 채택하며 끝없이 선물을 생산한다.Santa Inc.를 처음 만든 건 2015년 겨울이었다. 웹 프로그래밍을 공부한 후 매년 크리스..."><meta name="twitter:title" content="🎅 요정을 착취하는 방치형 게임 개발한 이야기: ES6 OOP와 타입스크립트, 그리고 제이쿼리(?) "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**%F0%9F%8E%85%20%EC%9A%94%EC%A0%95%EC%9D%84%20%EC%B0%A9%EC%B7%A8%ED%95%98%EB%8A%94%20%EB%B0%A9%EC%B9%98%ED%98%95%20%EA%B2%8C%EC%9E%84%20%EA%B0%9C%EB%B0%9C%ED%95%9C%20%EC%9D%B4%EC%95%BC%EA%B8%B0**.png?subtitle=ES6%20OOP%EC%99%80%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8,%20%EA%B7%B8%EB%A6%AC%EA%B3%A0%20%EC%A0%9C%EC%9D%B4%EC%BF%BC%EB%A6%AC(?)&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.12.26%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="Santa Inc.는 초국적 블랙 기업 '산타 주식회사’를 운영하는 방치형 게임(Idle game)이다. 산타의 목적은 오직 선물 생산을 최대로 끌어올리는 것. 산타는 직원을 고용하고, 정책을 채택하며 끝없이 선물을 생산한다.Santa Inc.를 처음 만든 건 2015년 겨울이었다. 웹 프로그래밍을 공부한 후 매년 크리스..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> 🎅 요정을 착취하는 방치형 게임 개발한 이야기 </h1> <h2 id="article-subtitle"> ES6 OOP와 타입스크립트, 그리고 제이쿼리(?) </h2> <time id="article-date"> 2018.12.26 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20181226_idle-game-dev-story.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#%F0%9F%98%88-%EC%82%B0%ED%83%80%EA%B0%80-%EB%90%98%EC%96%B4-%EB%A3%A8%EB%8F%8C%ED%94%84%EC%99%80-%EC%9A%94%EC%A0%95%EC%9D%84-%EC%B0%A9%EC%B7%A8%ED%95%B4%EB%B3%B4%EC%84%B8%EC%9A%94!">😈 산타가 되어 루돌프와 요정을 착취해보세요!</a><ul><li><a href="#%ED%99%95%EC%9E%A5-%EB%B6%88%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%95%84%EC%9D%B4%ED%85%9C-%EC%BD%94%EB%93%9C">확장 불가능한 아이템 코드</a></li><li><a href="#%EC%8A%A4%ED%8C%8C%EA%B2%8C%ED%8B%B0-%EC%A3%BC%EB%8F%84-%EA%B0%9C%EB%B0%9C">스파게티 주도 개발</a></li><li><a href="#%EA%B7%B8%EB%A6%AC%EA%B3%A0...">그리고...</a></li></ul></li><li><a href="#%F0%9F%8C%8F-%EC%84%B8%EA%B3%84%EB%A5%BC-%EC%84%A0%EB%8F%84%ED%95%98%EB%8A%94-%EA%B8%80%EB%A1%9C%EB%B2%8C-%EA%B8%B0%EC%97%85-(%EC%A3%BC)%EC%82%B0%ED%83%80">🌏 세계를 선도하는 글로벌 기업 (주)산타</a><ul><li><a href="#%EB%AA%A8%EB%93%A0-%EA%B2%83%EC%9D%84-%EB%AA%A8%EB%93%88%ED%99%94%ED%95%98%EC%9E%90">모든 것을 모듈화하자</a></li><li><a href="#%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98">타입스크립트로 마이그레이션</a></li></ul></li><li><a href="#%F0%9F%93%8C-%EC%BD%94%EB%94%A9%EB%A7%90%EA%B3%A0-%EB%8B%A4%EB%A5%B8-%EC%9E%91%EC%97%85%EB%93%A4">📌 코딩말고 다른 작업들</a><ul><li><a href="#%EB%A7%88%EC%9A%B0%EC%8A%A4%EB%A1%9C-%EB%8F%84%ED%8A%B8%EC%B0%8D%EA%B8%B0">마우스로 도트찍기</a></li><li><a href="#%EC%82%AC%EB%9D%BC%EC%A7%84-%EC%BD%98%ED%85%90%EC%B8%A0%EC%99%80-%EC%B6%94%EA%B0%80%EB%90%9C-%EC%BD%98%ED%85%90%EC%B8%A0">사라진 콘텐츠와 추가된 콘텐츠</a></li></ul></li><li><a href="#%F0%9F%A4%94-%EA%B7%B8%EB%9F%B0-%EC%A7%93%EC%9D%80-%ED%95%98%EC%A7%80-%EB%A7%90%EC%95%84%EC%95%BC-%ED%96%88%EB%8A%94%EB%8D%B0">🤔 그런 짓은 하지 말아야 했는데</a></li></ul></div></p>
+</details>
+<p><a href="https://parksb.github.io/santa-inc/">Santa Inc.</a>는 초국적 블랙 기업 '산타 주식회사’를 운영하는 방치형 게임(Idle game)이다. 산타의 목적은 오직 선물 생산을 최대로 끌어올리는 것. 산타는 직원을 고용하고, 정책을 채택하며 끝없이 선물을 생산한다.</p>
+<p><img src="https://raw.githubusercontent.com/ParkSB/santa-inc/develop/assets/meta/preview.png" alt="Santa Inc. 세계를 선도하는 글로벌 기업. 루돌프."></p>
+<p>Santa Inc.를 처음 만든 건 2015년 겨울이었다. 웹 프로그래밍을 공부한 후 매년 크리스마스마다 이상한 걸 만들었는데, 이것도 그 일환이었다. 당시엔 크리스마스에 맞춰 런칭하겠다는 욕심으로 학기 중 20일만에 게임을 완성했다. 물론 코드가 엉망진창이었다.</p>
+<p>그리고 2018년, 엉망이던 코드를 ES6 클래스 문법과 타입스크립트를 이용해 (아마도) 깔끔하게 정리했다.</p>
+<h1 id="%F0%9F%98%88-%EC%82%B0%ED%83%80%EA%B0%80-%EB%90%98%EC%96%B4-%EB%A3%A8%EB%8F%8C%ED%94%84%EC%99%80-%EC%9A%94%EC%A0%95%EC%9D%84-%EC%B0%A9%EC%B7%A8%ED%95%B4%EB%B3%B4%EC%84%B8%EC%9A%94!">😈 산타가 되어 루돌프와 요정을 착취해보세요!</h1>
+<p>
+처음 아이디어는 '산타가 요정을 고용해 회사를 운영하는 게임’이었다. 어렸을 때 줄기차게 한 롤러코스터 타이쿤이나 로코모션급의 시뮬레이션 게임…이 이상적이긴 하지만 당장 만드는 건 무리였다. 대신 <a href="http://orteil.dashnet.org/cookieclicker/">Cookie Clicker</a>라는 게임을 재밌게 한 기억이 났고, 이것처럼 만들어봐야겠다고 결심했다.</p>
+<p>크리스마스까지 시간이 많지 않았기 때문에 기획, 디자인, 개발을 모두 동시에 했다. (그러지 말았어야 했다! 개발하다가 갑자기 생각이 바뀌어 코드를 완전히 새로 짜거나 새로운 그림을 그려야 하는 상황이 여러번 발생했다.) 프로젝트 중간에 친구가 게임 OST까지 작곡해줬는데, 게임 분위기와 놀랍도록 잘 맞아 떨어져서 신의 한 수였던 것 같다.</p>
+<h2 id="%ED%99%95%EC%9E%A5-%EB%B6%88%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%95%84%EC%9D%B4%ED%85%9C-%EC%BD%94%EB%93%9C">확장 불가능한 아이템 코드</h2>
+<p>플레이어는 루돌프나 요정을 고용해서 선물을 생산하도록 할 수 있다. 게임 특성상 '구입할 수 있는 아이템’과 '아직 구입할 수 없는 아이템’이 나뉘어 있고, 특정 조건을 만족하면 아이템의 잠금이 풀리는 매커니즘이 필요했다. 따라서 아이템 리스트를 먼저 만들었다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">var</span> htItem = [{
+    <span class="hljs-attr">k_name</span> : <span class="hljs-string">&quot;루돌프&quot;</span>,
+    <span class="hljs-attr">name</span> : <span class="hljs-string">&quot;dolf&quot;</span>,
+    <span class="hljs-attr">img</span> : <span class="hljs-string">&quot;img/dolf.gif&quot;</span>,
+    <span class="hljs-attr">num</span> : <span class="hljs-number">0</span>,
+    <span class="hljs-attr">prod</span> : <span class="hljs-number">2</span>,
+    <span class="hljs-attr">addi</span> : <span class="hljs-number">1</span>,
+    <span class="hljs-attr">cost</span> : <span class="hljs-number">30</span>,
+    <span class="hljs-attr">lv</span> : <span class="hljs-literal">false</span>
+}, {
+    <span class="hljs-attr">k_name</span> : <span class="hljs-string">&quot;인턴 요정&quot;</span>,
+    <span class="hljs-attr">name</span> : <span class="hljs-string">&quot;elf&quot;</span>,
+    <span class="hljs-attr">img</span> : <span class="hljs-string">&quot;img/elf.gif&quot;</span>,
+    <span class="hljs-attr">num</span> : <span class="hljs-number">0</span>,
+    <span class="hljs-attr">prod</span> : <span class="hljs-number">5</span>,
+    <span class="hljs-attr">addi</span> : <span class="hljs-number">2</span>,
+    <span class="hljs-attr">cost</span> : <span class="hljs-number">200</span>,
+    <span class="hljs-attr">lv</span> : <span class="hljs-literal">false</span>
+}, {
+    <span class="hljs-comment">// ...</span>
+</code></pre>
+<p>이때는 왠지 몰라도 배열에 객체담는 걸 그렇게 좋아했다. 쉽게 파악하기 힘든 프로퍼티는 둘째치고, 가장 큰 문제는 아이템을 오직 인덱스로 관리했다는 점이다. 플레이어가 가진 선물에 따라 n번째 아이템을 구입할 수 있도록 열고, 아이템 리스트에서 n번째 요소를 클릭하면 <code>htItem[n]</code> 아이템이 구입되는 방식이었다.</p>
+<p>어떤 아이템이 몇 번째 순서인지 기억해야 했고, <code>htItem</code> 중간에 새로운 아이템을 끼워 넣을 수 없었다. 이 때문에 '루돌프’와 ‘인턴 요정’ 사이에 들어갈 '알바요정’의 그래픽 작업을 마쳤음에도 끝내 추가하지 못했다.</p>
+<h2 id="%EC%8A%A4%ED%8C%8C%EA%B2%8C%ED%8B%B0-%EC%A3%BC%EB%8F%84-%EA%B0%9C%EB%B0%9C">스파게티 주도 개발</h2>
+<p>아이템 관련 코드도 심각했지만, 정책 부분은 더 심각했다. 플레이어가 정책 리스트에서 정책을 구입하면 그 정책이 가진 효과를 실행해야 하는데, 그 부분을 이렇게 처리했다:</p>
+<pre class="hljs"><code><span class="hljs-comment">// 정책 선택에 따른 분기를 설정, 처리한다.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updatePolicy</span>(<span class="hljs-params">sPolicy</span>) </span>{
+    <span class="hljs-keyword">if</span>(sPolicy == <span class="hljs-string">&quot;practice&quot;</span>) { <span class="hljs-comment">// 리본묶기</span>
+        nClickPres = <span class="hljs-number">1.2</span>;
+        renderPolicyList(<span class="hljs-number">1</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sPolicy == <span class="hljs-string">&quot;smart-work&quot;</span>) { <span class="hljs-comment">// 스마트 업무 환경</span>
+        nClickPres = <span class="hljs-number">1.5</span>;
+        renderPolicyList(<span class="hljs-number">2</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sPolicy == <span class="hljs-string">&quot;night&quot;</span>) { <span class="hljs-comment">// 야근문화</span>
+        htItem[<span class="hljs-number">0</span>][<span class="hljs-string">&quot;prod&quot;</span>] += <span class="hljs-number">1</span>;
+        $(<span class="hljs-string">&quot;#dolf .pr&quot;</span>).text(htItem[<span class="hljs-number">0</span>][<span class="hljs-string">&quot;addi&quot;</span>] + <span class="hljs-string">&quot; ~ &quot;</span> + htItem[<span class="hljs-number">0</span>][<span class="hljs-string">&quot;prod&quot;</span>] + <span class="hljs-string">&quot;개 생산&quot;</span>);
+        renderPolicyList(<span class="hljs-number">3</span>); <span class="hljs-comment">// 열정페이 오픈</span>
+        renderPolicyList(<span class="hljs-number">4</span>); <span class="hljs-comment">// 멀티태스킹 오픈</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sPolicy == <span class="hljs-string">&quot;pashion&quot;</span>) { <span class="hljs-comment">// 열정페이</span>
+        <span class="hljs-comment">// ...</span>
+</code></pre>
+<p>지옥이 있다면 이런 모습일까? 정책 리스트도 아이템처럼 객체 배열로 구성했지만, 정책마다 실행할 코드가 다르다는 점과 한 정책이 다음 정책을 여러 개 열 수 있다는 점이 아이템과는 달랐다. 가령 ‘리본묶기’ 정책을 구입하면 선물 상자를 클릭할 때 들어오는 선물이 1.2개가 되고, 다음 정책인 '스마트 업무 환경’이 열린다. 반면 '야근문화’를 구입하면 루돌프(<code>htItem[0]</code>이 루돌프를 의미하는 게 포인트.)의 최대 생산량이 1오르고, '열정페이’와 '멀티태스킹’이 열린다.</p>
+<p>중간에 새로운 정책을 끼워 넣을 수 없을 뿐만 아니라, 정책이 열리는 순서와 각 정책의 인덱스, 효과, 이름을 모두 숙지해야 했다. 솔직히 이 부분에서 때려칠까 고민했다.</p>
+<h2 id="%EA%B7%B8%EB%A6%AC%EA%B3%A0%E2%80%A6">그리고…</h2>
+<p>크리스마스 직전, 친구들에게 무작위로 링크를 뿌려 베타테스트를 했다. 아이템이나 정책 추가는 불가능했고, 버그 수정과 밸런싱에 신경썼다. <a href="https://play.google.com/store/apps/details?id=com.maf.moneyhero&amp;hl=ko">중년기사 김봉식</a>이라는 방치형 게임을 참고해 밸런스를 맞췄지만, 막상 테스트를 해보니 손볼 곳이 많았다.</p>
+<p>이런 식의 스파게티 코드들을 <code>santa.js</code>에 때려 박았다. 어찌저치 런칭하기 했지만 당연히 유지보수가 불가능에 가까웠고, 게임 후반부에 게임이 멈춰버린다는 리포트도 많았다. 루돌프와 요정을 착취하려 했으나 결과적으로 내가 나를 착취한 상황이 됐다. 이후로 업데이트는 커녕 소스파일을 다시 열어보는 일도 없…을 줄 알았으나…</p>
+<h1 id="%F0%9F%8C%8F-%EC%84%B8%EA%B3%84%EB%A5%BC-%EC%84%A0%EB%8F%84%ED%95%98%EB%8A%94-%EA%B8%80%EB%A1%9C%EB%B2%8C-%EA%B8%B0%EC%97%85-(%EC%A3%BC)%EC%82%B0%ED%83%80">🌏 세계를 선도하는 글로벌 기업 (주)산타</h1>
+<p>2018년초 깃랩 프로젝트 몇 개를 깃허브로 옮기는 작업을 했다. 이때 Santa Inc. 코드를 다시 열어봤는데, 정말 '내 인생에 이딴 코드를 남겨두는 건 부끄러운 일이다’라는 생각이 들어 바로 뜯어 고치기 시작했다. 이때가 1월이었으니 크리스마스까지 시간은 충분했다.</p>
+<h2 id="%EB%AA%A8%EB%93%A0-%EA%B2%83%EC%9D%84-%EB%AA%A8%EB%93%88%ED%99%94%ED%95%98%EC%9E%90">모든 것을 모듈화하자</h2>
+<p>게임에 등장하는 주요 요소는 크게 두 가지, 직원과 정책이다. 먼저 <code>Worker</code> 클래스를 추상 클래스로 활용하면서 이를 <code>Rudolph</code>나 <code>InternElf</code>와 같은 각각의 직원 클래스에 상속했다. ES6 덕분에 클래스 문법에 따라 개발할 수 있었다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Worker</span> </span>{
+  <span class="hljs-keyword">static</span> cost = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">static</span> minOutput = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">static</span> maxOutput = <span class="hljs-number">0</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.output = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">this</span>.level = <span class="hljs-number">1</span>;
+    <span class="hljs-comment">// ...</span>
+    <span class="hljs-built_in">this</span>.img = <span class="hljs-string">&#x27;&#x27;</span>;
+  }
+
+  <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">getMinOutput</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.minOutput;
+  }
+
+  <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">getMaxOutput</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.maxOutput;
+  }
+
+  <span class="hljs-comment">// ...</span>
+
+  <span class="hljs-function"><span class="hljs-title">next</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;next() must be implemented.&#x27;</span>);
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Worker;
+</code></pre>
+<p>코드가 너무 길어 많은 부분이 생략되었지만, 대략 이런 모습이다. 다른 OOP 언어와 비슷하게 클래스 문법을 사용할 수 있다. 다만 추상 메소드라는 개념이 없어서 <code>next</code> 메소드는 서브클래스에서 구현되어야 한다는 에러를 던지도록 했다.</p>
+<p>그리고 각 직원 클래스들이 <code>Worker</code>를 상속받는다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rudolph</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Worker</span> </span>{
+  <span class="hljs-keyword">static</span> cost = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">static</span> minOutput = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">static</span> maxOutput = <span class="hljs-number">2</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">super</span>();
+
+    <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&#x27;rudolph&#x27;</span>;
+    <span class="hljs-built_in">this</span>.korName = <span class="hljs-string">&#x27;루돌프&#x27;</span>;
+
+    <span class="hljs-built_in">this</span>.img = <span class="hljs-string">&#x27;/assets/rudolph.gif&#x27;</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">next</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ParttimeElf();
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Rudolph;
+</code></pre>
+<p><code>Rudolph</code> 인스턴스를 통해 <code>next</code>를 호출하면 다음 단계 직원인 알바요정(<code>ParttimeElf</code>)을 반환받는다. 이렇게 모든 종류의 직원을 각각의 클래스로 나눠서 관리하니 훨씬 편하게 개발할 수 있었다. 정책도 같은 방식으로 구현했다.</p>
+<p>‘감독관 배치’ 정책은 모든 직원의 생산량을 1늘려준다. 이 동작도 다른 모듈은 전혀 건드리지 않고 감독관 배치 클래스에서 아주 간단하게 구현할 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Supervisor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Policy</span> </span>{
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">execute</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> workers = Game.getHiredWorkers();
+
+    workers.forEach(<span class="hljs-function">(<span class="hljs-params">worker</span>) =&gt;</span> {
+      worker.setOutput(worker.getOutput() + <span class="hljs-number">1</span>);
+      PersonnelInterface.updateOutput(worker.getName(), worker.getOutput());
+      Game.addTotalOutput(<span class="hljs-number">1</span>);
+    });
+  }
+}
+</code></pre>
+<p><code>Supervisor.execute()</code>와 같이 호출되면 고용된 직원 객체로 구성된 배열을 가져와 각 직원의 <code>setOutput</code> 메소드를 호출해 생산량을 1씩 증가시킨다. 그리고 스크린의 사이드바에 있는 '인사 탭’을 업데이트하기 위해 <code>PersonnelInterface</code>의 <code>updateOutput</code> 메소드를 사용했다.</p>
+<p>이로써 직원과 정책, 인터페이스가 완전히 독립적으로 동작하며 public 메소드를 통해 최소한의 관계를 유지할 수 있게 되었다. (자바스크립트에선 모든 프로퍼티가 public하지만…) 예전 방식대로라면 if문 지옥안에서 이중루프를 돌리는 짓을 했을지도 모른다.</p>
+<h2 id="%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98">타입스크립트로 마이그레이션</h2>
+<p>아무리 ES6라도 자바 프로그래밍에서의 개발 경험에 비하면 불편한 점이 많았다. abstract나 interface같은 OOP 문법이 없다는 건 둘째치고, 다양한 클래스를 다루다보니 원시 타입만 생각할 수가 없다는 게 큰 문제였다. Worker 타입, Policy 타입 등이 마구 섞이기 시작했다. 여기에 더해 인스턴스 멤버의 자동 완성이 제대로 안 된다는 불편함도 있었다.</p>
+<p>타입 문제, 역시 타입스크립트가 바로 떠올랐다. 기존 자바스크립트 코드를 타입스크립트로 그대로 옮기는 작업이 크게 어려울 것 같지는 않았다. 바로 새로운 브랜치를 만들어 타입스크립트로 마이그레이션하는 작업을 시작했다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Worker</span> </span>{
+  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">static</span> cost: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">static</span> minOutput: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">static</span> maxOutput: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">protected</span> output: <span class="hljs-built_in">number</span>;
+  <span class="hljs-keyword">protected</span> level: <span class="hljs-built_in">number</span>;
+  <span class="hljs-keyword">protected</span> levelCost: <span class="hljs-built_in">number</span>;
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-keyword">protected</span> img: <span class="hljs-built_in">string</span>;
+  
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.output = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">this</span>.level = <span class="hljs-number">1</span>;
+    <span class="hljs-built_in">this</span>.levelCost = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// ...</span>
+    <span class="hljs-built_in">this</span>.img = <span class="hljs-string">&#x27;&#x27;</span>;
+  }
+
+  <span class="hljs-keyword">static</span> getMinOutput(): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.minOutput;
+  }
+
+  <span class="hljs-keyword">static</span> getMaxOutput(): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.maxOutput;
+  }
+
+  <span class="hljs-comment">// ...</span>
+
+  <span class="hljs-keyword">abstract</span> next(): Worker;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Worker;
+</code></pre>
+<p>기존 코드와 거의 비슷하다! 타입스크립트는 public, private, protected와 같은 접근 제한자를 제공한다. public은 외부에서 해당 클래스의 멤버에 직접 접근할 수 있고, private은 해당 클래스 내부에서만 접근할 수 있다. 그리고 protected는 해당 클래스와 그 서브클래스에서만 접근 할 수 있다.</p>
+<p><code>Worker</code>의 프로퍼티들을 protected로 설정해 <code>Worker</code>의 서브클래스에서만 프로퍼티에 직접 접근할 수 있도록 제한했다. 이 프로퍼티들은 오직 getter, setter 메소드를 통해서만 접근할 수 있다.</p>
+<p>추상 클래스와 추상 메소드도 만들 수도 있다. <code>Worker</code> 클래스를 추상 클래스로 만들어 <code>new Worker()</code>처럼 생성하지 못하도록 했다. 또한 앞서 직접 에러를 던져주던 <code>next</code> 메소드도 추상 메소드로 만들었다. 이제 서브클래스에서 <code>next</code>를 오버라이드하지 않으면 타입스크립트 컴파일러가 알아서 잡아낸다.</p>
+<p>대체로 자바 문법과 굉장히 비슷하다는 느낌을 받았다.</p>
+<h1 id="%F0%9F%93%8C-%EC%BD%94%EB%94%A9%EB%A7%90%EA%B3%A0-%EB%8B%A4%EB%A5%B8-%EC%9E%91%EC%97%85%EB%93%A4">📌 코딩말고 다른 작업들</h1>
+<p>프로그래밍뿐 아니라 기획과 그래픽도 중요한 작업이었다.</p>
+<h2 id="%EB%A7%88%EC%9A%B0%EC%8A%A4%EB%A1%9C-%EB%8F%84%ED%8A%B8%EC%B0%8D%EA%B8%B0">마우스로 도트찍기</h2>
+<p><img src="https://raw.githubusercontent.com/ParkSB/santa-inc/develop/assets/parttimeElf.gif" alt="알바요정."></p>
+<p>도트그래픽 외에는 선택지가 없었다. 다행인 것은 내가 도트그래픽을 좋아하고, 도트를 찍는 것도 좋아한다는 것이었다. 마우스로 열심히 도트를 찍어 프레임 포함 30개 정도의 어셋을 만들었다. 이 중에는 인게임에 적용된 것도 있고, 안타깝게 적용되지 못한 것도 있다. 빈 교실에서 눈오는 창밖을 보며 도트찍던(…) 그때가 생각난다.</p>
+<h2 id="%EC%82%AC%EB%9D%BC%EC%A7%84-%EC%BD%98%ED%85%90%EC%B8%A0%EC%99%80-%EC%B6%94%EA%B0%80%EB%90%9C-%EC%BD%98%ED%85%90%EC%B8%A0">사라진 콘텐츠와 추가된 콘텐츠</h2>
+<p>사실 Santa Inc.는 2015년 사회 이슈를 풍자하기 위해 만들었던 게임이었다. 당시에는 한창 열정페이나 노동개혁에 대한 논의가 활발했고, <a href="http://www.molleindustria.org/">Molleindustria</a>처럼 사회적 메시지를 담은 결과물을 만들고 싶었다. 그래서 첫 버전에는 플레이어가 악덕 정책을 다수 채택하는 후반부에 요정들이 노조를 결성해 파업에 돌입하고, 회사가 감시, 소송 절차를 거치며 노조를 파괴하는 시나리오까지 있었다.</p>
+<p>게임을 다시 만든 2018년에 똑같은 요소를 넣기엔 시의에 맞지 않았다. 노동 이슈를 그대로 다루되, 몇가지 정책을 빼고 이를 대체하는 다른 정책들을 추가했다. 기존의 해고 탭도 인사 탭으로 바꿔 직원을 승진시키는 기능을 더했다.</p>
+<p>기존에 직원으로 있던 '커플’도 뺐다. 예전에는 크리스마스마다 커플을 밈으로 사용하는 한국 전통(?)에 따라 커플을 직원으로 넣었으나, 지금 보니 별로 적절하지 않았다. 캐릭터에 젠더 고정관념이 그대로 반영되기도 했고, 최근에는 그런 밈이 거의 사라진 것 같다. 대신 그 자리에 '트리’를 추가했다. 크리스마스하면 트리인데 왜 진작에 안 넣었는지 모르겠다.</p>
+<p>'아이들’도 빼려 했다. 아이들을 위해 선물을 주는 산타가 아동노동을 자행하는 모습을 통해 블랙기업 산타 주식회사의 정체성을 좀 더 명확히 하려는 의도였는데, 마음이 아파서 아이들은 고용하지 않았다는 말을 듣고 이번에는 없애려 했…으나 모 회사에서 심야 업무에 불법적으로 청소년 노동자를 동원했다는 뉴스가 나와 다시 넣게 되었다.</p>
+<p>추가로, 예전에 추가하지 못했던 비운의 알바요정을 루돌프와 인턴요정 사이에 넣었다.</p>
+<h1 id="%F0%9F%A4%94-%EA%B7%B8%EB%9F%B0-%EC%A7%93%EC%9D%80-%ED%95%98%EC%A7%80-%EB%A7%90%EC%95%84%EC%95%BC-%ED%96%88%EB%8A%94%EB%8D%B0">🤔 그런 짓은 하지 말아야 했는데</h1>
+<p>제이쿼리를 버리고 싶었지만 처음 만들 때 제이쿼리로 만들었더니 뒤바꾸는 게 쉽지 않았다. 아예 웹 게임 엔진을 쓰면 좋은데, 로직을 고치는 것만으로도 벅차서 이 부분은 잘 신경쓰지 못했다.</p>
+<p>일단 로직과 html 코드 조각이 마구 섞여있는 게 신경쓰였다. 리액트에서 컴포넌트를 관리하는 것처럼 요소별로 모듈을 분리하면 어떨까 싶어서 시도해봤다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> WorkerItem = <span class="hljs-function">(<span class="hljs-params">
+  name: <span class="hljs-built_in">string</span>,
+  img: <span class="hljs-built_in">string</span>,
+  korName: <span class="hljs-built_in">string</span>,
+  cost: <span class="hljs-built_in">number</span>,
+  minOutput: <span class="hljs-built_in">number</span>,
+  maxOutput: <span class="hljs-built_in">number</span>
+</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-string">`&lt;li id=&quot;<span class="hljs-subst">${name}</span>&quot;&gt;`</span> +
+      <span class="hljs-string">`&lt;img class=&quot;worker-img&quot; src=&quot;<span class="hljs-subst">${img}</span>&quot;/&gt;`</span> +
+      <span class="hljs-string">`&lt;p&gt;<span class="hljs-subst">${korName}</span>`</span> +
+        <span class="hljs-string">&#x27;&lt;img class=&quot;item-present-img&quot; src=&quot;./assets/present.png&quot;&gt;&#x27;</span> +
+        <span class="hljs-string">`&lt;span class=&quot;t&quot;&gt;<span class="hljs-subst">${cost}</span>&lt;/span&gt;`</span> +
+        <span class="hljs-string">`&lt;br/&gt;&lt;span class=&quot;pr&quot;&gt;<span class="hljs-subst">${minOutput}</span> ~ <span class="hljs-subst">${maxOutput}</span>개 생산&lt;/span&gt;`</span> +
+      <span class="hljs-string">&#x27;&lt;/p&gt;&#x27;</span> +
+    <span class="hljs-string">&#x27;&lt;/li&gt;&#x27;</span>
+  );
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> WorkerItem;
+</code></pre>
+<p>직원 목록의 각 아이템을 컴포넌트로 만들었다. 이제 필요한 곳에서 불러와 파라미터를 잘 넣어주면 된다.</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> WorkerItem <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./WorkerItem&#x27;</span>;
+<span class="hljs-comment">// ...</span>
+drawWorkerList(worker: Worker): <span class="hljs-built_in">void</span> {
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-built_in">this</span>.elements.workerList.append(
+    WorkerItem(
+      worker.getName(),
+      worker.getImg(),
+      worker.getKorName(),
+      workerClass.getCost(),
+      workerClass.getMinOutput(),
+      workerClass.getMaxOutput()
+    )
+  );
+  <span class="hljs-comment">// ...</span>
+</code></pre>
+<p>파라미터도 많고 관심사의 분리도 완벽하지 않아서 여전히 마음에 안 들지만, 그래도 로직과 뒤섞여 있는 것보다는 조금 나아졌다. 분명 제이쿼리 장인들은 더 나은 방법을 썼을 것 같은데 잘 모르겠다.</p>
+<p>평소 게임 개발쪽은 큰 관심이 없음에도 주기적으로 게임을 만들어지고 싶어지는 시기가 온다. 다음에는 아예 (예전에 파다가 관둔) 유니티를 공부해서 만들어볼까한다.</p>
+<p>Santa Inc.의 코드는 <a href="https://github.com/ParkSB/santa-inc">GitHub 저장소</a>에서 살펴볼 수 있다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/27.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">2학년 학부생의 신입 개발자 취업기</p> <p class="article-navigation-subtitle">산업기능요원 결심부터 합격까지 3개월의 기록</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/25.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">🤖 컴퓨터가 코드를 읽는 아주 구체적인 원리</p> <p class="article-navigation-subtitle">MIPS 어셈블리어 훑어보기</p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/26.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>

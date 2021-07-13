@@ -1,0 +1,69 @@
+<rss version="2.0">
+<channel>
+<title>Simon Park</title>
+<link>https://parksb.github.io/</link>
+<description>Recently published articles written by Simon Park</description>
+<language>ko-kr</language>
+<lastBuildDate>Tue, 13 Jul 2021 23:40:37 +0900</lastBuildDate>
+<item>
+<title>🧱 Server Driven UI 설계를 통한 UI 유연화</title>
+<link>https://parksb.github.io/article/38.html</link>
+<description>웹과 달리 네이티브 모바일 앱은 빌드, 배포 후에는 수정이 불가능하다. 만약 잘못된 위치에 버튼을 배치한 채로 스토어에 앱을 배포했다면, 그리고 사용자가 잘못된 버전의 앱을 설치했다면 버튼의 위치를 수정할 방법이 없다. 유일한 방법은 사용자가 스스로 스토어에 들어가 수정된 버전의 앱으로 업데이트하는 것 뿐이다.배포 후 수...</description>
+<pubDate>Thu, 1 Jul 2021 09:00:00 +0900</pubDate>
+</item>
+<item>
+<title>읽기 쉬운 웹을 위한 타이포그래피</title>
+<link>https://parksb.github.io/article/37.html</link>
+<description>웹에서 장문의 글을 보여줄 때 보다 읽기 쉽게 디자인하기 위한 원칙을 소개하고자 한다. 전통적인 타이포그래피 규칙들을 바탕으로 웹에서 글을 어떻게 효과적으로 조판할지 소개하되, 활자 자체를 해부하지는 않는다. 이 글에서 제시하는 원칙을 무조건적으로 따르는 것보다는 상황에 따라 유연하게 적용하는 것이 좋고, 실험적인 시도를...</description>
+<pubDate>Fri, 1 Jan 2021 13:00:00 +0900</pubDate>
+</item>
+<item>
+<title>인터넷이 동작하는 아주 구체적인 원리</title>
+<link>https://parksb.github.io/article/36.html</link>
+<description>학교에서 노트북으로 구글(www.google.com)에 접속하는 과정을 살펴본다. 이 글에 등장하는 KT와 Google Fiber, 구글의 네트워크 구조, 노드의 IP 주소와 MAC 주소는 모두 간소화 또는 가정한 것이다. 또한 클라이언트와 서버가 패킷을 주고받는 전체 과정을 훑기 위해 프록시와 캐시는 생략했다.학교 네트...</description>
+<pubDate>Thu, 2 Jan 2020 03:00:00 +0900</pubDate>
+</item>
+<item>
+<title>🦀 러스트의 멋짐을 모르는 당신은 불쌍해요</title>
+<link>https://parksb.github.io/article/35.html</link>
+<description>내가 만나온 개발자들은 대체로 자신이 사용하는 프로그래밍 언어에 딱히 만족하지 않았는데 (극단적으로는 자바스크립트와 PHP가 있다.) 유독 러스트 개발자들은 적극적으로 러스트를 추천했다.하지만 그냥 그런 언어가 있구나 정도로 생각하고 있었다. 그런데 러스트 2018 에디션 발표 이후 근 1년간 러스트 코드를 웹어셈블리로 ...</description>
+<pubDate>Sat, 2 Nov 2019 05:00:00 +0900</pubDate>
+</item>
+<item>
+<title>🗞️ 훈련소에서 매일 뉴스 받아보기</title>
+<link>https://parksb.github.io/article/34.html</link>
+<description>훈련소에서 가장 답답한 것은 외부와의 단절이라는 말을 자주 들었다. 그래서 입대한 친구들에게 뉴스나 읽을거리를 요약해서 인터넷 편지로 보내주곤 했는데, 매일 주요 뉴스를 요약하는 것은 의외로 손이 많이 가는 일이었다. 무엇보다 인터넷 편지 발송을 지원하는 서비스인 더 캠프의 인터페이스가 너무 불편해서 사용하기 쉽지 않았다...</description>
+<pubDate>Mon, 2 Sep 2019 06:00:00 +0900</pubDate>
+</item>
+<item>
+<title>해피 터미널 라이프</title>
+<link>https://parksb.github.io/article/33.html</link>
+<description>6년간 써온 윈도우 노트북을 포맷하고 다시 WSL 환경을 세팅했다. 포맷을 하도 오랜만에 해서 그런지 설정에 의외로 손이 많이 갔다. 모든 걸 완벽하게 자동화할 겸 세팅을 정리해보기로 했다.Git우선 git을 설치한다. 자신의 프로젝트에 git을 사용하지 않더라도 (웬만하면 써보자) 다른 프로그램을 설치할 때 필요하다.#...</description>
+<pubDate>Thu, 2 Aug 2018 04:00:00 +0900</pubDate>
+</item>
+<item>
+<title>하지만, 야크 털 깎기는 재미있다</title>
+<link>https://parksb.github.io/article/32.html</link>
+<description>이 블로그는 지킬이나 휴고, 개츠비같은 정적 사이트 생성기/프레임워크를 사용하지 않았다. 처음엔 이것저것 써봤지만 커스터마이징 자유도가 낮아서 직접 블로그를 만들기로 했다. 초기에는 간단히 html로 글을 썼는데, 너무 불편해서 json 파일로 글을 쓰는 시스템을 만들었다. 이것도 장문의 글을 쓰기엔 불편해서 마크다운 파...</description>
+<pubDate>Tue, 2 Jul 2019 07:00:00 +0900</pubDate>
+</item>
+<item>
+<title>👻 CPU 보안 취약점을 공격하는 아주 구체적인 원리</title>
+<link>https://parksb.github.io/article/31.html</link>
+<description>지난 5월 인텔 CPU의 새로운 보안 취약점이 보고됐다. MDS(Microarchitectural Data Sampling)라고 불리는 이 취약점은 2018년 초 보고된 멜트다운(Meltdown), 스펙터(Spectre) 취약점과 달리 CPU 내부 3개의 버퍼(Line Fill Buffers, Load Ports, Sto...</description>
+<pubDate>Sat, 1 Jun 2019 02:00:00 +0900</pubDate>
+</item>
+<item>
+<title>하나의 함수로 강아지와 고양이 분류하기</title>
+<link>https://parksb.github.io/article/30.html</link>
+<description>여기 강아지와 고양이가 있다.class Dog {  name: string;  age: number;}class Cat {  name: string;  color: string;}const dogs: Dog[] = [...];const cats: Cat[] = [...];이때 5살 미만의 강아지나 검은색 고양이를 골라내려...</description>
+<pubDate>Wed, 1 May 2019 12:00:00 +0900</pubDate>
+</item>
+<item>
+<title>💵 캐시가 동작하는 아주 구체적인 원리</title>
+<link>https://parksb.github.io/article/29.html</link>
+<description>기술의 발전으로 프로세서 속도는 빠르게 증가해온 반면, 메모리의 속도는 이를 따라가지 못했다. 프로세서가 아무리 빨라도 메모리의 처리 속도가 느리면 결과적으로 전체 시스템 속도는 느려진다. 이를 개선하기 위한 장치가 바로 캐시(Cache)다.캐시는 CPU 칩 안에 들어가는 작고 빠른 메모리다. (그리고 비싸다.) 프로세서...</description>
+<pubDate>Sat, 2 Mar 2019 06:00:00 +0900</pubDate>
+</item>
+</channel>
+</rss>

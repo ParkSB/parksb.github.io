@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title> ES6와 함께 JavaScript로 OOP하기 </title><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="theme-color" content="#F5F5F5"><link rel="canonical" href="https://parksb.github.io/article/1.html"><meta property="og:title" content="ES6와 함께 JavaScript로 OOP하기: 자바스크립트의 OOP는 진정한 OOP가 아닌가? "><meta property="og:image" content="https://og-image-parksb.vercel.app/**ES6%EC%99%80%20%ED%95%A8%EA%BB%98%20JavaScript%EB%A1%9C%20OOP%ED%95%98%EA%B8%B0**.png?subtitle=%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98%20OOP%EB%8A%94%20%EC%A7%84%EC%A0%95%ED%95%9C%20OOP%EA%B0%80%20%EC%95%84%EB%8B%8C%EA%B0%80?&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.04.15%20%E2%80%95%20parksb.github.io"><meta property="og:description" content="객체지향 프로그래밍(OOP, Object-Oriented Programming)은 절차지향 프로그래밍(Procedural Programming)과 대비되는 프로그래밍 방법론이다.절차지향 프로그래밍 방식 언어로는 대표적으로 C언어가 있다. 일반적으로 C코드는 특정 기능을 수행하는 함수들로 구성되어 있다. C 프로그래머는 프..."><meta name="twitter:title" content="ES6와 함께 JavaScript로 OOP하기: 자바스크립트의 OOP는 진정한 OOP가 아닌가? "><meta name="twitter:image" content="https://og-image-parksb.vercel.app/**ES6%EC%99%80%20%ED%95%A8%EA%BB%98%20JavaScript%EB%A1%9C%20OOP%ED%95%98%EA%B8%B0**.png?subtitle=%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98%20OOP%EB%8A%94%20%EC%A7%84%EC%A0%95%ED%95%9C%20OOP%EA%B0%80%20%EC%95%84%EB%8B%8C%EA%B0%80?&description=%E2%80%95%20Simon%20Park%20%E2%80%95%202018.04.15%20%E2%80%95%20parksb.github.io"><meta name="twitter:description" content="객체지향 프로그래밍(OOP, Object-Oriented Programming)은 절차지향 프로그래밍(Procedural Programming)과 대비되는 프로그래밍 방법론이다.절차지향 프로그래밍 방식 언어로는 대표적으로 C언어가 있다. 일반적으로 C코드는 특정 기능을 수행하는 함수들로 구성되어 있다. C 프로그래머는 프..."><meta name="twitter:card" content="summary_large_image"><link rel="preload" href="/init.9f9937d1.css" as="style"><link rel="preload" href="/article.32d70d6a.css" as="style"><link rel="shortcut icon" href="/favicon.6b194a55.ico" type="image/x-icon"><link rel="stylesheet" href="/init.9f9937d1.css"><link rel="stylesheet" href="/article.32d70d6a.css"></head><body> <header id="top-container" role="navigation"> </header> <main id="main-container"> <article id="article-container"> <h1 id="article-title"> ES6와 함께 JavaScript로 OOP하기 </h1> <h2 id="article-subtitle"> 자바스크립트의 OOP는 진정한 OOP가 아닌가? </h2> <time id="article-date"> 2018.04.15 </time> <small id="article-history"> <a href="https://github.com/parksb/parksb.github.io/commits/development/_articles/20180415_javascript-oop-with-es6.md"> (history) </a> </small> <section id="article-content-container"> <details><summary>Table of Contents</summary>
+<p><div class="table-of-contents"><ul><li><a href="#class">Class</a></li><li><a href="#constructor">Constructor</a></li><li><a href="#instance-variable">Instance variable</a></li><li><a href="#method">Method</a></li><li><a href="#static-method">Static Method</a></li><li><a href="#information-hiding">Information Hiding</a></li><li><a href="#inheritance-%26-polymorphism">Inheritance & Polymorphism</a></li><li><a href="#overriding">Overriding</a></li><li><a href="#overloading">Overloading</a></li><li><a href="#abstract">Abstract</a></li><li><a href="#interface">Interface</a></li></ul></div></p>
+</details>
+<p>객체지향 프로그래밍(OOP, Object-Oriented Programming)은 절차지향 프로그래밍(Procedural Programming)과 대비되는 프로그래밍 방법론이다.</p>
+<p>절차지향 프로그래밍 방식 언어로는 대표적으로 C언어가 있다. 일반적으로 C코드는 특정 기능을 수행하는 함수들로 구성되어 있다. C 프로그래머는 프로그램의 각 기능을 구현하고, 이 기능들이 어떤 절차로 수행되는가를 중심으로 개발한다. 객체지향 프로그래밍 방식 언어는 Java가 대표적이다. Java 프로그래머는 프로그램에 필요한 각 객체들의 속성과 동작을 구현하고, 이 객체들이 어떻게 상호작용하는가를 중심으로 개발한다. (절차지향 프로그래밍은 명령을 순차적으로 수행하고, 객체지향은 그렇지 않다는 의미는 아니다. C든 Java든 기본적으로 명령은 순서대로 수행된다.)</p>
+<p>C와 Java를 예시로 들었는데, 절차지향과 객체지향은 방법론이지 언어의 속성은 아니다. Java로도 절차지향 프로그래밍을 할 수 있고, C언어로 객체지향 프로그래밍을 할 수 있다. 다만 C언어는 문법 자체로 객체지향을 지원하지 않기 때문에 매우 비효율적이다. (<a href="https://stackoverflow.com/questions/351733/can-you-write-object-oriented-code-in-c">Can you write object-oriented code in C?</a>) 반면 Java는 언어가 차체적으로 객체지향 프로그래밍을 위한 다양한 문법을 제공하고 있으며, 굳이 자바로 절차지향 프로그래밍을 할 이유는 없다.</p>
+<p>OOP의 가장 큰 장점은 유지보수가 쉽다는 것이다. 특히 다른 사람과 함께 개발해야 할 때 발생하는 혼란을 줄여준다. 다른 사람들과 절차지향 프로그래밍 방식으로 프로젝트를 해봤다면 알겠지만, 내가 작업하는 코드에 다른 사람이 구현한 함수를 가져다 써야하는 경우가 있다. 반대로 내가 구현한 함수를 다른 사람이 가져다 쓰는 경우도 있다. 여기서 문제가 발생한다. 내가 작성한 함수를 다른 부분에도 사용하기 위해 내용을 고치면 내 함수를 쓰던 다른 사람의 코드에 문제가 생길 수 있다. 따라서 다른 사람이 작성한 코드를 매번 해석해야 하며, 내 함수가 어디서 어떻게 사용되는지 항상 신경쓰고 있어야 한다.</p>
+<p>객체지향 프로그래밍 방식으로 개발을 한다면 이런 문제를 해결할 수 있다. 각 기능을 독립적인 모듈로 관리할 수 있으며, 다른 사람이 내 코드의 내용을 직접 수정하지 않고 데이터에 접근하게 만들 수 있다. 따라서 코드 재사용성을 높이고 의존성을 관리하기 쉬워진다. 대신 코드 설계를 잘해야 한다. 객체 사이의 관계를 생각하지 않고 무작정 코드를 작성하기 시작하면 모든 것이 꼬여버릴 수 있다.</p>
+<p><img src="https://t1.daumcdn.net/cfile/tistory/995B74355AD5C39A1C" alt="말을 만들고 싶다면 먼저 말 공장을 만들어야 한다."></p>
+<p>처음 객체지향 프로그래밍 방식으로 개발을 하면 굉장히 번거롭다고 느껴진다. 특히 바로 결과물이 나오지 않고 설계도를 그려야 한다는 점이 답답하다. 말을 만들기 위해 말 공장을 먼저 만들어야 한다. 공장의 장점은 한 번 만들어두면 이후에 반복적으로 사용할 수 있고, 말에 추가적인 기능을 붙일 때도 공장에 장비를 하나 더 들여놓기만 하면 된다는 것이다. (실제로 공장에서 제품을 찍어내는 듯한 디자인 패턴인 factory pattern이 있다.) 객체지향 방식은 현실 세계를 표현하기 적합하고, 또 직관적이기도 하다. 코드와 서비스의 미래를 생각한다면 객체지향 프로그래밍을 하자!</p>
+<p>자바스크립트로도 객체지향 프로그래밍을 할 수 있을까? 한때 자바스크립트로 객체지향 프로그래밍을 한다고 하면 &quot;자바스크립트의 객체지향은 진정한 객체지향이 아니다&quot;라고 하는 사람들이 있었다.</p>
+<p>하지만 자바스크립트는 기본적으로 객체지향 언어다. 자바스크립트는 캡슐화, 추상화, 다형성 등 OOP의 개념을 구현할 수 있고, prototype을 기반으로 상속도 할 수 있다. 다음은 자바스크립트로 고양이 클래스를 만든 코드다:</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cat</span>(<span class="hljs-params">name, age</span>) </span>{
+    <span class="hljs-built_in">this</span>.name = name;
+    <span class="hljs-built_in">this</span>.age = age;
+};
+
+Cat.prototype.makeNoise = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Meow!&#x27;</span>);
+}
+
+<span class="hljs-keyword">var</span> cake = <span class="hljs-keyword">new</span> Cat(<span class="hljs-string">&#x27;Cake&#x27;</span>, <span class="hljs-number">3</span>);
+
+cake.makeNoise(); <span class="hljs-comment">// &#x27;Meow!&#x27;</span>
+</code></pre>
+<p>다른 객체지향 언어를 사용해 본 사람이라면 일반적인 객체지향 언어와 굉장히 다르다는 것을 알 수 있다. 객체지향하면 떠오르는 클래스없이 그냥 함수가 쓰였고, 심지어 메소드는 그 함수 밖에서 정의되었다. 자바스크립트 OOP에 생소한 사람에게는 '이건 뭔가 잘못됐어’하는 생각이 들 수 있다.</p>
+<p>ES6에는 여러 객체지향 문법이 추가되면서 자바나 C++같은 다른 객체지향 언어들과 비슷한 방식으로, 보다 간결하게 객체지향 프로그래밍을 할 수 있게 되었다. (예전 방식의 OOP는 MDN의 <a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript">객체지향 자바스크립트 소개</a>를 참고하자.)</p>
+<h1 id="class">Class</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>클래스는 객체의 설계도다. 클래스의 내용을 바탕으로 인스턴스를 찍어낸다. 자바스크립트에서 클래스 선언은 아주 간단하다. 참고로 클래스 선언은 <a href="https://developer.mozilla.org/ko/docs/Glossary/Hoisting">hoisting</a>되지 않는다는 점을 유의해야 한다. (맨 마지막 라인 <code>export default Animal</code>은 Animal.js 파일에서 Animal 클래스를 외부로 export하기 위한 코드다. 클래스 외에도 함수나 변수 등을 export할 때도 이를 사용할 수 있다.)</p>
+<p>클래스 문법이 추가됐지만, 엄밀히 말하자면 진짜 클래스가 아니라 함수다. 그리고 자바스크립트에서 함수는 일급객체다. 즉, 자바스크립트에 새로운 객체지향 모델이 도입된 것은 아니고, 문법적으로만 클래스를 지원하게 된 것이다. 해당 콘텍스트에서 hoisting되지 않는다는 점만 빼면 위 코드는 <code>function Animal() { }</code>과 같다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">import</span> Animal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Animal&#x27;</span>;
+
+<span class="hljs-keyword">let</span> anim = <span class="hljs-keyword">new</span> Animal();
+</code></pre>
+<p>다른 파일에서 Animal 클래스에 접근하려면 우선 Animal 클래스를 import해야 한다. (앞서 <code>export default Animal</code> 라인을 작성한 이유다.) <code>anim</code> 변수를 만들고 <code>new</code> 키워드를 통해 Animal을 생성할 수 있다. 여기서 <code>anim</code>은 Animal 클래스를 가리키는 레퍼런스 변수(Reference variable)이며, 인스턴스(Instance)라고 부른다. 그리고 이것이 바로 클래스라는 설계도를 이용해 인스턴스라는 개체를 생성하는 과정이다.</p>
+<h1 id="constructor">Constructor</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+    
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>클래스는 하나의 constructor를 가질 수 있다. constructor는 <code>new Animal();</code> 명령을 통해 실행되어 인스턴스를 초기화하는 역할을 한다. 또한 constructor에는 <code>name</code>처럼 매개변수를 둘 수도 있다. 만약 constructor를 명시하지 않는다면 비어있는 default constructor가 만들어진다. 굳이 빈 constructor를 만들 필요는 없다.</p>
+<h1 id="instance-variable">Instance variable</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>클래스의 멤버 프로퍼티는 constructor 안에 선언한다. 다른 언어에서는 이를 인스턴스 변수(Instance variable)라고 부르지만, 앞서 언급했듯 클래스는 사실 함수고, 자바스크립트에서 함수는 객체이기 때문에 <code>this.name</code>은 변수가 아닌 프로퍼티(Property)다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">import</span> Animal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Animal&#x27;</span>;
+
+<span class="hljs-keyword">let</span> anim = <span class="hljs-keyword">new</span> Animal(<span class="hljs-string">&#x27;Jake&#x27;</span>);
+</code></pre>
+<p>인스턴스를 생성할 때 매개변수를 넘겨줄 수 있다. <code>anim</code> 인스턴스의 프로퍼티 <code>name</code>의 값은 'Jake’다.</p>
+<h1 id="method">Method</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+    }
+    
+    <span class="hljs-function"><span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name;
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>메소드는 함수와 비슷하며, 메소드는 객체의 동작을 정의한다. <code>getName()</code> 메소드는 Animal 클래스의 프로퍼티인 <code>this.name</code>을 반환한다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">import</span> Animal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Animal&#x27;</span>;
+
+<span class="hljs-keyword">let</span> anim = <span class="hljs-keyword">new</span> Animal(<span class="hljs-string">&#x27;Jake&#x27;</span>);
+
+<span class="hljs-built_in">console</span>.log(anim.getName()); <span class="hljs-comment">// &#x27;Jake&#x27;</span>
+</code></pre>
+<p>호출 역시 직관적이다.</p>
+<h1 id="static-method">Static Method</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+    }
+    
+    <span class="hljs-function"><span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name;
+    }
+    
+    <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">sleep</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Zzz&#x27;</span>);
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>메소드 앞에 static 키워드를 붙여주면 따로 인스턴스를 생성하지 않고 메소드를 호출할 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">import</span> Animal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Animal&#x27;</span>;
+
+<span class="hljs-keyword">let</span> anim = <span class="hljs-keyword">new</span> Animal(<span class="hljs-string">&#x27;Jake&#x27;</span>);
+
+Animal.sleep(); <span class="hljs-comment">// &#x27;Zzz&#x27;</span>
+anim.sleep(); <span class="hljs-comment">// Uncaught TypeError: anim.sleep is not a function</span>
+</code></pre>
+<p>인스턴스를 통해 static 메소드를 호출하면 TypeError가 발생한다.</p>
+<h1 id="information-hiding">Information Hiding</h1>
+<p>자바스크립트에는 은닉된 프로퍼티라는 개념이 없다. 자바에는 private, protected, public과 같은 접근제어자가 있어서 외부에서 인스턴스 멤버에 접근하는 것을 통제할 수 있지만, 자바스크립트는 클래스의 모든 프로퍼티가 public이다.</p>
+<p>종종 프로퍼티 이름 앞에 언더스코어를 붙이는 방식(<code>this._name</code>)으로 private한 변수임을 표현하는 경우도 있는데, 실제로 프로퍼티가 private하게 동작하는 것은 아니기 때문에 오해를 불러일으킨다는 의견이 있다. <a href="https://github.com/ParkSB/javascript-style-guide#naming--leading-underscore">Airbnb JavaScript 스타일 가이드</a>를 참고.</p>
+<p>프로퍼티 대신 변수를 사용하면 정보를 은닉하는 효과를 낼 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-keyword">let</span> name = name;
+
+        <span class="hljs-built_in">this</span>.getName = <span class="hljs-function">() =&gt;</span> { 
+            <span class="hljs-keyword">return</span> name;
+        };
+
+        <span class="hljs-built_in">this</span>.setName = <span class="hljs-function">(<span class="hljs-params">newName</span>) =&gt;</span> {
+            name = newName;
+        }
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>변수는 해당 블록 안에만 존재하기 때문에 해당 블록을 벗어나서 접근하면 undefined가 된다. (단, 블록 스코프를 갖는 <code>let</code>, <code>const</code>와 달리 <code>var</code>는 함수 스코프를 갖는다.) 따라서 constructor 안에 변수를 선언하면 외부에서 <code>name</code>에 직접 접근할 수 없다. 더불어 <code>name</code>을 가져오는 프로퍼티와 <code>name</code>을 설정하는 프로퍼티를 두면 외부에서 <code>getName</code>과 <code>setName</code>을 통해 <code>name</code>에 간접적으로 접근할 수 있다.</p>
+<h1 id="inheritance-%26-polymorphism">Inheritance &amp; Polymorphism</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+    }
+    
+    <span class="hljs-function"><span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name;
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>상속은 OOP 개념 중 하나다. 상속은 말그대로 해당 클래스의 모든 내용을 다른 클래스에 그대로 복사한다는 의미다. 즉, Animal 클래스의 프로퍼티 <code>this.name</code>과 메소드 <code>getName()</code>을 다른 클래스에 그대로 상속할 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Dog.js</span>
+<span class="hljs-keyword">import</span> Animal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Animal&#x27;</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dog</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">super</span>(name);
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Dog;
+</code></pre>
+<p><code>extends</code> 키워드를 사용해 Dog 클래스가 Animal 클래스를 상속했다. 이제 Animal 클래스는 Dog 클래스의 superclass가 되었고, Dog 클래스는 Animal 클래스의 subclass가 되었다. Dog 클래스는 Animal 클래스가 가지고 있는 <code>this.name</code>과 <code>getName()</code>을 똑같이 갖는다.</p>
+<p>subclass의 constructor에는 <code>super()</code>를 넣어 superclass의 constructor를 호출할 수도 있다. subclass에서 <code>super()</code>를 사용하지 않아도 되는 경우 에러가 발생하지는 않지만, 그래도 <code>super()</code>를 명시하길 권장한다.</p>
+<p>클래스를 상속할 때는 IS-A 관계나 HAS-A 관계를 만족하는지 확인해야 한다. 가령 &quot;사과는 과일이다(Apple is a fruit)&quot;는 IS-A 관계를 만족하므로 Fruit 클래스가 Apple 클래스의 superclass가 될 수 있다. 한편 &quot;차에는 바퀴가 있다(Car has a wheel)&quot;는 HAS-A 관계를 만족하므로 Car 클래스가 Wheel 클래스의 superclass가 될 수 있다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">import</span> Dog <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Dog&#x27;</span>;
+
+<span class="hljs-keyword">let</span> jake = <span class="hljs-keyword">new</span> Dog(<span class="hljs-string">&#x27;Jake&#x27;</span>);
+
+<span class="hljs-built_in">console</span>.log(jake.getName()); <span class="hljs-comment">// &#x27;Jake&#x27;</span>
+</code></pre>
+<p>이런 식으로 사용한다. Dog 인스턴스 <code>jake</code>가 Animal 클래스의 <code>getName()</code>을 호출한다.</p>
+<h1 id="overriding">Overriding</h1>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+    }
+    
+    <span class="hljs-function"><span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name;
+    }
+    
+    <span class="hljs-function"><span class="hljs-title">makeNoise</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;It makes a noise&#x27;</span>);
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p>오버라이딩(Overriding)은 subclass가 superclass의 메소드를 덮어쓰는 것을 말한다. 먼저 Animal 클래스에 <code>makeNoise()</code> 메소드를 추가했다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Dog.js</span>
+<span class="hljs-keyword">import</span> Animal <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Animal&#x27;</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dog</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">super</span>(name);
+    }
+    
+    <span class="hljs-comment">// Override</span>
+    <span class="hljs-function"><span class="hljs-title">makeNoise</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Bark!&#x27;</span>);
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Dog;
+</code></pre>
+<p>Dog 클래스에 같은 이름의 메소드 <code>makeNoise()</code>를 정의했다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">import</span> Dog <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Dog&#x27;</span>;
+
+<span class="hljs-keyword">let</span> jake = <span class="hljs-keyword">new</span> Dog(<span class="hljs-string">&#x27;Jake&#x27;</span>);
+
+<span class="hljs-built_in">console</span>.log(jake.getName()); <span class="hljs-comment">// &#x27;Jake&#x27;</span>
+jake.makeNoise(); <span class="hljs-comment">// &#x27;Bark!&#x27;</span>
+</code></pre>
+<p>Animal 클래스의 <code>makeNoise()</code>가 Dog 클래스의 <code>makeNoise()</code>로 오버라이드된 것을 볼 수 있다.</p>
+<h1 id="overloading">Overloading</h1>
+<p>오버로딩(Overloading)은 같은 이름, 다른 매개변수를 가진 메소드가 여러 개 존재하는 것을 말한다. 매개변수가 다르면 다른 메소드임을 알 수 있기 때문에 가능한 기능인데, 자바스크립트에서는 기본적으로 불가능하다. (대신 <a href="https://stackoverflow.com/questions/456177/function-overloading-in-javascript-best-practices">매개변수의 존재 여부에 따라 분기를 나누는 방식</a>으로 구현할 수는 있다.) 한 클래스 안에 같은 이름을 가진 메소드가 여러 개 존재할 수 없으며, constructor도 반드시 하나만 있어야 한다.</p>
+<h1 id="abstract">Abstract</h1>
+<p>Animal 클래스가 분명 존재하지만, 단순히 '동물’을 만든다는 것은 조금 이상한 일이다. 동물은 추상적인 개념이기 때문에 Animal 객체를 생성하는 일이 있어서는 안 된다. 이럴 때 추상화(Abstraction)를 통해 <code>new Animal(...);</code>과 같은 명령을 미연에 방지할 수 있다. Java의 경우 <code>public abstract class Animal {...}</code>과 같은 방식으로 추상 클래스를 만들 수 있다. 아쉽지만 자바스크립트에서는 추상 클래스나 메소드를 만들 수 없다. 다만 추상 메소드를 직접 구현하는 방법은 있다.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Animal.js</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+    }
+    
+    <span class="hljs-function"><span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name;
+    }
+    
+    <span class="hljs-comment">// Abstract</span>
+    <span class="hljs-function"><span class="hljs-title">makeNoise</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;makeNoise() must be implement.&#x27;</span>);
+    }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Animal;
+</code></pre>
+<p><code>makeNoise()</code>를 추상 메소드로 만들어 subclass에서 구현되지 않은 <code>makeNoise()</code>를 호출하면 에러를 발생시키도록 했다. 이 경우 추상 메소드는 반드시 subclass에서 오버라이드되어야 한다.</p>
+<p>추상 클래스를 만드는 것을 조금 더 번거롭다. 직접 Abstract 클래스를 만들어 상속시키는 방식인데, 스택오버플로우의 <a href="https://stackoverflow.com/questions/29480569/does-ecmascript-6-have-a-convention-for-abstract-classes">Does ECMAScript 6 have a convention for abstract classes?</a>를 참고해보자.</p>
+<h1 id="interface">Interface</h1>
+<p>인터페이스(Interface)는 추상 메소드들의 집합이다. 클래스와는 다르며, 인스턴스 변수를 가질 수 없다. 자바의 경우 인터페이스는 <code>public interface Pet {...}</code>과 같이 만들고, 다른 클래스에서 <code>public class Dog extends Animal implements Pet</code>과 같은 방식으로 구현(Implement)한다. 이 코드에서 Dog 클래스는 Animal 클래스를 상속받고, Pet 인터페이스를 구현한다. 즉, Animal 클래스의 메소드, 인스턴스 변수와 Pet 인터페이스의 추상 메소드들을 가진다.</p>
+<p>인터페이스만 보면 이를 구현하는 클래스가 어떤 동작을 하는지 직관적으로 볼 수 있고, 자바에서는 각 타입별로 새로운 메소드를 오버로딩할 필요가 없어진다. (자바에서의 인터페이스는 <a href="https://wikidocs.net/217">점프 투 자바</a>를 참고.) 매우 편리한 기능이지만, 자바스크립트는 타입이 없는 덕 타이핑(Duck typing) 언어이기 때문에 인터페이스와 같은 문법이 없다. 한편 타입스크립트에는 자바와 유사한 방식으로 인터페이스를 사용할 수 있다.</p> </section> <section id="article-navigation"> <div class="article-navigation-item article-navigation-next"> <a href="/article/2.html"> <div class="article-navigation-arrow article-navigation-next">＜</div> <div class="article-navigation-content article-navigation-next"> <p class="article-navigation-title">♻️ 자바는 어떻게 Garbage Collection을 할까?</p> <p class="article-navigation-subtitle">오브젝트의 일생</p> </div> </a> </div> <div class="article-navigation-item article-navigation-prev"> <a href="/article/0.html"> <div class="article-navigation-arrow article-navigation-prev">＞</div> <div class="article-navigation-content article-navigation-prev"> <p class="article-navigation-title">📋 프론트엔드 개발자를 위한 토막상식</p> <p class="article-navigation-subtitle"></p> </div> </a> </div> </section> <section id="article-social-container"> <div id="fb-like" class="fb-like" data-href="https://parksb.github.io/article/1.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> <a href="https://twitter.com/share" class="twitter-share-button" data-show-count="true"></a> </section> <section id="article-comments"> <script async src="https://utteranc.es/client.js" repo="ParkSB/parksb.github.io-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous">
+          </script> </section> <section id="article-list-button-container"> <a href="/articles.html"> <div id="article-list-button">📚</div> </a> </section> </article> </main> <div id="fb-root"></div> <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0"></script> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> <script defer src="/init.ddb7c0df.js"></script> <script defer src="/article.8be3798d.js"></script>  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113147800-1"></script> <script>function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date),a("config","UA-113147800-1");</script>
+</body></html>
